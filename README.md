@@ -29,7 +29,7 @@ https://digital-twin-v2-chi.vercel.app/
 
 ## Preview: 
 
-[Click here to watch the video]()
+ [Video is coming soon]
 
 Manually Create the Table: Go to your Supabase project, navigate to SQL Editor, and run the following SQL to create the readings table:
 
