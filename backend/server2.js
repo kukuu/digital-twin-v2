@@ -12,7 +12,7 @@ const server = http.createServer(app);
 app.use(cors());
 const ORIGIN =
   process.env.NODE_ENV === "production"
-    ? "https://digital-twin-neon.vercel.app"
+    ? "https://digital-twin-v2-chi.vercel.app/"
     : "http://localhost:3000";
 
 const io = new Server(server, {
