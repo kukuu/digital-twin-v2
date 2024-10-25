@@ -1,0 +1,13 @@
+# render.yaml
+services:
+  - type: web
+    name: energy-meter-backend
+    env: node
+    plan: free
+    rootDir: backend
+    buildCommand: "npm install" 
+    startCommand: "node server2.js"
+    envVars:
+      - key: NODE_ENV
+        value: production
+
