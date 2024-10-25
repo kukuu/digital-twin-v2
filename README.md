@@ -1,2 +1,2 @@
-# digital-twin-v2
+# Digital Twin
 Optimising simulation real-time infrastructure.
