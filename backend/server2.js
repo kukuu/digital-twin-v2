@@ -30,9 +30,9 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 
 // Use the provided meter IDs
 let readings = {
-  "SMR-98756-1-A": 1000,
-  "SMR-43563-2-A": 2000,
-  "SMR-65228-1-B": 3000,
+  "SMR-98756-1-A": 100,
+  "SMR-43563-2-A": 200,
+  "SMR-65228-1-B": 300,
 };
 
 // Fetch the last saved reading for each meter from Supabase on server start
