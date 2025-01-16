@@ -69,7 +69,8 @@ export default function EnergyMeter() {
     <div className="container">
       <h1 className="title">Digital Twin - Live Energy Meter Readings</h1>
 
-  <p>At DSS Digital Smart Meter Centre, we help you find the best electricity meter at the most competitive price. Compare diferent meters, check prices and choose the right option to save on energy bills. </p>
+  <p>At DSS Digital Smart Meter Centre, we help you find the best electricity meter 
+    at the most competitive price. Compare diferent meters, check prices and choose the right option to save on energy bills. </p>
         
        <p> Start comparing now and make smarter choices for 
         your electricity usage.<strong>Select a Smart Meter!</strong>
