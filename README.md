@@ -20,12 +20,9 @@ https://github.com/kukuu/digital-twin-v2
 
 https://digital-twin-v2-chi.vercel.app/
 
-## Snapshots
+## Supabase
 
-1. ![]()
-2. ![]()
-3. ![]()
-4. ![]()
+https://supabase.com/dashboard/project/wqcbpdnltpmdhztxojes/editor/35802?schema=public
 
 ## Preview: 
 
