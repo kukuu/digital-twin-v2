@@ -9,7 +9,7 @@ This development covers:
 3. Vercel to host connection and configuration to  versioning and source control of code repository in GitHub. 
 4. Updated UI to dynamically calculate the cost of Meter Reading cumulatively.   
 
-[Video is coming soon]
+
 
 
 ## Code Repository: 
@@ -26,7 +26,6 @@ https://supabase.com/dashboard/project/wqcbpdnltpmdhztxojes/editor/35802?schema=
 
 ## Preview: 
 
- [Video is coming soon]
 
 Manually Create the Table: Go to your Supabase project, navigate to SQL Editor, and run the following SQL to create the readings table:
 
