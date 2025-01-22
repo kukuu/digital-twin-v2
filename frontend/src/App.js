@@ -72,8 +72,8 @@ export default function EnergyMeter() {
   <p>The DSS <strong>Digital Smart Meter</strong>, helps you find the best electricity meter 
     at the most competitive price. Compare diferent meters, check prices and choose the right option to save on energy bills. </p>
         
-       <p> Start comparing now and make smarter choices for 
-        your electricity usage!
+        <p> Start comparing now and make smarter choices for 
+        your electricity usage.<strong> Please login and select a Smart Meter!</strong>
       </p>
 
       {loading ? ( // Show loading state if no readings are received yet
