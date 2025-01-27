@@ -67,7 +67,7 @@ export default function EnergyMeter() {
 
   return (
     <div className="container">
-      <h1 className="title">Price Comaprison Smart Energy Meter Reader.</h1>
+      <h1 className="title">Price Comaprison Smart Energy Meter Reader</h1>
 
   <p>The DSS <strong>Digital Twin Smart Energy Meter Reader</strong>, helps you find the best electricity meter 
     at the most competitive price. Compare diferent meters, check prices and choose the right option to save on energy bills. </p>
