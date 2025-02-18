@@ -67,9 +67,10 @@ export default function EnergyMeter() {
 
   return (
     <div className="container">
-      <h1 className="title">Price Comaprison Smart Energy Meter Reader</h1>
+      <h1 className="title">SPYDER</h1>
+    <h2 className="title">Price Comaprison Smart Energy Meter Reader</h2>
 
-  <p>The <strong>SPIDER</strong> Digital Twin Smart Energy Meter Reader, helps you find the best electricity meter 
+  <p>The <strong>SPYDER</strong> Digital Twin Smart Energy Meter Reader, helps you find the best electricity meter 
     at the most competitive price. Compare diferent meters, check prices and choose the right option to save on energy bills. </p>
         
         <p> Start comparing now and make smarter choices for 
