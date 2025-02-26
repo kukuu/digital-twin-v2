@@ -1,154 +1,166 @@
-.App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: #f8f9fa;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+  
+  .navbar-brand h2 {
+    margin: 0;
+    color: #333;
   }
-  to {
-    transform: rotate(360deg);
+  
+  .navbar-auth {
+    display: flex;
+    align-items: center;
   }
-}
-
-
-/* General container */
-.container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
-}
-
-/* Title styling */
-.title {
-  font-size: 2rem;
-  font-weight: bold;
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-/* Grid layout for meters */
-.meter-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 20px;
-}
-
-@media (min-width: 768px) {
-  .meter-grid {
-    grid-template-columns: repeat(3, 1fr);
+  
+  /* Adjust existing container styles */
+  .container {
+    padding-top: 2rem;
   }
-}
-
-/* Card styling */
 .card {
-  border: 1px solid #ccc;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  padding: 2rem;
   border-radius: 8px;
-  overflow: hidden;
-  background-color: #fff;
+  width: 90%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
 }
 
-/* Card header */
-.card-header {
-  background-color: #f0f0f0;
-  padding: 10px;
-}
-
-.card-title {
+.modal-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-weight: bold;
-  font-size: 1.2rem;
+  margin-bottom: 1.5rem;
 }
 
-/* Status indicator */
-.status-indicator {
+.close-button {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.5rem;
+}
+
+.detail-row {
+  margin-bottom: 1.5rem;
+}
+
+/* Add styles for button container */
+.detail-row:last-child {
   display: flex;
-  position: relative;
-  width: 12px;
-  height: 12px;
+  gap: 1rem;
+  margin-bottom: 0;
 }
 
-.ping {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  background-color: #34d399; /* Green */
-  animation: ping-animation 1s cubic-bezier(0, 0, 0.2, 1) infinite;
-  opacity: 0.75;
+.detail-row h3 {
+  color: #333;
+  margin-bottom: 0.5rem;
 }
 
-.dot {
-  position: relative;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background-color: #34d399; /* Green */
-}
-
-/* Animation for the ping effect */
-@keyframes ping-animation {
-  0% {
-    transform: scale(1);
-    opacity: 1;
-  }
-  75% {
-    transform: scale(2);
-    opacity: 0;
-  }
-  100% {
-    transform: scale(2.5);
-    opacity: 0;
-  }
-}
-
-/* Card content */
-.card-content {
-  padding: 20px;
-  background-color: #fff7e6; /* Light orange */
-}
-
-/* Reading display */
-.reading-display {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px;
-  background-color: #ffcc80; /* Orange */
-  border-radius: 8px;
-  font-family: monospace;
+.send-reading-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  cursor: pointer;
   font-size: 1rem;
+  flex: 1;  /* Make buttons take equal space */
+  margin-top: 1rem;
+}
+/* Add styles for PayPal button */
+.paypal-payment-button {
+  background-color: #cccccc;
+  color: black;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  cursor: none;
+  font-size: 1rem;
+  flex: 1;  /* Make buttons take equal space */
+  margin-top: 1rem;
+  }
+  
+  .paypal-payment-button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+  opacity: 0.7;
+  }
+
+.send-reading-button:hover {
+  background-color: #0056b3;
 }
 
-.unit {
-  font-size: 1.2rem;
+.send-reading-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Make sure the toast container appears above the modal */
+.Toastify__toast-container {
+  z-index: 10000;
+}
+
+.reading-input-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.reading-input {
+  padding: 8px 12px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 150px;
+}
+
+.reading-input:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0,123,255,0.25);
+}
+
+.reading-unit {
+  font-size: 1rem;
   color: #666;
 }
+
+.account-number {
+  font-size: 0.9em;
+  color: #666;
+  margin: 5px 0 0 0;
+  font-family: monospace;
+}
+
+.modal-header div {
+  flex-grow: 1;
+} 
