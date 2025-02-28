@@ -117,7 +117,8 @@ const Modal = memo(
               onClick={onPay}
               disabled={isSending}
             >
-              Pay £{meterInfo.total}
+             {/* Pay £{meterInfo.total}*/}
+             Payment Gateway
             </button>
           </div>
         </div>
