@@ -30,18 +30,21 @@ let meterData = {
     cost: 23.28, // Cost per kWh in pence
     tariff: "Fixed", // Tariff type
     total: 0,
+    contact:"0808 164 1088",
   },
   "SMR-43563-2-A": {
     supplier: "EDF Energy",
     cost: 23.28, // Cost per kWh in pence
     tariff: "Fixed", // Tariff type
     total: 0,
+    contact:"0333 200 5100",
   },
   "SMR-65228-1-B": {
     supplier: "E.ON Next",
     cost: 25.69, // Cost per kWh in pence
     tariff: "Standard", // Tariff type
     total: 0,
+    contact:"0808 501 5200",
   },
 };
 
@@ -323,6 +326,7 @@ export default function EnergyMeter() {
               <span className="unit2">Total Cost:</span>
               <span>£{data.total}</span>
             </div>
+             <div>Contact: {data.contact}</div>      
           </div>
         </div>
       ))}
