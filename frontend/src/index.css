@@ -191,3 +191,13 @@ code {
   font-size: 0.8rem;
   color: #666;
 }
+
+
+.ad-label{
+  color:green;
+}
+
+.ad-space {
+  color:pink;
+  font-weight:600;
+}
