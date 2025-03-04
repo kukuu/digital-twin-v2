@@ -404,6 +404,12 @@ export default function EnergyMeter() {
             </SignedIn>
           </div>
         )}
+ <div className="ad-label">Race to zero emission future! - <span className="ad-space">Advertise here!</span><br /><br />
+           <iframe width="200" height="200" src="https://www.youtube.com/embed/O7ACNMj8NW0" title="Evolution of Tesla (Animation)" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; 
+         // picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+&nbsp;&nbsp;
+         </div>
       </div>
     </div>
   );
