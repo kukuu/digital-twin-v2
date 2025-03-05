@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useCallback, useRef, memo } from "react";
 import io from "socket.io-client";
+import paperWhisky from './images/whisky-in-paper-bottle.png';
 import {
   SignedIn,
   SignedOut,
