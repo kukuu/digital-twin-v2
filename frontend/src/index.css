@@ -201,3 +201,13 @@ code {
   color:#ff6b46;
   font-weight:600;
 }
+
+.whisky-bottle {
+  width: 200px;
+  height: 200px;
+  border-radius: 10px;
+}
+
+.whisky-label {
+  color: #000;
+}
