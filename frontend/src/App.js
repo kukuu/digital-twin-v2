@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useCallback, useRef, memo } from "react";
 import io from "socket.io-client";
 import paperWhisky from './images/whisky-in-paper-bottle.png';
+import woodenbike from './images/wooden-bicycle.jpg';
 import {
   SignedIn,
   SignedOut,
@@ -405,12 +406,11 @@ export default function EnergyMeter() {
             </SignedIn>
           </div>
         )}
- <div className="ad-label">Race to zero emission future! - <span className="ad-space">Advertise here!</span><br /><br />
+  <div className="ad-label"><h3 className="ad-labelHeader">Race to zero emission future!</h3><span className="ad-space">Advertise here!</span><br /><br />
            <iframe width="200" height="200" src="https://www.youtube.com/embed/O7ACNMj8NW0" title="Evolution of Tesla (Animation)" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; 
          // picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-&nbsp;&nbsp;<img src={paperWhisky} alt="Whisky in Paper bottle" className="whisky-bottle" /><br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+&nbsp;&nbsp;<img src={paperWhisky} alt="Whisky in Paper bottle" className="whisky-bottle" /> &nbsp;&nbsp;<img src={woodenbike} alt="Wooden Bike" className="wooden-bike" /></div>
       </div>
     </div>
   );
