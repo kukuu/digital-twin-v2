@@ -4,6 +4,7 @@ import React, { useState, useEffect, useCallback, useRef, memo } from "react";
 import io from "socket.io-client";
 import paperWhisky from './images/whisky-in-paper-bottle.png';
 import woodenbike from './images/wooden-bicycle.jpg';
+import heatpump from './images/heat-pump.png';
 import {
   SignedIn,
   SignedOut,
@@ -406,11 +407,14 @@ export default function EnergyMeter() {
             </SignedIn>
           </div>
         )}
-  <div className="ad-label"><h3 className="ad-labelHeader">Race to zero emission future!</h3><span className="ad-space">Advertise here!</span><br /><br />
+        <div className="ad-label"><h3 className="ad-labelHeader">Race to zero emission future!</h3><span className="ad-space">Advertise here!</span><br /><br />
            <iframe width="200" height="200" src="https://www.youtube.com/embed/O7ACNMj8NW0" title="Evolution of Tesla (Animation)" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; 
          // picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-&nbsp;&nbsp;<img src={paperWhisky} alt="Whisky in Paper bottle" className="whisky-bottle" /> &nbsp;&nbsp;<img src={woodenbike} alt="Wooden Bike" className="wooden-bike" /></div>
+&nbsp;&nbsp;<img src={paperWhisky} alt="Whisky in Paper bottle" className="whisky-bottle" /> &nbsp;&nbsp;<img src={woodenbike} alt="Wooden Bike" className="wooden-bike" />
+&nbsp;&nbsp;<img src={heatpump} alt="Heat pump" className="heat-pump" />
+
+          </div>
       </div>
     </div>
   );
