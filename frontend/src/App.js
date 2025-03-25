@@ -30,25 +30,28 @@ const APPS_SCRIPT_URL = process.env.REACT_APP_APPS_SCRIPT_URL;
 let meterData = {
   "SMR-98756-1-A": {
     supplier: "Octopus Energy",
-    cost: 23.28, // Cost per kWh in pence
-    tariff: "Fixed", // Tariff type
+    cost: 23.28,
+    tariff: "Fixed",
     total: 0,
-    contact:"0808 164 1088",
+    contact: "0808 164 1088",
+    target: "https://octopus.energy/"
   },
   "SMR-43563-2-A": {
     supplier: "EDF Energy",
-    cost: 23.28, // Cost per kWh in pence
-    tariff: "Fixed", // Tariff type
+    cost: 23.28,
+    tariff: "Fixed",
     total: 0,
-    contact:"0333 200 5100",
+    contact: "0333 200 5100",
+    target: "https://www.edfenergy.com/"
   },
   "SMR-65228-1-B": {
     supplier: "E.ON Next",
-    cost: 25.69, // Cost per kWh in pence
-    tariff: "Standard", // Tariff type
+    cost: 25.69,
+    tariff: "Standard",
     total: 0,
-    contact:"0808 501 5200",
-  },
+    contact: "0808 501 5200",
+    target: "https://www.eonnext.com/"
+  }
 };
 
 // Simple memoized modal component
@@ -76,7 +79,6 @@ const Modal = memo(
         <div className="modal-body">
           <div className="detail-row">
             <div className="account-number-input">
-              {/* <label htmlFor="accountNumber">Customer Account Number:</label> */}
               <h3>Customer Account Number:</h3>
               <input
                 type="text"
@@ -123,8 +125,7 @@ const Modal = memo(
               onClick={onPay}
               disabled={isSending}
             >
-             {/* Pay £{meterInfo.total}*/}
-             Payment Gateway
+              Payment Gateway
             </button>
           </div>
         </div>
@@ -136,17 +137,15 @@ const Modal = memo(
 Modal.displayName = "Modal";
 
 export default function EnergyMeter() {
-  const [readings, setReadings] = useState({}); // Start with an empty state
-  const [loading, setLoading] = useState(true); // Loading state to track when readings are received
+  const [readings, setReadings] = useState({});
+  const [loading, setLoading] = useState(true);
   const [isReadingActive, setIsReadingActive] = useState(true);
-  //const [selectedMeter, setSelectedMeter] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const { user } = useUser();
   const [isSending, setIsSending] = useState(false);
   const [modalData, setModalData] = useState(null);
   const [inputValue, setInputValue] = useState("");
 
-  // Update readings with dynamic meter_id and reading data
   const updateReading = useCallback(({ meter_id, reading }) => {
     setReadings((prevReadings) => ({
       ...prevReadings,
@@ -246,7 +245,12 @@ export default function EnergyMeter() {
     }));
   }, []);
 
-  const handleMeterSelect = useCallback((meterId, data) => {
+  const handleMeterSelect = useCallback((meterId, data, e) => {
+    // Check if the click came from the target link
+    if (e.target.closest('.target-link')) {
+      return; // Let the default anchor behavior handle it
+    }
+    
     stopReading();
     const meterSnapshot = {
       id: meterId,
@@ -256,14 +260,13 @@ export default function EnergyMeter() {
       cost: data.cost,
       total: data.total,
       editedReading: data.reading,
-      accountNumber: "", // Initialize with empty string instead of generating
+      accountNumber: "",
     };
     setModalData(meterSnapshot);
     setInputValue(data.reading);
     setShowModal(true);
   }, []);
 
-  // Simplified modal rendering
   const renderModal = () => {
     if (!modalData || !showModal) return null;
 
@@ -290,7 +293,7 @@ export default function EnergyMeter() {
             isInteractive ? "card-interactive" : "card-disabled"
           }`}
           onClick={
-            isInteractive ? () => handleMeterSelect(meterId, data) : undefined
+            isInteractive ? (e) => handleMeterSelect(meterId, data, e) : undefined
           }
           role={isInteractive ? "button" : undefined}
           tabIndex={isInteractive ? 0 : undefined}
@@ -330,18 +333,22 @@ export default function EnergyMeter() {
               <span>£{data.total}</span>
             </div>
             <div>Contact: {data.contact}</div>
+            {data.target && (
+              <div className="target-link" onClick={(e) => e.stopPropagation()}>
+                <a href={data.target} target="_blank" rel="noopener noreferrer">
+                  Find out more!
+                </a>
+              </div>
+            )}
           </div>
-          
         </div>
       ))}
-
     </div>
   );
 
   return (
-    <div>
+    <div className="app-container">
       <ToastContainer position="top-right" autoClose={3000} />
-      {/* New Navbar */}
       <nav className="navbar">
         <div className="navbar-brand">
           <h2 style={{ fontWeight: "bold", color: "blue" }}>SPYDER</h2>
@@ -357,18 +364,15 @@ export default function EnergyMeter() {
       </nav>
 
       <div className="container">
-        {/* <h2 className="title" style={{ fontWeight: "bold", color: "blue" }}>
-          SPYDER
-        </h2> */}
         <h3 className="title">Price Comparison Smart Energy Meter Reader</h3>
-        <p>
+        <p className="app-description">
           The <strong>SPYDER</strong> Digital Twin Smart Energy Meter Reader,
           helps you find the best electricity meter at the most competitive
           price. Compare diferent meters, check prices and choose the right
           option to save on energy bills.
         </p>
         <SignedOut>
-          <p>
+          <p className="auth-prompt">
             Start comparing now and make smarter choices for your electricity
             usage. Please &nbsp;
             <SignInButton mode="modal" className="login-button">
@@ -378,7 +382,7 @@ export default function EnergyMeter() {
           </p>
         </SignedOut>
         <SignedIn>
-          <p>
+          <p className="auth-prompt">
             Start comparing now and make smarter choices for your electricity
             usage. Please select a Smart Meter!
           </p>
@@ -397,118 +401,109 @@ export default function EnergyMeter() {
               <MeterGrid isInteractive={true} />
               {renderModal()}
 
-              {isReadingActive ? (
-                <button onClick={() => stopReading()} className="stop-button">
-                  Stop
-                </button>
-              ) : (
-                <button onClick={() => startReading()} className="start-button">
-                  Start
-                </button>
-              )}
+              <div className="button-container">
+                {isReadingActive ? (
+                  <button onClick={() => stopReading()} className="stop-button">
+                    Stop
+                  </button>
+                ) : (
+                  <button onClick={() => startReading()} className="start-button">
+                    Start
+                  </button>
+                )}
+              </div>
             </SignedIn>
           </div>
-          
         )}
-         <div className="ad-container">
-      {/* First Column */}
-      <div className="ad-column">
-        <div className="ad-label">
-          <h3 className="ad-labelHeader">Race to zero emission future!</h3>
-          <span className="ad-space">Advertise here!</span>
-          <br /><br />
-          <iframe
-            
-            src="https://www.youtube.com/embed/O7ACNMj8NW0"
-            title="Evolution of Tesla (Animation)"
-            alt="Evolution of Tesla"
-            frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            referrerPolicy="strict-origin-when-cross-origin"
-            allowFullScreen
-          ></iframe>
-          <img src={paperWhisky}   alt="Whisky in Paper bottle" className="whisky-bottle" />
-          <img src={woodenbike} alt="Wooden Bike" className="wooden-bike" />
-          <img src={heatpump} alt="Heat pump" className="heat-pump" />
+        
+        <div className="ad-container">
+          <div className="ad-column">
+            <div className="ad-label">
+              <h3 className="ad-labelHeader">Race to zero emission future!</h3>
+              <span className="ad-space">Advertise here!</span>
+              <div className="responsive-iframe-container">
+                <iframe
+                  src="https://www.youtube.com/embed/O7ACNMj8NW0"
+                  title="Evolution of Tesla (Animation)"
+                  alt="Evolution of Tesla"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  referrerPolicy="strict-origin-when-cross-origin"
+                  allowFullScreen
+                ></iframe>
+              </div>
+              <div className="responsive-image-container">
+                <img src={paperWhisky} alt="Whisky in Paper bottle" className="ad-image" />
+                <img src={woodenbike} alt="Wooden Bike" className="ad-image" />
+                <img src={heatpump} alt="Heat pump" className="ad-image" />
+              </div>
+            </div>
+          </div>
+
+          <div className="ad-column">
+            <div className="ad-label">
+              <h3 className="ad-labelHeader2">Google Ads Space!</h3>
+              <span className="ad-space">Advertise here!</span>
+              
+              <div className="media-grid">
+                <div className="media-container video">
+                  <span>VIDEO</span>
+                  <iframe
+                    src=""
+                    title="Dummy Video"
+                    alt="Dummy Video"
+                    frameBorder="0"
+                    allowFullScreen
+                  ></iframe>
+                </div>
+
+                <div className="media-container image">
+                  <span>IMAGE</span>
+                  <iframe
+                    src=""
+                    title="Dummy Image"
+                    alt="Dummy Image"
+                    frameBorder="0"
+                    allowFullScreen
+                  ></iframe>
+                </div>
+
+                <div className="media-container carousel">
+                  <span>CAROUSEL</span>
+                  <iframe
+                    src=""
+                    title="Dummy Carousel"
+                    alt="Dummy Carousel"
+                    frameBorder="0"
+                    allowFullScreen
+                  ></iframe>
+                </div>
+
+                <div className="media-container video">
+                  <span>VIDEO</span>
+                  <iframe
+                    src=""
+                    title="Dummy Video"
+                    alt="Dummy Video"
+                    frameBorder="0"
+                    allowFullScreen
+                  ></iframe>
+                </div>
+
+                <div className="media-container image">
+                  <span>IMAGE</span>
+                  <iframe
+                    src=""
+                    title="Dummy Image"
+                    alt="Dummy Image"
+                    frameBorder="0"
+                    allowFullScreen
+                  ></iframe>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-
-      {/* Second Column with Dummy Content */}
-      <div className="ad-column">
-        <div className="ad-label">
-          <h3 className="ad-labelHeader">Google Ads Space!</h3>
-          <span className="ad-space">Advertise here!</span>
-          
-          <div class="media-container video">
-            <span>VIDEO</span>
-            <iframe
-              src=""
-              title="Dummy Video"
-              alt="Dummy Video"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              referrerPolicy="strict-origin-when-cross-origin"
-              allowFullScreen
-            ></iframe>
-          </div>
-
-          <div class="media-container image">
-            <span>IMAGE</span>
-            <iframe
-              src=""
-              title="Dummy Video"
-              alt="Dummy Video"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              referrerPolicy="strict-origin-when-cross-origin"
-              allowFullScreen
-            ></iframe>
-          </div>
-
-          <div class="media-container carousel">
-            <span>CAROUSEL</span>
-            <iframe
-              src=""
-              title="Dummy Video"
-              alt="Dummy Video"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              referrerPolicy="strict-origin-when-cross-origin"
-              allowFullScreen
-            ></iframe>
-          </div>
-
-          <div class="media-container video">
-            <span>VIDEO</span>
-            <iframe
-              src=""
-              title="Dummy Video"
-              alt="Dummy Video"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              referrerPolicy="strict-origin-when-cross-origin"
-              allowFullScreen
-            ></iframe>
-          </div>
-
-          <div class="media-container image">
-            <span>IMAGE</span>
-            <iframe
-              src=""
-              title="Dummy Video"
-              alt="Dummy Video"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              referrerPolicy="strict-origin-when-cross-origin"
-              allowFullScreen
-            ></iframe>
-        </div>
-           {/* <img src="dummy-image-2.jpg" alt="Dummy Image 2" className="wooden-bike" />
-          <img src="dummy-image-3.jpg" alt="Dummy Image 3" className="heat-pump" /> */}
-          
-        </div>
-      </div>
-    </div>
       </div>
     </div>
   );
