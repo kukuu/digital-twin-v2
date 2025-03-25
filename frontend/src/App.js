@@ -102,7 +102,7 @@ const Modal = memo(
           </div>
           <div className="detail-row">
             <h3>Supplier Information</h3>
-            <p>Supplier: {meterInfo.supplier}</p>
+            <p>Supplier: <span className="energy-supplier">{meterInfo.supplier}</span></p>
             <p>Tariff Type: {meterInfo.tariff}</p>
           </div>
           <div className="detail-row">
@@ -139,7 +139,7 @@ export default function EnergyMeter() {
   const [readings, setReadings] = useState({}); // Start with an empty state
   const [loading, setLoading] = useState(true); // Loading state to track when readings are received
   const [isReadingActive, setIsReadingActive] = useState(true);
-  const [selectedMeter, setSelectedMeter] = useState(null);
+  //const [selectedMeter, setSelectedMeter] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const { user } = useUser();
   const [isSending, setIsSending] = useState(false);
@@ -329,10 +329,12 @@ export default function EnergyMeter() {
               <span className="unit2">Total Cost:</span>
               <span>£{data.total}</span>
             </div>
-             <div>Contact: {data.contact}</div>      
+            <div>Contact: {data.contact}</div>
           </div>
+          
         </div>
       ))}
+
     </div>
   );
 
@@ -406,15 +408,107 @@ export default function EnergyMeter() {
               )}
             </SignedIn>
           </div>
+          
         )}
-        <div className="ad-label"><h3 className="ad-labelHeader">Race to zero emission future!</h3><span className="ad-space">Advertise here!</span><br /><br />
-           <iframe width="200" height="200" src="https://www.youtube.com/embed/O7ACNMj8NW0" title="Evolution of Tesla (Animation)" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; 
-         // picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+         <div className="ad-container">
+      {/* First Column */}
+      <div className="ad-column">
+        <div className="ad-label">
+          <h3 className="ad-labelHeader">Race to zero emission future!</h3>
+          <span className="ad-space">Advertise here!</span>
+          <br /><br />
+          <iframe
+            
+            src="https://www.youtube.com/embed/O7ACNMj8NW0"
+            title="Evolution of Tesla (Animation)"
+            alt="Evolution of Tesla"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerPolicy="strict-origin-when-cross-origin"
+            allowFullScreen
+          ></iframe>
+          <img src={paperWhisky}   alt="Whisky in Paper bottle" className="whisky-bottle" />
+          <img src={woodenbike} alt="Wooden Bike" className="wooden-bike" />
+          <img src={heatpump} alt="Heat pump" className="heat-pump" />
+        </div>
+      </div>
 
-&nbsp;&nbsp;<img src={paperWhisky} alt="Whisky in Paper bottle" className="whisky-bottle" /> &nbsp;&nbsp;<img src={woodenbike} alt="Wooden Bike" className="wooden-bike" />
-&nbsp;&nbsp;<img src={heatpump} alt="Heat pump" className="heat-pump" />
-
+      {/* Second Column with Dummy Content */}
+      <div className="ad-column">
+        <div className="ad-label">
+          <h3 className="ad-labelHeader">Google Ads Space!</h3>
+          <span className="ad-space">Advertise here!</span>
+          
+          <div class="media-container video">
+            <span>VIDEO</span>
+            <iframe
+              src=""
+              title="Dummy Video"
+              alt="Dummy Video"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerPolicy="strict-origin-when-cross-origin"
+              allowFullScreen
+            ></iframe>
           </div>
+
+          <div class="media-container image">
+            <span>IMAGE</span>
+            <iframe
+              src=""
+              title="Dummy Video"
+              alt="Dummy Video"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerPolicy="strict-origin-when-cross-origin"
+              allowFullScreen
+            ></iframe>
+          </div>
+
+          <div class="media-container carousel">
+            <span>CAROUSEL</span>
+            <iframe
+              src=""
+              title="Dummy Video"
+              alt="Dummy Video"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerPolicy="strict-origin-when-cross-origin"
+              allowFullScreen
+            ></iframe>
+          </div>
+
+          <div class="media-container video">
+            <span>VIDEO</span>
+            <iframe
+              src=""
+              title="Dummy Video"
+              alt="Dummy Video"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerPolicy="strict-origin-when-cross-origin"
+              allowFullScreen
+            ></iframe>
+          </div>
+
+          <div class="media-container image">
+            <span>IMAGE</span>
+            <iframe
+              src=""
+              title="Dummy Video"
+              alt="Dummy Video"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerPolicy="strict-origin-when-cross-origin"
+              allowFullScreen
+            ></iframe>
+        </div>
+           {/* <img src="dummy-image-2.jpg" alt="Dummy Image 2" className="wooden-bike" />
+          <img src="dummy-image-3.jpg" alt="Dummy Image 3" className="heat-pump" /> */}
+          
+        </div>
+      </div>
+    </div>
       </div>
     </div>
   );
