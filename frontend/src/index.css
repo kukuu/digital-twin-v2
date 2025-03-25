@@ -214,3 +214,83 @@ code {
 .ad-labelHeader {
   margin-top: 0;
 }
+
+
+.energy-supplier{
+  color:green;
+}
+
+/* Container for the two columns */
+.ad-container {
+  display: flex; /* Use flexbox for layout */
+ 
+  gap: 20px; /* Add gap between columns */
+}
+
+/* Style for each column */
+.ad-column {
+  flex: 1; /* Each column takes equal space */
+  box-sizing: border-box; /* Include padding and border in the element's total width */
+  padding: 10px; /* Add some padding for spacing */
+}
+
+/* Style for the ad label */
+.ad-label {
+  text-align: center; /* Center-align the content */
+}
+
+/* Style for the iframe */
+.ad-label iframe {
+  display: block; /* Ensure iframe is block-level */
+  margin: 0 auto 20px; /* Center the iframe and add margin below */
+}
+
+/* Style for images */
+.ad-label img {
+  max-width: 100%; /* Ensure images are responsive */
+   /*height: auto; Maintain aspect ratio */
+  display: block; /* Make images block-level */
+  margin: 10px auto; /* Center images and add margin */
+}
+
+.media-container {
+  position: relative;
+  width: 200px;
+  height: 150px;
+  margin: 20px auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  color: black;
+  font-weight: bold;
+  font-size: 24px;
+  overflow: hidden;
+}
+
+.media-container span {
+  position: absolute;
+  z-index: 1;
+  text-align: center;
+  width: 100%;
+  background-color: rgba(255,255,255,0.7);
+  padding: 5px 0;
+}
+
+.media-container iframe {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.video {
+  background-color: #4285F4; /* Blue */
+}
+.image {
+  background-color: #34A853; /* Green */
+}
+.carousel {
+  background-color: #FF69B4; /* Pink */
+}
