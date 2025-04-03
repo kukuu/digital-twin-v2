@@ -111,6 +111,16 @@ graph LR
 
 ```
 
+
+## Key Features Enabled
+✅ Predictive Maintenance: LLM analyzes trends to flag anomalies (e.g., meter failures).
+
+✅ Natural Language Queries: Users ask, "Show worst-performing meters this week" via chat.
+
+✅ Automated Reports: LangChain generates summaries from Supabase data.
+
+✅ Simulation Scenarios: "What if meter load increases by 20%?" → LLM runs digital twin simulations.
+
 ## Node.js e2e implementation
 
 Here's a step-by-step executable plan to integrate an LLM module into SPYDER production Digital Twin App (hosted on Vercel/Render/Supabase) without disrupting existing functionality:
