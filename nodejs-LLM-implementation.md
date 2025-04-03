@@ -3,3 +3,136 @@
 
 Here's a step-by-step executable plan to integrate an LLM module into SPYDER production Digital Twin App https://digital-twin-v2-chi.vercel.app/  (hosted on Vercel/Render/Supabase) without disrupting existing functionality. It  leveraging the existing Supabase/Vercel/Render stack:
 
+## Phase 1: Setup & Backend (Node.js + TypeScript) 
+
+- Install Dependencies
+
+```
+cd backend && npm install \
+  langchain @langchain/openai \
+  @supabase/supabase-js \
+  typescript @types/node \
+  zod dotenv  # For type-safe envs
+```
+
+- Extend Supabase Schema
+
+  - Run in Supabase SQL Editor:
+
+```
+-- Enable PGVector
+CREATE EXTENSION IF NOT EXISTS vector;
+
+-- Add LLM context tables
+CREATE TABLE llm_queries (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  meter_id VARCHAR(255) REFERENCES readings(meter_id),
+  query TEXT NOT NULL,
+  response JSONB,
+  embeddings vector(1536),  -- OpenAI embeddings
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+```
+
+- TypeScript Backend Service
+  - File: backend/src/llm/service.ts
+ 
+  ```
+import { OpenAI } from "@langchain/openai";
+import { SupabaseVectorStore } from "@langchain/community/vectorstores/supabase";
+import { createClient } from "@supabase/supabase-js";
+import { Document } from "langchain/document";
+import { z } from "zod";
+
+// Type-safe envs
+const envSchema = z.object({
+  SUPABASE_URL: z.string(),
+  SUPABASE_KEY: z.string(),
+  OPENAI_KEY: z.string(),
+});
+const env = envSchema.parse(process.env);
+
+// Initialize clients
+const supabase = createClient(env.SUPABASE_URL, env.SUPABASE_KEY);
+const llm = new OpenAI({ 
+  apiKey: env.OPENAI_KEY,
+  model: "gpt-4-1106-preview",  // Use cheaper model for production
+});
+
+interface QueryRequest {
+  meterId: string;
+  question: string;
+}
+
+export async function handleLLMQuery({ meterId, question }: QueryRequest) {
+  // 1. Fetch meter context
+  const { data: readings } = await supabase
+    .from("readings")
+    .select("*")
+    .eq("meter_id", meterId)
+    .order("timestamp", { ascending: false })
+    .limit(20);
+
+  if (!readings) throw new Error("No meter data found");
+
+  // 2. Generate embeddings for semantic search
+  const docs = readings.map(reading => 
+    new Document({
+      pageContent: JSON.stringify(reading),
+      metadata: { meterId, timestamp: reading.timestamp },
+    })
+  );
+
+  const vectorStore = await SupabaseVectorStore.fromDocuments(
+    docs,
+    new OpenAIEmbeddings({ apiKey: env.OPENAI_KEY }),
+    { client: supabase, tableName: "llm_queries" }
+  );
+
+  // 3. Run context-aware query
+  const response = await llm.invoke(
+    `As a Digital Twin AI, analyze meter ${meterId}. Context: ${JSON.stringify(readings)}. Question: ${question}`
+  );
+
+  // 4. Log to Supabase
+  await supabase.from("llm_queries").insert({
+    meter_id: meterId,
+    query: question,
+    response: { answer: response },
+  });
+
+  return response;
+}
+  ```
+
+## Phase 2: API & Frontend Integration
+
+- TypeScript API Endpoint
+
+  - File: backend/src/routes/llm.ts
+
+```
+import express from "express";
+import { handleLLMQuery } from "../services/llmService";
+import { z } from "zod";
+
+const router = express.Router();
+
+const QuerySchema = z.object({
+  meterId: z.string(),
+  question: z.string().min(3),
+});
+
+router.post("/query", async (req, res) => {
+  try {
+    const validated = QuerySchema.parse(req.body);
+    const answer = await handleLLMQuery(validated);
+    res.json({ answer });
+  } catch (error) {
+    console.error("LLM Error:", error);
+    res.status(400).json({ error: error instanceof Error ? error.message : "Unknown error" });
+  }
+});
+
+export default router;
+```
