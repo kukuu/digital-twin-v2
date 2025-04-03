@@ -95,8 +95,21 @@ llm = OpenAI(temperature=0)  # Or Llama 3 via HuggingFacePipeline
 
 - Cache frequent queries in Supabase/Redis to reduce LLM API calls.
 
+## Architecture
 
+```
 
+graph LR
+  A[Sensor/IoT Data] --> B[Supabase Realtime]
+  B --> C[AWS Lambda (Preprocess)]
+  C --> D[PGVector (Embeddings)]
+  D --> E[LangChain + LLM]
+  E --> F[Predictions/Alerts]
+  F --> G[Vercel Frontend]
+  G --> H[User Actions]
+  H --> A
+
+```
 
 ## Node.js e2e implementation
 
