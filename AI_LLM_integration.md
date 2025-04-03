@@ -123,6 +123,4 @@ graph LR
 
 ## Node.js e2e implementation
 
-Here's a step-by-step executable plan to integrate an LLM module into SPYDER production Digital Twin App (hosted on Vercel/Render/Supabase) without disrupting existing functionality:
-
 https://github.com/kukuu/digital-twin-v2/blob/main/nodejs-LLM-implementation.md
