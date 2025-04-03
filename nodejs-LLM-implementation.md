@@ -193,3 +193,47 @@ export default function LLMInterface({ meterId }: LLMInterfaceProps) {
   );
 }
 ```
+
+
+## Phase 3: Deployment & CI/CD
+
+- Environment Variables
+  - Add to Render and Vercel:
+ 
+```
+SUPABASE_URL=your-project-url
+SUPABASE_KEY=your-anon-key
+OPENAI_KEY=sk-your-key
+```
+
+- Build & Deploy
+
+```
+# Build TypeScript
+npx tsc --project tsconfig.json
+
+# Deploy to Render (backend)
+git push origin main
+
+# Deploy to Vercel (frontend)
+vercel --prod
+```
+
+
+## Key Features Added
+
+✅ Type Safety - Zod for runtime validation
+
+✅ Semantic Search - PGVector embeddings
+
+✅ Error Handling - Structured logging
+
+✅ Cost Control - GPT-4-turbo with context window optimization
+
+- Production Checklist:
+
+  - Set rate limiting on /llm/query endpoint
+
+  - Enable Supabase RLS for llm_queries table
+
+  - Monitor usage via Supabase Logs Explorer
