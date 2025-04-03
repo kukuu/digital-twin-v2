@@ -46,13 +46,15 @@ CREATE TABLE readings (
 );
 
 ```
-
-## AI / LLM Integration
-
-https://github.com/kukuu/digital-twin-v2/blob/main/AI_LLM_integration.md
-
+### Execution steps
 
  First open two terminals.
  Then CD into frontend and backend
  First you need to start the service by running : node server2.js
- Then start the react app by running : npm run start
+ Then start the react app by running : npm run start 
+
+ 
+## AI / LLM Integration
+
+https://github.com/kukuu/digital-twin-v2/blob/main/AI_LLM_integration.md
+
