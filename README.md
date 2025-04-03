@@ -10,7 +10,13 @@ This development covers:
 4. Updated UI to dynamically calculate the cost of Meter Reading cumulatively.   
 
 
+## Frontend is hosted on Vercel
 
+https://digital-twin-v2-chi.vercel.app/
+
+## Backend is histed on Render
+
+https://dashboard.render.com/web/srv-csdkb5g8fa8c73f5vpg0/logs
 
 ## Code Repository: 
 
