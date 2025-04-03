@@ -48,17 +48,16 @@ Supabase Vector (PostgreSQL PGVector extension) or Pinecone (for scalable storag
 - LLM Contextualization:
 
     - LangChain Setup:
-      
-    - Prompt Engineering:
-
-```
+ 
+  ```
 from langchain.llms import OpenAI
 from langchain.chains import LLMChain
 llm = OpenAI(temperature=0)  # Or Llama 3 via HuggingFacePipeline
 
 ```
+      
+    - Prompt Engineering:
 
-    
 
 Example: "Analyze meter ID {meter_id}’s last 10 readings. Predict failures or suggest optimizations."
 
