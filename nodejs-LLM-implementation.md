@@ -37,7 +37,7 @@ CREATE TABLE llm_queries (
 - TypeScript Backend Service
   - File: backend/src/llm/service.ts
  
-  ```
+```
 import { OpenAI } from "@langchain/openai";
 import { SupabaseVectorStore } from "@langchain/community/vectorstores/supabase";
 import { createClient } from "@supabase/supabase-js";
@@ -103,7 +103,7 @@ export async function handleLLMQuery({ meterId, question }: QueryRequest) {
 
   return response;
 }
-  ```
+```
 
 ## Phase 2: API & Frontend Integration
 
