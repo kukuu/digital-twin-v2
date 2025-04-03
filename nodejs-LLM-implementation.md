@@ -247,3 +247,12 @@ vercel --prod
   - Enable Supabase RLS for llm_queries table
 
   - Monitor usage via Supabase Logs Explorer
+ 
+## Testing 
+
+```
+curl -X POST https://your-render-url.com/llm/query \
+  -H "Content-Type: application/json" \
+  -d '{"meterId": "meter-123", "question": "Predict maintenance needs"}'
+
+```
