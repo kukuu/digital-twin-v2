@@ -9,11 +9,11 @@ To build an LLM for SPYDER  Digital Twin App  https://digital-twin-v2-chi.vercel
 
     - i. LLM Framework:
 
-a. OpenAI API (GPT-4) or Llama 3 (self-hosted via Hugging Face)
+        - OpenAI API (GPT-4) or Llama 3 (self-hosted via Hugging Face)
 
-b. LangChain (orchestration) for workflow automation (e.g., connecting to Supabase/Sensors).
+        - LangChain (orchestration) for workflow automation (e.g., connecting to Supabase/Sensors).
 
-c. Embedding Models: OpenAI’s text-embedding-3-small or BAAI/bge-small-en-v1.5 (for semantic search).
+        - Embedding Models: OpenAI’s text-embedding-3-small or BAAI/bge-small-en-v1.5 (for semantic search).
 
 ## Vector Database:
 
