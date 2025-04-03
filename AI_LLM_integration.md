@@ -91,9 +91,9 @@ llm = OpenAI(temperature=0)  # Or Llama 3 via HuggingFacePipeline
 
 **Cost Optimization** 
 
-i. Use OpenAI’s cheaper gpt-3.5-turbo for routine queries; reserve GPT-4 for complex simulations.
+- Use OpenAI’s cheaper gpt-3.5-turbo for routine queries; reserve GPT-4 for complex simulations.
 
-ii. Cache frequent queries in Supabase/Redis to reduce LLM API calls.
+- Cache frequent queries in Supabase/Redis to reduce LLM API calls.
 
 
 
