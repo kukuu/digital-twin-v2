@@ -47,7 +47,9 @@ CREATE TABLE readings (
 
 ```
 
+## AI / LLM Integration
 
+https://github.com/kukuu/digital-twin-v2/blob/main/AI_LLM_integration.md
 
 
  First open two terminals.
