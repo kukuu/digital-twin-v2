@@ -21,19 +21,19 @@ Supabase Vector (PostgreSQL PGVector extension) or Pinecone (for scalable storag
 
 - Data Pipeline:
 
-i. AWS Lambda (triggered by sensor data updates) to preprocess and feed data to the LLM.
+    - AWS Lambda (triggered by sensor data updates) to preprocess and feed data to the LLM.
 
-ii. Supabase Webhooks (to detect new meter readings/events).
+    - Supabase Webhooks (to detect new meter readings/events).
 
 - For Enhanced Digital Twin Features:
 
-i. Real-time Analytics:
+    - Real-time Analytics:
 
-a. TimescaleDB (time-series extension for Supabase) to optimize sensor data storage.
+    - TimescaleDB (time-series extension for Supabase) to optimize sensor data storage.
 
 - Predictive AI:
 
-i. PyTorch/TensorFlow (custom models for anomaly detection) + LangChain Agents (for action recommendations).
+    - PyTorch/TensorFlow (custom models for anomaly detection) + LangChain Agents (for action recommendations).
 
 ## Implementation Steps
 
@@ -41,13 +41,13 @@ i. PyTorch/TensorFlow (custom models for anomaly detection) + LangChain Agents (
 
 - Ingest Sensor Data:
 
-i. Use Supabase’s Realtime API to stream meter readings to the LLM pipeline.
+    - Use Supabase’s Realtime API to stream meter readings to the LLM pipeline.
 
-ii. Store raw data in Supabase (readings table) and embeddings in PGVector.
+    - Store raw data in Supabase (readings table) and embeddings in PGVector.
 
 - LLM Contextualization:
 
-i. LangChain Setup:
+    - LangChain Setup:
 
 ```
 from langchain.llms import OpenAI
@@ -55,35 +55,35 @@ from langchain.chains import LLMChain
 llm = OpenAI(temperature=0)  # Or Llama 3 via HuggingFacePipeline
 ```
 
-ii. Prompt Engineering:
+    - Prompt Engineering:
 
 Example: "Analyze meter ID {meter_id}’s last 10 readings. Predict failures or suggest optimizations."
 
 
 - Actionable Outputs:
 
-i. Dynamic UI Updates:
+    - Dynamic UI Updates:
 
-a. Connect LLM outputs to your Vercel-hosted frontend via WebSockets (Supabase Realtime).
+    - Connect LLM outputs to your Vercel-hosted frontend via WebSockets (Supabase Realtime).
 
 - Alerts/Simulations:
 
-i. Use AWS EventBridge to trigger alerts or update the digital twin’s 3D visualization.
+    - Use AWS EventBridge to trigger alerts or update the digital twin’s 3D visualization.
 
 
 **Infrastructure Upgrades**
 
 - AWS Services:
 
-i. SageMaker (optional): Fine-tune domain-specific LLMs using historical sensor data.
+    - SageMaker (optional): Fine-tune domain-specific LLMs using historical sensor data.
 
-ii. EC2/ECS (if self-hosting Llama 3).
+    - EC2/ECS (if self-hosting Llama 3).
 
 - Security:
 
-i. Supabase Row-Level Security (RLS) for data access control.
+    - Supabase Row-Level Security (RLS) for data access control.
 
-ii. AWS KMS to encrypt sensitive LLM inputs/outputs.
+    - AWS KMS to encrypt sensitive LLM inputs/outputs.
 
 
 
