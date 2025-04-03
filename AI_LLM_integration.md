@@ -56,7 +56,7 @@ llm = OpenAI(temperature=0)  # Or Llama 3 via HuggingFacePipeline
 
 ```
       
-    - Prompt Engineering:
+Prompt Engineering:
 
 
 Example: "Analyze meter ID {meter_id}’s last 10 readings. Predict failures or suggest optimizations."
