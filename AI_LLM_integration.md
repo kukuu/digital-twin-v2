@@ -53,6 +53,7 @@ Supabase Vector (PostgreSQL PGVector extension) or Pinecone (for scalable storag
 from langchain.llms import OpenAI
 from langchain.chains import LLMChain
 llm = OpenAI(temperature=0)  # Or Llama 3 via HuggingFacePipeline
+
 ```
 
     - Prompt Engineering:
