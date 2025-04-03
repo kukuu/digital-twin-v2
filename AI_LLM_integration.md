@@ -7,7 +7,7 @@ To build an LLM for SPYDER  Digital Twin App  https://digital-twin-v2-chi.vercel
 
 - For LLM Integration:
 
-i. LLM Framework:
+-- i. LLM Framework:
 
 a. OpenAI API (GPT-4) or Llama 3 (self-hosted via Hugging Face)
 
