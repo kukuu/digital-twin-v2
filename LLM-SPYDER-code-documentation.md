@@ -14,3 +14,5 @@ npm install langchain @langchain/openai @supabase/supabase-js typescript zod dot
 ```
 
 Installs production dependencies:ependencies:
+
+![image]( )
