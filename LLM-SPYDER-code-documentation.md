@@ -141,3 +141,60 @@ CREATE TABLE llm_queries (...)
     - Debugging: Audit logs help troubleshoot incorrect LLM responses.
 
     - Performance: PGVector enables fast similarity searches (e.g., for RAG pipelines).
+   
+  ## Explainint the Backend code 
+
+  Here's a breakdown of what this backend code does, section by section:
+
+- Imports & Setup
+
+```
+import { OpenAI } from "@langchain/openai";
+import { SupabaseVectorStore } from "@langchain/community/vectorstores/supabase";
+import { createClient } from "@supabase/supabase-js";
+import { Document } from "langchain/document";
+import { z } from "zod";
+```
+  - OpenAI: LangChain's wrapper for OpenAI's LLMs (like GPT-4).
+
+  - SupabaseVectorStore: Stores/retrieves vector embeddings (for semantic search) in Supabase.
+  
+  - createClient: Supabase's JS client for database operations.
+  
+  - Document: LangChain's class for structuring data (text + metadata).
+  
+  - zod: Library for type-safe environment variable validation.
+
+- Environment Validation
+```
+const envSchema = z.object({
+  SUPABASE_URL: z.string(),
+  SUPABASE_KEY: z.string(),
+  OPENAI_KEY: z.string(),
+});
+const env = envSchema.parse(process.env);
+```
+  - Validates that these environment variables exist:
+
+    - SUPABASE_URL: Your Supabase project URL.
+
+    - SUPABASE_KEY: Supabase API key.
+
+    - OPENAI_KEY: OpenAI API key.
+
+  - Throws an error if any are missing (fail-fast approach).
+
+- Client Initialization
+
+```
+
+const supabase = createClient(env.SUPABASE_URL, env.SUPABASE_KEY);
+const llm = new OpenAI({ 
+  apiKey: env.OPENAI_KEY,
+  model: "gpt-4-1106-preview",  // Explicitly uses GPT-4-turbo
+});
+
+```
+  - supabase: Configures the Supabase client for database queries.
+
+  - llm: Sets up the OpenAI LLM with your API key and model choice.
