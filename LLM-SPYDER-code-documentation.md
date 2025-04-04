@@ -222,9 +222,9 @@ const { data: readings } = await supabase
   .order("timestamp", { ascending: false })
   .limit(20);
 ```
-    - Queries Supabase for the 20 most recent readings from the specified meter.
+    i. Queries Supabase for the 20 most recent readings from the specified meter.
   
-    - Throws an error if no data exists.
+    ii. Throws an error if no data exists.
 
 - Step 2: Generate Embeddings
 ```
