@@ -247,3 +247,20 @@ i. Converts meter readings into LangChain Document objects (text + metadata).
 ii. Generates OpenAI embeddings (vector representations) for each reading and stores them in Supabase's llm_queries table (via SupabaseVectorStore).
 
 - Step 3: Run LLM Query
+
+  - Sends a prompt to OpenAI with:
+
+  - Context: The last 20 meter readings.
+
+  - Question: The user's query (e.g., "Predict failures").
+
+  - The LLM returns a natural language response.
+
+```
+const response = await llm.invoke(
+  `As a Digital Twin AI, analyze meter ${meterId}. Context: ${JSON.stringify(readings)}. Question: ${question}`
+);
+```
+
+
+- Step 4: Log to Supabase
