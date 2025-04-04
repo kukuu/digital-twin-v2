@@ -90,4 +90,4 @@ CREATE EXTENSION IF NOT EXISTS vector;
 CREATE TABLE llm_queries (...)
 ```
 
-![image]()
+![image](https://github.com/kukuu/digital-twin-v2/blob/main/LLM-table-model.png)
