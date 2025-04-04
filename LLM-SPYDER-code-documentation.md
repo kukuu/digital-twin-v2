@@ -8,6 +8,9 @@ The command sequence are installing Node.js dependencies for the backend to inte
 
 Purpose: Navigates into the backend directory of your project (where your Node.js/TypeScript backend code lives).
 
-2. npm install langchain @langchain/openai @supabase/supabase-js typescript zod dotenv
+```
+npm install langchain @langchain/openai @supabase/supabase-js typescript zod dotenv
+
+```
 
 Installs production dependencies:ependencies:
