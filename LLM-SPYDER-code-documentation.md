@@ -198,3 +198,51 @@ const llm = new OpenAI({
   - supabase: Configures the Supabase client for database queries.
 
   - llm: Sets up the OpenAI LLM with your API key and model choice.
+
+- Core Function: handleLLMQuery
+
+  - Input
+```
+interface QueryRequest {
+  meterId: string;
+  question: string;
+}
+
+```
+
+    - Takes a meterId (to fetch specific meter data) and a question (user query).
+  
+  - Step 1: Fetch Meter Data
+```
+const { data: readings } = await supabase
+  .from("readings")
+  .select("*")
+  .eq("meter_id", meterId)
+  .order("timestamp", { ascending: false })
+  .limit(20);
+```
+  - Queries Supabase for the 20 most recent readings from the specified meter.
+
+  - Throws an error if no data exists.
+
+- Step 2: Generate Embeddings
+```
+const docs = readings.map(reading => 
+  new Document({
+    pageContent: JSON.stringify(reading),
+    metadata: { meterId, timestamp: reading.timestamp },
+  })
+);
+
+const vectorStore = await SupabaseVectorStore.fromDocuments(
+  docs,
+  new OpenAIEmbeddings({ apiKey: env.OPENAI_KEY }),
+  { client: supabase, tableName: "llm_queries" }
+);
+
+```
+  - Converts meter readings into LangChain Document objects (text + metadata).
+
+  - Generates OpenAI embeddings (vector representations) for each reading and stores them in Supabase's llm_queries table (via SupabaseVectorStore).
+
+- Step 3: Run LLM Query
