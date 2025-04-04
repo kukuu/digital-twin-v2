@@ -202,6 +202,7 @@ const llm = new OpenAI({
 - Core Function: handleLLMQuery
 
   - Input
+    - Takes a meterId (to fetch specific meter data) and a question (user query).
 ```
 interface QueryRequest {
   meterId: string;
@@ -210,7 +211,7 @@ interface QueryRequest {
 
 ```
 
-    - Takes a meterId (to fetch specific meter data) and a question (user query).
+    
   
   - Step 1: Fetch Meter Data
 ```
