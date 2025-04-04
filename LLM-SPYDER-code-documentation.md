@@ -83,3 +83,11 @@ CREATE EXTENSION IF NOT EXISTS vector;
   - **Critical for semantic search (e.g., finding similar meter readings using AI).**
 
   - Uses the vector(**1536**) data type later in the llm_queries table.
+
+- CREATE TABLE for LLM Queries
+
+```
+CREATE TABLE llm_queries (...)
+```
+
+![image]()
