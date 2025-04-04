@@ -242,8 +242,8 @@ const vectorStore = await SupabaseVectorStore.fromDocuments(
 );
 
 ```
-  - Converts meter readings into LangChain Document objects (text + metadata).
+i. Converts meter readings into LangChain Document objects (text + metadata).
 
-  - Generates OpenAI embeddings (vector representations) for each reading and stores them in Supabase's llm_queries table (via SupabaseVectorStore).
+ii. Generates OpenAI embeddings (vector representations) for each reading and stores them in Supabase's llm_queries table (via SupabaseVectorStore).
 
 - Step 3: Run LLM Query
