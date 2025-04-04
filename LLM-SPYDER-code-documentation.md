@@ -91,3 +91,53 @@ CREATE TABLE llm_queries (...)
 ```
 
 ![image](https://github.com/kukuu/digital-twin-v2/blob/main/LLM-table-model.png)
+
+
+
+    - Key Features Enabled
+
+      - Audit Trail
+
+      - Every LLM query/responses is logged with timestamps and linked to a specific meter.
+
+      - Example: Track how often users ask about "failure predictions."
+
+  - Semantic Search Ready
+
+    - The embeddings column lets you:
+
+    - Compare past queries for similarity (e.g., cluster FAQs).
+
+    - Improve future responses using retrieval-augmented generation (RAG).
+
+  - Data Integrity
+
+    - REFERENCES readings(meter_id) ensures meter_id values exist in your main readings table.
+
+    - JSONB allows flexible storage of structured LLM outputs (e.g., { "answer": "...", "confidence": 0.95 }).
+ 
+  - Example Workflow
+
+    - A user asks: "Is meter-123 at risk of failure?"
+
+    - Your backend:
+
+      - Logs the query in llm_queries.
+
+      - Stores the OpenAI embedding of the question in embeddings.
+
+      - Saves the LLM’s response in response.
+
+  - Later, you can:
+
+    - Search for similar queries using vector math (<=> operator in PostgreSQL).
+
+    - Analyze trends with:
+ 
+  - Why This Matters
+
+    - Scalability: Supports future AI features (e.g., auto-suggesting queries).
+
+    - Debugging: Audit logs help troubleshoot incorrect LLM responses.
+
+    - Performance: PGVector enables fast similarity searches (e.g., for RAG pipelines).
