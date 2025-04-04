@@ -4,10 +4,11 @@ The command sequence are installing Node.js dependencies for the backend to inte
 
 ## Here's a breakdown of what each part does:
 
-1. cd backend
+-  cd backend
 
 Purpose: Navigates into the backend directory of your project (where your Node.js/TypeScript backend code lives).
 
+- Installation of modules in the Backend
 ```
 npm install langchain @langchain/openai @supabase/supabase-js typescript zod dotenv
 
@@ -15,4 +16,15 @@ npm install langchain @langchain/openai @supabase/supabase-js typescript zod dot
 
 Installs production dependencies:ependencies:
 
-![image]( )
+![image](https://github.com/kukuu/digital-twin-v2/blob/main/MLL-installations.png)
+
+
+- Installs development-only type definitions:
+
+```
+
+npm install --save-dev @types/node
+
+```
+
+![image]()
