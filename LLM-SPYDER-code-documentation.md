@@ -464,7 +464,7 @@ const askAI = async (meterId: string, question: string) => {
 ```
 4. Frontend displays the answer:
 
-![image]()
+![image](https://github.com/kukuu/digital-twin-v2/blob/main/llm-fe-ans.png)
 
 [TO BE COVERED] 
 
