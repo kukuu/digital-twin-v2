@@ -608,3 +608,21 @@ Formats errors with "Error:" prefix.
 - ✅ Integration
 
     - Connects to your Supabase Function (llm/query).
+
+**4. Workflow Example**
+
+  - User types: "Is Meter-123 overheating?"
+  
+  - Clicks "Ask AI":
+  
+  - Button disables → shows "Processing..."
+  
+  - API call to Supabase Function.
+  
+  - On Success:
+  
+    - Displays: "Response: Meter-123 shows a 5% temperature anomaly."
+  
+  - On Error:
+  
+    - Displays: "Error: Failed to fetch meter data."
