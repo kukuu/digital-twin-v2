@@ -644,3 +644,5 @@ interface APIResponse {
     - Markdown Support: Format LLM responses with bold/line breaks.
 
     - Retry Logic: Add a "Retry" button for errors.
+
+## CI/CD & Deployment of env variales to Render and Vercel 
