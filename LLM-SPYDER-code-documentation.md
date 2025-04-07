@@ -630,3 +630,17 @@ Formats errors with "Error:" prefix.
       ![image](https://github.com/kukuu/digital-twin-v2/blob/main/llm-fe-ans.png)
 
  **5. Integration with Backend**
+```
+// Expected API response shape
+interface APIResponse {
+  answer: string;
+  error?: string;
+}
+
+```
+  - Suggested Improvements
+    - Debounce Input: Prevent rapid API calls.
+
+    - Markdown Support: Format LLM responses with bold/line breaks.
+
+    - Retry Logic: Add a "Retry" button for errors.
