@@ -410,3 +410,42 @@ router.post("/query", async (req, res) => {
     - Logs errors.
 
     - Returns 400 Bad Request with error details (safe for frontend display).
+
+**How the Frontend Uses This**
+
+React Component Example (Simplified):
+
+```
+const askAI = async (meterId: string, question: string) => {
+  const response = await fetch("/api/llm/query", {
+    method: "POST",
+    body: JSON.stringify({ meterId, question }),
+  });
+  const { answer, error } = await response.json();
+  if (error) alert(error);
+  return answer; // "Meter-123 shows normal operation."
+};
+
+```
+
+**Key Features**
+
+- ✅ Type Safety
+
+  - Zod ensures meterId and question exist and are valid.
+
+- ✅ Structured Logging
+
+  - Errors are logged (console.error) before being sent to the frontend.
+
+- ✅ Secure Error Handling
+
+  - Prevents stack traces from leaking to users.
+
+- ✅ Scalability
+
+  - Separates validation (QuerySchema) from business logic (handleLLMQuery).
+ 
+**Example Workflow**
+
+1. Frontend sends:
