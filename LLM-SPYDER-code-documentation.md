@@ -327,3 +327,52 @@ Returns the LLM's response (e.g., "Meter-123 shows a 20% risk of failure next we
   - Supabase/OpenAI API calls fail.
 
 Corporate documentation: [to be added]
+
+## Frontend Breakdown
+
+Here's a clear breakdown of the frontend API integration code and its role in SPYDER DigitalTwin LLM-powered app:
+
+- This code creates an Express.js API endpoint (/llm/query) that:
+
+**Purpose** 
+
+This code creates an Express.js API endpoint (/llm/query) that:
+
+- Accepts natural language questions about meter data from your frontend.
+
+- Validates the request.
+
+- Calls your LLM service (handleLLMQuery).
+
+- Returns the AI's response to the frontend.
+
+**Code Breakdown**
+
+- A. Imports
+
+```
+import express from "express";
+import { handleLLMQuery } from "../services/llmService";
+import { z } from "zod";
+```
+  - express: Node.js framework for building APIs.
+  
+  - handleLLMQuery: Your LLM service (analyzes meter data + generates answers).
+  
+  - zod: Validates request data types.
+
+- B. Request Validation
+
+```
+const QuerySchema = z.object({
+  meterId: z.string(),
+  question: z.string().min(3),
+});
+```
+  - Defines the expected request shape:
+
+  - meterId: Must be a string (e.g., "meter-123").
+  
+  - question: Must be a string with ≥3 characters (e.g., "Predict failures").
+
+- Throws an error if invalid (e.g., missing meterId).
