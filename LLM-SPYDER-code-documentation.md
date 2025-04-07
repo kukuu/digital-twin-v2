@@ -142,7 +142,7 @@ CREATE TABLE llm_queries (...)
 
     - Performance: PGVector enables fast similarity searches (e.g., for RAG pipelines).
    
-  ## Explainint the Backend code 
+  ## Explaining the Backend code 
 
   Here's a breakdown of what this backend code does, section by section:
 
