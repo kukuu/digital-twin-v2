@@ -264,3 +264,20 @@ const response = await llm.invoke(
 
 
 - Step 4: Log to Supabase
+
+```
+await supabase.from("llm_queries").insert({
+  meter_id: meterId,
+  query: question,
+  response: { answer: response },
+});
+```
+ - Saves the query and LLM response to Supabase for:
+
+  - Auditing (track user questions).
+
+  - Future RAG (retrieval-augmented generation).
+
+**Output**
+
+Returns the LLM's response (e.g., "Meter-123 shows a 20% risk of failure next week.").
