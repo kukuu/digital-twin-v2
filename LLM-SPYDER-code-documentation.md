@@ -480,4 +480,65 @@ Authentication (e.g., JWT checks), Rate limiting, Streaming responses
 
   - Display the LLM's responses
 
-Handle loading/error states
+- Handle loading/error states
+
+**2. Code Structure**
+
+A. Props & State
+
+```
+interface LLMInterfaceProps {
+  meterId: string;  // Required prop: ID of the meter to query
+}
+
+const [query, setQuery] = useState<string>("");        // User's question
+const [answer, setAnswer] = useState<string>("");      // LLM's response
+const [isLoading, setIsLoading] = useState<boolean>(false); // Loading state
+```
+  - Type Safety: Explicitly defines meterId as a required string prop.
+
+  - State Management:
+
+    - query: Tracks the input field value.
+
+    - answer: Stores the LLM's response.
+
+    - isLoading: Manages UI during API calls.
+
+
+- B. Core Function: handleSubmit
+
+```
+const handleSubmit = async () => {
+  setIsLoading(true);
+  try {
+    const { data, error } = await supabase.functions.invoke("llm/query", {
+      body: { meterId, question: query },
+    });
+    if (error) throw error;
+    setAnswer(data.answer);
+  } catch (err) {
+    setAnswer(`Error: ${err instanceof Error ? err.message : "Unknown error"}`);
+  } finally {
+    setIsLoading(false);
+  }
+};
+```
+
+  - Sets loading state (isLoading = true) → shows spinner/disabled button.
+
+    - Calls Supabase Function:
+
+      - Invokes your backend endpoint (llm/query).
+
+      - Sends { meterId, question } as JSON.
+
+  - Handles Response:
+
+    - Success: Updates answer with LLM response.
+
+    - Error: Displays user-friendly error message.
+
+  - Resets loading state (in finally block).
+
+- C. UI Rendering
