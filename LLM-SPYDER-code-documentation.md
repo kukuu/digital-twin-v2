@@ -601,10 +601,10 @@ Formats errors with "Error:" prefix.
   
   - Clear error messages.
 
-  - ✅ Styling
+- ✅ Styling
 
     - Uses Tailwind CSS for responsive design.
 
-  - ✅ Integration
+- ✅ Integration
 
     - Connects to your Supabase Function (llm/query).
