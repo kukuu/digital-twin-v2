@@ -449,3 +449,35 @@ const askAI = async (meterId: string, question: string) => {
 **Example Workflow**
 
 1. Frontend sends:
+
+```
+{ "meterId": "meter-123", "question": "Predict failures" }
+
+```
+
+2. API validates → calls handleLLMQuery → fetches meter data → queries OpenAI.
+
+3. API responds:
+
+```
+{ "answer": "Failure risk: 12% (rising temperature trend)." }
+```
+4. Frontend displays the answer:
+
+![image]()
+
+[TO BE COVERED] 
+
+Authentication (e.g., JWT checks), Rate limiting, Streaming responses
+
+## Breakdown of the React TypeScript component for SPYDER Digital Twin app's LLM interface:
+
+**1. Component Purpose**
+
+- This LLMInterface component provides a user-friendly way to:
+
+  - Ask natural language questions about specific meters (e.g., "Predict failures for Meter-123")
+
+  - Display the LLM's responses
+
+Handle loading/error states
