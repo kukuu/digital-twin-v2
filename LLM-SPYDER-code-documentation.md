@@ -484,7 +484,7 @@ Authentication (e.g., JWT checks), Rate limiting, Streaming responses
 
 **2. Code Structure**
 
-A. Props & State
+- A. Props & State
 
 ```
 interface LLMInterfaceProps {
@@ -542,3 +542,69 @@ const handleSubmit = async () => {
   - Resets loading state (in finally block).
 
 - C. UI Rendering
+
+```
+return (
+  <div className="p-4 border rounded-lg">
+    {/* Input Field */}
+    <input
+      type="text"
+      value={query}
+      onChange={(e) => setQuery(e.target.value)}  // Updates `query` state
+      placeholder="Ask about this meter..."
+      className="w-full p-2 mb-2 border rounded"  // Tailwind CSS classes
+    />
+
+    {/* Submit Button */}
+    <button
+      onClick={handleSubmit}
+      disabled={isLoading}
+      className={`px-4 py-2 rounded ${
+        isLoading ? "bg-gray-400" : "bg-blue-600 text-white"
+      }`}
+    >
+      {isLoading ? "Processing..." : "Ask AI"}
+    </button>
+
+    {/* Response Display */}
+    {answer && (
+      <div className="mt-4 p-3 bg-gray-50 rounded">
+        <strong>Response:</strong> {answer}
+      </div>
+    )}
+  </div>
+);
+```
+  - Input Field: Binds to query state, updates on keystrokes.
+
+  - Button:
+
+    - Disables during loading.
+
+    - Changes appearance based on state.
+
+  - Response Area:
+
+    - Only shows when answer exists.
+
+Formats errors with "Error:" prefix.
+
+**3. Key Features**
+
+- ✅ Type Safety
+
+    - Props and state are strictly typed (string, boolean).
+
+- ✅ User Experience
+
+  - Loading state prevents duplicate submissions.
+  
+  - Clear error messages.
+
+  - ✅ Styling
+
+    - Uses Tailwind CSS for responsive design.
+
+  - ✅ Integration
+
+    - Connects to your Supabase Function (llm/query).
