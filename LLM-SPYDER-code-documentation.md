@@ -281,3 +281,21 @@ await supabase.from("llm_queries").insert({
 **Output**
 
 Returns the LLM's response (e.g., "Meter-123 shows a 20% risk of failure next week.").
+
+**Key Features**
+
+- Context-Aware Responses
+
+  - The LLM analyzes real meter data (readings) before answering.
+
+- Semantic Search Ready
+
+  - Embeddings enable future searches like: "Find meters with similar usage patterns to Meter-123."
+
+- Auditability
+
+  - All queries/responses are logged in Supabase.
+
+- Type Safety
+
+  - Zod ensures env vars exist, and TypeScript checks interfaces.
