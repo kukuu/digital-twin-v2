@@ -371,8 +371,8 @@ const QuerySchema = z.object({
 ```
   - Defines the expected request shape:
 
-  - meterId: Must be a string (e.g., "meter-123").
+    - meterId: Must be a string (e.g., "meter-123").
   
-  - question: Must be a string with ≥3 characters (e.g., "Predict failures").
+    - question: Must be a string with ≥3 characters (e.g., "Predict failures").
 
-- Throws an error if invalid (e.g., missing meterId).
+  - Throws an error if invalid (e.g., missing meterId).
