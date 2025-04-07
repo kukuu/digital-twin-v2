@@ -299,3 +299,19 @@ Returns the LLM's response (e.g., "Meter-123 shows a 20% risk of failure next we
 - Type Safety
 
   - Zod ensures env vars exist, and TypeScript checks interfaces.
+ 
+**Workflow Example**
+
+- User asks: "Is Meter-123 at risk of failure?"
+
+- Backend:
+
+  - Fetches Meter-123's last 20 readings.
+
+  - Generates embeddings for those readings.
+
+  - Sends context + question to OpenAI.
+
+  - Logs the query/response in Supabase.
+
+- Response: "Based on recent data, Meter-123 has a 15% failure risk due to rising temperature trends."
