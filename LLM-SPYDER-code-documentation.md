@@ -628,3 +628,5 @@ Formats errors with "Error:" prefix.
     - Displays: "Error: Failed to fetch meter data."
    
       ![image](https://github.com/kukuu/digital-twin-v2/blob/main/llm-fe-ans.png)
+
+ **5. Integration with Backend**
