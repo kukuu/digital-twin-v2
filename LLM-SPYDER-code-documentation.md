@@ -376,3 +376,37 @@ const QuerySchema = z.object({
     - question: Must be a string with ≥3 characters (e.g., "Predict failures").
 
   - Throws an error if invalid (e.g., missing meterId).
+
+- C. API Endpoint
+```
+router.post("/query", async (req, res) => {
+  try {
+    // 1. Validate request
+    const validated = QuerySchema.parse(req.body);
+
+    // 2. Call LLM service
+    const answer = await handleLLMQuery(validated);
+
+    // 3. Return response
+    res.json({ answer });
+
+  } catch (error) {
+    console.error("LLM Error:", error);
+    res.status(400).json({ 
+      error: error instanceof Error ? error.message : "Unknown error" 
+    });
+  }
+});
+```
+
+  - Validation: Uses QuerySchema to check req.body.
+
+  - LLM Processing: Passes validated data to handleLLMQuery (fetches meter data → calls OpenAI).
+
+  - Response: Sends the LLM's answer as JSON (e.g., { answer: "Risk level: 15%" }).
+
+  - Error Handling:
+
+    - Logs errors.
+
+    - Returns 400 Bad Request with error details (safe for frontend display).
