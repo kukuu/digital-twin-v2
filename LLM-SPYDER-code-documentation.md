@@ -315,3 +315,15 @@ Returns the LLM's response (e.g., "Meter-123 shows a 20% risk of failure next we
   - Logs the query/response in Supabase.
 
 - Response: "Based on recent data, Meter-123 has a 15% failure risk due to rising temperature trends."
+
+**Error Handling**
+
+- Throws errors if:
+
+  - Environment variables are missing.
+
+  - No meter data exists.
+
+  - Supabase/OpenAI API calls fail.
+
+Corporate documentation: [to be added]
