@@ -646,3 +646,7 @@ interface APIResponse {
     - Retry Logic: Add a "Retry" button for errors.
 
 ## CI/CD & Deployment of env variales to Render and Vercel 
+
+In here we cover step-by-step guide to securely deploying your environment variables (SUPABASE_URL, SUPABASE_KEY, OPENAI_KEY) to Render (backend) and Vercel (frontend) for SPYDER Digital Twin app:
+
+![image]( )
