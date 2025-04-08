@@ -650,3 +650,15 @@ interface APIResponse {
 In here we cover step-by-step guide to securely deploying your environment variables (SUPABASE_URL, SUPABASE_KEY, OPENAI_KEY) to Render (backend) and Vercel (frontend) for SPYDER Digital Twin app:
 
 ![image](https://github.com/kukuu/digital-twin-v2/blob/main/env-vars-overvue.png)
+
+- Deployment to Render (Backend)
+
+  - A. Method 1: Render Dashboard
+    - Go to your Render dashboard → Select your backend service.
+    - Navigate to Environment → Environment Variables.
+    - Add each variable:
+```
+SUPABASE_URL = https://your-project-ref.supabase.co
+SUPABASE_KEY = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+OPENAI_KEY = sk-your-openai-key
+```
