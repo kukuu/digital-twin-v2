@@ -662,3 +662,4 @@ SUPABASE_URL = https://your-project-ref.supabase.co
 SUPABASE_KEY = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 OPENAI_KEY = sk-your-openai-key
 ```
+  - Click Save. Render automatically restarts your service.
