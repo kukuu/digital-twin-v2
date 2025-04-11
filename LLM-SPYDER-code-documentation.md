@@ -680,4 +680,5 @@ services:
       - key: OPENAI_KEY
         value: sk-your-openai-key
 ```
-- Commit this file to your repo. Render picks up changes on push.
+
+Commit this file to your repo. Render picks up changes on push.
