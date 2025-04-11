@@ -662,4 +662,22 @@ SUPABASE_URL = https://your-project-ref.supabase.co
 SUPABASE_KEY = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 OPENAI_KEY = sk-your-openai-key
 ```
-  - Click Save. Render automatically restarts your service.
+    - Click Save. Render automatically restarts your service.
+
+- B. Method 2: render.yaml (Infrastructure as Code)
+
+```
+# render.yaml
+services:
+  - type: web
+    name: digital-twin-backend
+    env: node
+    envVars:
+      - key: SUPABASE_URL
+        value: https://your-project-ref.supabase.co
+      - key: SUPABASE_KEY
+        value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+      - key: OPENAI_KEY
+        value: sk-your-openai-key
+```
+    - Commit this file to your repo. Render picks up changes on push.
