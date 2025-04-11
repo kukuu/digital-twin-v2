@@ -682,3 +682,54 @@ services:
 ```
 
 Commit this file to your repo. Render picks up changes on push.
+
+
+- C. Verify on Render
+
+  - Check logs for errors:
+
+```
+render logs --service digital-twin-backend
+
+```
+  - Test the API:
+```
+curl -X POST https://your-render-url.onrender.com/llm/query \
+  -H "Content-Type: application/json" \
+  -d '{"meterId": "meter-123", "question": "Test"}'
+```
+
+- Deployment to Vercel (Frontend)
+
+  - A. Method 1: Vercel Dashboard
+
+i. Go to your Vercel project → Settings → Environment Variables.
+
+ii. Add variables (same as Render, but omit OPENAI_KEY unless frontend needs it):
+
+```
+SUPABASE_URL = https://your-project-ref.supabase.co
+SUPABASE_KEY = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+
+```
+
+  - B. Method 2: vercel.json
+
+```
+{
+  "env": {
+    "SUPABASE_URL": "https://your-project-ref.supabase.co",
+    "SUPABASE_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+  }
+}
+```
+  - C. Verify on Vercel
+
+i. Check deployment logs in the Vercel dashboard.
+
+ii. Test the frontend:
+
+```
+// In browser console
+console.log(process.env.SUPABASE_URL); // Should show your URL
+```
