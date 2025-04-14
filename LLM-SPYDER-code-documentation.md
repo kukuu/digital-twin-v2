@@ -744,7 +744,7 @@ console.log(process.env.SUPABASE_URL); // Should show your URL
 
     - Use a limited anon key (not service_role).
 
-- OpenAI Key Protection:
+  - OpenAI Key Protection:
 
     - Never commit to GitHub. Add .env to .gitignore.
 
@@ -761,3 +761,47 @@ console.log(process.env.SUPABASE_URL); // Should show your URL
 
     - Grant least-privilege access to deployment settings.
 
+- 5. CI/CD Integration
+
+  - GitHub Actions Example (Backend)
+ 
+```
+# .github/workflows/deploy.yml
+name: Deploy to Render
+on: push
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: echo "OPENAI_KEY=${{ secrets.OPENAI_KEY }}" >> .env
+      - uses: render-actions/deploy@v1
+        with:
+          service-id: your-render-service-id
+          api-key: ${{ secrets.RENDER_API_KEY }}
+```
+    - Store keys in GitHub Secrets (Settings → Secrets → Actions).
+ 
+  - Vercel CLI (Frontend)
+
+```
+# Deploy with env vars
+vercel env add SUPABASE_URL production
+vercel env add SUPABASE_KEY production
+vercel --prod
+```
+
+- 6. Troubleshooting
+ 
+![image]()
+
+
+- Summary
+  - Render (Backend): Use dashboard or render.yaml.
+
+  - Vercel (Frontend): Use dashboard or vercel.json.
+
+  - Security: Restrict keys, enable RLS, use secrets.
+
+  - CI/CD: Automate with GitHub Actions/Vercel CLI.
