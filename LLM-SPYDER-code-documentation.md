@@ -755,4 +755,9 @@ console.log(process.env.SUPABASE_URL); // Should show your URL
   - In Render/Vercel, restrict env vars to production only. Utilise .gitignore file in development before commiting code to centralised code repository.
 
   - Use Vercel’s Preview Environments for staging.
+ 
+- For Teams:
+  - Use Vercel Secrets or Render Secret Files for shared keys.
+
+  - Grant least-privilege access to deployment settings.
 
