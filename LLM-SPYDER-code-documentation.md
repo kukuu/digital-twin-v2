@@ -733,3 +733,26 @@ ii. Test the frontend:
 // In browser console
 console.log(process.env.SUPABASE_URL); // Should show your URL
 ```
+
+- Security Best Practices
+
+  - For Production:
+
+  - Restrict Supabase Key:
+
+  - Enable Row-Level Security (RLS) in Supabase.
+
+  - Use a limited anon key (not service_role).
+
+- OpenAI Key Protection:
+
+  - Never commit to GitHub. Add .env to .gitignore.
+
+  - Rotate keys periodically.
+
+- Access Control:
+
+  - In Render/Vercel, restrict env vars to production only.
+
+  - Use Vercel’s Preview Environments for staging.
+
