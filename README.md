@@ -54,7 +54,7 @@ CREATE TABLE readings (
  Then start the react app by running : npm run start 
 
  
-## AI / LLM Integration
+## AI / ML/ LLM Integration
 
 - https://github.com/kukuu/digital-twin-v2/blob/main/AI_LLM_integration.md
 - https://github.com/kukuu/AI-ML-LLM-NLP-integration
