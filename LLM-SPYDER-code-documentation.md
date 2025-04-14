@@ -794,7 +794,7 @@ vercel --prod
 
 - 6. Troubleshooting
  
-![image]()
+![image](https://github.com/kukuu/digital-twin-v2/blob/main/LLM%3ANLP-%20troubleshooting.png)
 
 
 - Summary
