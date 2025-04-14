@@ -738,26 +738,26 @@ console.log(process.env.SUPABASE_URL); // Should show your URL
 
   - For Production:
 
-  - Restrict Supabase Key:
+    - Restrict Supabase Key:
 
-  - Enable Row-Level Security (RLS) in Supabase.
+    - Enable Row-Level Security (RLS) in Supabase.
 
-  - Use a limited anon key (not service_role).
+    - Use a limited anon key (not service_role).
 
 - OpenAI Key Protection:
 
-  - Never commit to GitHub. Add .env to .gitignore.
+    - Never commit to GitHub. Add .env to .gitignore.
 
-  - Rotate keys periodically.
+    - Rotate keys periodically.
 
-- Access Control:
+  - Access Control:
 
-  - In Render/Vercel, restrict env vars to production only. Utilise .gitignore file in development before commiting code to centralised code repository.
+    - In Render/Vercel, restrict env vars to production only. Utilise .gitignore file in development before commiting code to centralised code repository.
 
-  - Use Vercel’s Preview Environments for staging.
+    - Use Vercel’s Preview Environments for staging.
  
-- For Teams:
-  - Use Vercel Secrets or Render Secret Files for shared keys.
+  - For Teams:
+    - Use Vercel Secrets or Render Secret Files for shared keys.
 
-  - Grant least-privilege access to deployment settings.
+    - Grant least-privilege access to deployment settings.
 
