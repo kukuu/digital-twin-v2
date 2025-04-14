@@ -14,7 +14,7 @@ This development covers:
  
 https://digital-twin-v2-chi.vercel.app/
 
-## Backend is histed on Render
+## Backend is hosted on Render
 
 https://dashboard.render.com/web/srv-csdkb5g8fa8c73f5vpg0/logs
 
