@@ -752,7 +752,7 @@ console.log(process.env.SUPABASE_URL); // Should show your URL
 
 - Access Control:
 
-  - In Render/Vercel, restrict env vars to production only.
+  - In Render/Vercel, restrict env vars to production only. Utilise .gitignore file in development before commiting code to code repository.
 
   - Use Vercel’s Preview Environments for staging.
 
