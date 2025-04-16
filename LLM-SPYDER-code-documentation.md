@@ -409,11 +409,7 @@ ii. LLM Processing: Passes validated data to handleLLMQuery (fetches meter data 
 
 iii. Response: Sends the LLM's answer as JSON (e.g., { answer: "Risk level: 15%" }).
 
- IV. Error Handling:
-
-    1.Logs errors.
-
-    2.Returns 400 Bad Request with error details (safe for frontend display).
+ IV. Error Handling:Logs errors and returns 400 Bad Request with error details (safe for frontend display).
 
 **How the Frontend Uses This**
 
