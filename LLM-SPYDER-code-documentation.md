@@ -359,11 +359,11 @@ import express from "express";
 import { handleLLMQuery } from "../services/llmService";
 import { z } from "zod";
 ```
-  - express: Node.js framework for building APIs.
+    - express: Node.js framework for building APIs.
   
-  - handleLLMQuery: Your LLM service (analyzes meter data + generates answers).
+    - handleLLMQuery: Your LLM service (analyzes meter data + generates answers).
   
-  - zod: Validates request data types.
+    - zod: Validates request data types.
 
 - B. Request Validation
 
