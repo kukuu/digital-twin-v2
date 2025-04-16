@@ -227,6 +227,12 @@ const { data: readings } = await supabase
     ii. Throws an error if no data exists.
 
 - Step 2: Generate Embeddings
+
+i. Converts meter readings into LangChain Document objects (text + metadata).
+
+ii. Generates OpenAI embeddings (vector representations) for each reading and stores them in Supabase's llm_queries table (via SupabaseVectorStore).
+
+
 ```
 const docs = readings.map(reading => 
   new Document({
@@ -242,9 +248,7 @@ const vectorStore = await SupabaseVectorStore.fromDocuments(
 );
 
 ```
-i. Converts meter readings into LangChain Document objects (text + metadata).
 
-ii. Generates OpenAI embeddings (vector representations) for each reading and stores them in Supabase's llm_queries table (via SupabaseVectorStore).
 
 - Step 3: Run LLM Query
 
