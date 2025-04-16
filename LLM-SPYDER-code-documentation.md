@@ -1,4 +1,4 @@
-# LLM / NLM Integration Documentation for  SPYDER
+# Documentation: LLM / NLM Integration  for  SPYDER
 
 The command sequence are installing Node.js dependencies for the backend to integrate an LLM (Large Language Model) with SPYDER Digital Twin app. 
 
