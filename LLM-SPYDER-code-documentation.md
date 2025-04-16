@@ -106,9 +106,9 @@ CREATE TABLE llm_queries (...)
 
     - The embeddings column lets you:
 
-    - Compare past queries for similarity (e.g., cluster FAQs).
+      - Compare past queries for similarity (e.g., cluster FAQs).
 
-    - Improve future responses using retrieval-augmented generation (RAG).
+      - Improve future responses using retrieval-augmented generation (RAG).
 
   - Data Integrity
 
