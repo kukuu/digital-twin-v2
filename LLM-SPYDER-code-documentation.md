@@ -359,11 +359,11 @@ import express from "express";
 import { handleLLMQuery } from "../services/llmService";
 import { z } from "zod";
 ```
-      - express: Node.js framework for building APIs.
+i. express: Node.js framework for building APIs.
   
-      - handleLLMQuery: Your LLM service (analyzes meter data + generates answers).
+ii. handleLLMQuery: Your LLM service (analyzes meter data + generates answers).
   
-      - zod: Validates request data types.
+iii. zod: Validates request data types.
 
 - B. Request Validation
 
@@ -375,11 +375,11 @@ const QuerySchema = z.object({
 ```
   - Defines the expected request shape:
 
-    - meterId: Must be a string (e.g., "meter-123").
+    i. meterId: Must be a string (e.g., "meter-123").
   
-    - question: Must be a string with ≥3 characters (e.g., "Predict failures").
+    ii. question: Must be a string with ≥3 characters (e.g., "Predict failures").
 
-  - Throws an error if invalid (e.g., missing meterId).
+    iii. Throws an error if invalid (e.g., missing meterId).
 
 - C. API Endpoint
 ```
@@ -403,17 +403,17 @@ router.post("/query", async (req, res) => {
 });
 ```
 
-  - Validation: Uses QuerySchema to check req.body.
+i. Validation: Uses QuerySchema to check req.body.
 
-  - LLM Processing: Passes validated data to handleLLMQuery (fetches meter data → calls OpenAI).
+ii. LLM Processing: Passes validated data to handleLLMQuery (fetches meter data → calls OpenAI).
 
-  - Response: Sends the LLM's answer as JSON (e.g., { answer: "Risk level: 15%" }).
+iii. Response: Sends the LLM's answer as JSON (e.g., { answer: "Risk level: 15%" }).
 
-  - Error Handling:
+ IV. Error Handling:
 
-    - Logs errors.
+    a. Logs errors.
 
-    - Returns 400 Bad Request with error details (safe for frontend display).
+    b. Returns 400 Bad Request with error details (safe for frontend display).
 
 **How the Frontend Uses This**
 
