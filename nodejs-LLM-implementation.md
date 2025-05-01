@@ -84,7 +84,7 @@ import { createClient } from "@supabase/supabase-js";
 import { Document } from "langchain/document";
 import { z } from "zod";
 
-// Type-safe envs
+// Type-safe envs. SCHEMA VALIDATION
 const envSchema = z.object({
   SUPABASE_URL: z.string(),
   SUPABASE_KEY: z.string(),
