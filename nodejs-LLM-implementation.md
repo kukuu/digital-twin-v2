@@ -11,7 +11,7 @@ Here's a step-by-step executable plan to integrate an LLM module into SPYDER pro
 
 - Zero downtime deployment
 
-- Scalable LLM architecture
+- Scalable LLM architecture 
 
 
 ## Architecture: Folder Structure
