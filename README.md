@@ -13,7 +13,7 @@ This development covers:
 
 
 ## Frontend is hosted on Vercel
- 
+  
 https://digital-twin-v2-chi.vercel.app/
 
 ## Backend is hosted on Render
