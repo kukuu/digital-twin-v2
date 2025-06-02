@@ -633,3 +633,7 @@ body {
   background-color: rgba(46, 125, 50, 0.2);
   text-decoration: underline;
 }
+.changeReading {
+  color: red;
+  font-weight: 600;
+}
