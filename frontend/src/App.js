@@ -5,6 +5,8 @@ import io from "socket.io-client";
 import paperWhisky from './images/whisky-in-paper-bottle.png';
 import woodenbike from './images/wooden-bicycle.jpg';
 import heatpump from './images/heat-pump.png';
+import hellofresh from './images/dt-1-hello-fresh-co-uk.png';
+import lovejoint from './images/dt-2-love-joint.png';
 import {
   SignedIn,
   SignedOut,
@@ -421,7 +423,7 @@ export default function EnergyMeter() {
           <div className="ad-column">
             <div className="ad-label">
               <h3 className="ad-labelHeader">Race to zero emission future!</h3>
-          {/*<span className="ad-space">Advertise here!</span>*/}
+              {/*<span className="ad-space">Advertise here!</span>*/}
               <div className="responsive-iframe-container">
                 <iframe
                   src="https://www.youtube.com/embed/O7ACNMj8NW0"
@@ -445,10 +447,9 @@ export default function EnergyMeter() {
             <div className="ad-label">
               <h3 className="ad-labelHeader2">Advertising space!</h3>
               {/*span className="ad-space">Advertise here!</span>*/}
-              
               <div className="media-grid">
                 <div className="media-container video">
-                  <span>VIDEO</span>
+                <span>Available{/*VIDEO*/}</span>
                   <iframe
                     src=""
                     title="Dummy Video"
@@ -459,18 +460,18 @@ export default function EnergyMeter() {
                 </div>
 
                 <div className="media-container image">
-                  <span>IMAGE</span>
+                  <span>Hello Fresh</span>
                   <iframe
-                    src=""
-                    title="Dummy Image"
-                    alt="Dummy Image"
+                    src={hellofresh}
+                    title="Hello Fresh"
+                    alt="Hello Fresh"
                     frameBorder="0"
                     allowFullScreen
                   ></iframe>
                 </div>
 
                 <div className="media-container carousel">
-                  <span>CAROUSEL</span>
+                <span>Available{/*Carousel*/}</span>
                   <iframe
                     src=""
                     title="Dummy Carousel"
@@ -481,7 +482,7 @@ export default function EnergyMeter() {
                 </div>
 
                 <div className="media-container video">
-                  <span>VIDEO</span>
+                  <span>Available{/*VIDEO*/}</span>
                   <iframe
                     src=""
                     title="Dummy Video"
@@ -492,11 +493,10 @@ export default function EnergyMeter() {
                 </div>
 
                 <div className="media-container image">
-                  <span>IMAGE</span>
+                  <span>Love Joint</span>
                   <iframe
-                    src=""
-                    title="Dummy Image"
-                    alt="Dummy Image"
+                    src={lovejoint}
+                    title="Dummy ImageLove Joint"
                     frameBorder="0"
                     allowFullScreen
                   ></iframe>
