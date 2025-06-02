@@ -356,7 +356,7 @@ export default function EnergyMeter() {
       <ToastContainer position="top-right" autoClose={3000} />
       <nav className="navbar">
         <div className="navbar-brand">
-          <h2 style={{ fontWeight: "bold", color: "blue" }}>SPYDER</h2>
+          <h2 style={{ fontWeight: "bold", color: "green" }}>SPYDER</h2>
         </div>
         <div className="navbar-auth">
           <SignedOut>
