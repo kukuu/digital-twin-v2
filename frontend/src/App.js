@@ -9,6 +9,7 @@ import hellofresh from './images/dt-1-hello-fresh-co-uk.png';
 import lovejoint from './images/dt-2-love-joint.png';
 import temu from './images/dt-4-temu.png';
 import lidl from './images/dt-5-lidl.png';
+import VitaminD from './images/dt-6-VD.png';
 import {
   SignedIn,
   SignedOut,
@@ -536,10 +537,10 @@ export default function EnergyMeter() {
                   ></iframe>
                 </div>
 
-                <div className="media-container video">
-                <span>Available{/*VIDEO*/}</span>
+                <div className="media-container">
+                <span>Vitamin D</span>
                   <iframe
-                    src=""
+                    src={VitaminD}
                     title="Dummy Video"
                     alt="Dummy Video"
                     frameBorder="0"
