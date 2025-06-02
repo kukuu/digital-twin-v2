@@ -7,6 +7,8 @@ import woodenbike from './images/wooden-bicycle.jpg';
 import heatpump from './images/heat-pump.png';
 import hellofresh from './images/dt-1-hello-fresh-co-uk.png';
 import lovejoint from './images/dt-2-love-joint.png';
+import temu from './images/dt-4-temu.png';
+import lidl from './images/dt-5-lidl.png';
 import {
   SignedIn,
   SignedOut,
@@ -445,7 +447,7 @@ export default function EnergyMeter() {
 
           <div className="ad-column">
             <div className="ad-label">
-              <h3 className="ad-labelHeader2">Advertising space!</h3>
+              <h3 className="ad-labelHeader2"><a href="/advertising">Advertising space!</a></h3>
               {/*span className="ad-space">Advertise here!</span>*/}
               <div className="media-grid">
                 <div className="media-container video">
@@ -470,19 +472,50 @@ export default function EnergyMeter() {
                   ></iframe>
                 </div>
 
-                <div className="media-container carousel">
-                <span>Available{/*Carousel*/}</span>
+                <div className="media-container">
+                <span>Lidl</span>
                   <iframe
-                    src=""
-                    title="Dummy Carousel"
-                    alt="Dummy Carousel"
+                    src={lidl}
+                    title="Lidl"
+                    alt="Lidl"
                     frameBorder="0"
                     allowFullScreen
                   ></iframe>
                 </div>
 
                 <div className="media-container video">
-                  <span>Available{/*VIDEO*/}</span>
+                  <span>Available</span>
+                  <iframe
+                    src=""
+                    title=""
+                    alt=""
+                    frameBorder="0"
+                    allowFullScreen
+                  ></iframe>
+                </div>
+
+                <div className="media-container image">
+                 <a href="https://www.lovejoint.store"><span>Love Joint</span></a> 
+                  <iframe
+                    src={lovejoint}
+                    title="Love Joint"
+                    frameBorder="0"
+                    allowFullScreen
+                  ></iframe>
+                </div>
+
+                <div className="media-container">
+                  <span>Temu</span>
+                  <iframe
+                    src={temu}
+                    title="Temu"
+                    frameBorder="0"
+                    allowFullScreen
+                  ></iframe>
+                </div>
+
+                <div className="media-container video">
+                <span>Available{/*VIDEO*/}</span>
                   <iframe
                     src=""
                     title="Dummy Video"
@@ -492,15 +525,28 @@ export default function EnergyMeter() {
                   ></iframe>
                 </div>
 
-                <div className="media-container image">
-                  <a href="https://www.lovejoint.store"><span>Love Joint</span></a> 
+                <div className="media-container video">
+                <span>Available{/*VIDEO*/}</span>
                   <iframe
-                    src={lovejoint}
-                    title="Dummy ImageLove Joint"
+                    src=""
+                    title="Dummy Video"
+                    alt="Dummy Video"
                     frameBorder="0"
                     allowFullScreen
                   ></iframe>
                 </div>
+
+                <div className="media-container video">
+                <span>Available{/*VIDEO*/}</span>
+                  <iframe
+                    src=""
+                    title="Dummy Video"
+                    alt="Dummy Video"
+                    frameBorder="0"
+                    allowFullScreen
+                  ></iframe>
+                </div>
+
               </div>
             </div>
           </div>
