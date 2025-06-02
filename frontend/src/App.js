@@ -493,7 +493,7 @@ export default function EnergyMeter() {
                 </div>
 
                 <div className="media-container image">
-                  <span>Love Joint</span>
+                  <a href="https://www.lovejoint.store"><span>Love Joint</span></a> 
                   <iframe
                     src={lovejoint}
                     title="Dummy ImageLove Joint"
