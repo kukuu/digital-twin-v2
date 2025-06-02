@@ -443,8 +443,8 @@ export default function EnergyMeter() {
 
           <div className="ad-column">
             <div className="ad-label">
-              <h3 className="ad-labelHeader2">Google Ads Space!</h3>
-              <span className="ad-space">Advertise here!</span>
+              <h3 className="ad-labelHeader2">Advertising space!</h3>
+              {/*span className="ad-space">Advertise here!</span>*/}
               
               <div className="media-grid">
                 <div className="media-container video">
