@@ -637,3 +637,8 @@ body {
   color: red;
   font-weight: 600;
 }
+
+.ad-labelHeader2 a {
+  color: red;
+  text-decoration: none;
+}
