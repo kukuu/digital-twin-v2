@@ -421,7 +421,7 @@ export default function EnergyMeter() {
           <div className="ad-column">
             <div className="ad-label">
               <h3 className="ad-labelHeader">Race to zero emission future!</h3>
-              <span className="ad-space">Advertise here!</span>
+          {/*<span className="ad-space">Advertise here!</span>*/}
               <div className="responsive-iframe-container">
                 <iframe
                   src="https://www.youtube.com/embed/O7ACNMj8NW0"
