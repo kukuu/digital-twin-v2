@@ -322,7 +322,7 @@ export default function EnergyMeter() {
             <div className="reading-display">
               <span>{data.reading}</span>
               <span className="unit">kWh</span>
-              <p className="changeReading">Change reading</p>
+              <p className="changeReading">Use my reading</p>
             </div>
             <div className="other-display">
               <span className="unit2">Supplier:</span>
