@@ -2,8 +2,10 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
+import AdvertisingPage from "./advertising/AdvertisingPage"; // Add this import
 import { ClerkProvider } from "@clerk/clerk-react";
 import reportWebVitals from "./reportWebVitals";
+import { BrowserRouter, Routes, Route } from 'react-router-dom'; // Add Routes and Route
 
 const PUBLISHABLE_KEY = process.env.REACT_APP_CLERK_PUBLISHABLE_KEY;
 
@@ -14,9 +16,14 @@ if (!PUBLISHABLE_KEY) {
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <ClerkProvider publishableKey={PUBLISHABLE_KEY} afterSignOutUrl="/">
-      <App />
-    </ClerkProvider>
+    <BrowserRouter>
+      <ClerkProvider publishableKey={PUBLISHABLE_KEY} afterSignOutUrl="/">
+        <Routes>
+          <Route path="/" element={<App />} />
+          <Route path="/advertising" element={<AdvertisingPage />} />
+        </Routes>
+      </ClerkProvider>
+    </BrowserRouter>
   </React.StrictMode>
 );
 

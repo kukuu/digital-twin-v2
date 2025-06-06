@@ -10,6 +10,7 @@ import lovejoint from './images/dt-2-love-joint.png';
 import temu from './images/dt-4-temu.png';
 import lidl from './images/dt-5-lidl.png';
 import VitaminD from './images/dt-6-VD.png';
+import { Link } from 'react-router-dom';
 import {
   SignedIn,
   SignedOut,
@@ -21,6 +22,7 @@ import "./App.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useForm } from "react-hook-form";
+
 
 // Define socket connection based on environment
 const socket = io(
@@ -448,7 +450,9 @@ export default function EnergyMeter() {
 
           <div className="ad-column">
             <div className="ad-label">
-              <h3 className="ad-labelHeader2"><a href="/advertising">Advertising space!</a></h3>
+            <h3 className="ad-labelHeader2">
+                <Link to="/advertising">Advertising space!</Link>
+            </h3>
               {/*span className="ad-space">Advertise here!</span>*/}
               <div className="media-grid">
                 <div className="media-container video">
