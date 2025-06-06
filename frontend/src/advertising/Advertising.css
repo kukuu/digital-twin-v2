@@ -20,6 +20,9 @@
   .advertising-header p {
     color: #7f8c8d;
     font-size: 1.2rem;
+    margin:auto;
+    padding: 2rem;
+    width: 700px;
   }
   
   .advertising-form {
