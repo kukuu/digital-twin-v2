@@ -115,7 +115,7 @@ const Modal = memo(
             <p>Tariff Type: {meterInfo.tariff}</p>
           </div>
           <div className="detail-row">
-            <h3>Cost Calculation</h3>
+            <h3>How much you will be paying</h3>
             <p>Rate per kWh: {meterInfo.cost}p</p>
             <p>Total Cost: £{meterInfo.total}</p>
           </div>
