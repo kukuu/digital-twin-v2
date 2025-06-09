@@ -96,7 +96,7 @@ const Modal = memo(
                 className="account-input"
               />
             </div>
-            <h3>Current Reading</h3>
+            <h3>Current Reading (Update with your reading)</h3>
             <div className="reading-input-container">
               <input
                 type="number"
