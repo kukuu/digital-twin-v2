@@ -375,7 +375,7 @@ export default function EnergyMeter() {
         <h3 className="title">Price Comparison Smart Energy Meter Reader</h3>
         <p className="app-description">
           The <strong>SPYDER</strong> Digital Twin Smart Energy Meter Reader,
-          helps you find the best electricity meter at the most competitive
+          helps you find the best electricity tariff at the most competitive
           price. Compare diferent meters, check prices and choose the right
           option to save on energy bills. The Reader also serves as a forecasting system and a settlement tool.
         </p>
