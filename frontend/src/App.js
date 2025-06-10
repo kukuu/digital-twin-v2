@@ -96,7 +96,7 @@ const Modal = memo(
                 className="account-input"
               />
             </div>
-             <h3>Current Reading (<span className="updateReader">Update with your reading</span>)</h3>
+            <h3>Current Reading (<span className="updateReader">Update with your reading</span>)</h3>
             <div className="reading-input-container">
               <input
                 type="number"
@@ -359,7 +359,7 @@ export default function EnergyMeter() {
       <ToastContainer position="top-right" autoClose={3000} />
       <nav className="navbar">
         <div className="navbar-brand">
-          <h2 style={{ fontWeight: "bold", color: "green" }}>SPYDER</h2>
+          <h2 style={{ fontWeight: "bold", color: "green" }}><a href="/">SPYDER</a></h2>
         </div>
         <div className="navbar-auth">
           <SignedOut>
