@@ -66,9 +66,9 @@ export default function AdvertisingPage() {
     <div className="advertising-container">
 
 
-    <nav className="navbar">
+     <nav className="navbar">
         <div className="navbar-brand">
-          <h2 style={{ fontWeight: "bold", color: "green" }}>SPYDER</h2>
+          <h2 style={{ fontWeight: "bold", color: "green" }}><a href="/">SPYDER</a></h2>
         </div>
         <div className="navbar-auth">
           <SignedOut>
