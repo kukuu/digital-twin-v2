@@ -367,7 +367,7 @@ export default function EnergyMeter() {
             )}
           </div>
         </div>
-        
+        <br />
         <div className="meter-graph">
           <Line 
             data={chartData}
