@@ -2,6 +2,8 @@
 
 import React, { useState, useEffect, useCallback, useRef, memo } from "react";
 import io from "socket.io-client";
+import { Line } from 'react-chartjs-2';
+import { Chart, registerables } from 'chart.js';
 import paperWhisky from './images/whisky-in-paper-bottle.png';
 import woodenbike from './images/wooden-bicycle.jpg';
 import heatpump from './images/heat-pump.png';
@@ -23,6 +25,8 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useForm } from "react-hook-form";
 
+// Register Chart.js components
+Chart.register(...registerables);
 
 // Define socket connection based on environment
 const socket = io(
@@ -145,6 +149,7 @@ Modal.displayName = "Modal";
 
 export default function EnergyMeter() {
   const [readings, setReadings] = useState({});
+  const [historicalData, setHistoricalData] = useState({});
   const [loading, setLoading] = useState(true);
   const [isReadingActive, setIsReadingActive] = useState(true);
   const [showModal, setShowModal] = useState(false);
@@ -153,15 +158,28 @@ export default function EnergyMeter() {
   const [modalData, setModalData] = useState(null);
   const [inputValue, setInputValue] = useState("");
 
-  const updateReading = useCallback(({ meter_id, reading }) => {
-    setReadings((prevReadings) => ({
-      ...prevReadings,
-      [meter_id]: {
+  const updateReading = useCallback(({ meter_id, reading, timestamp }) => {
+    setReadings((prevReadings) => {
+      const newReading = {
         ...meterData[meter_id],
         reading: reading.toFixed(2),
         total: ((reading * meterData[meter_id].cost) / 100).toFixed(2),
-      },
-    }));
+      };
+      
+      // Update historical data
+      setHistoricalData(prev => ({
+        ...prev,
+        [meter_id]: [
+          ...(prev[meter_id] || []),
+          { reading, timestamp }
+        ].slice(-20) // Keep last 20 readings
+      }));
+      
+      return {
+        ...prevReadings,
+        [meter_id]: newReading
+      };
+    });
     setLoading(false);
   }, []);
 
@@ -253,9 +271,8 @@ export default function EnergyMeter() {
   }, []);
 
   const handleMeterSelect = useCallback((meterId, data, e) => {
-    // Check if the click came from the target link
     if (e.target.closest('.target-link')) {
-      return; // Let the default anchor behavior handle it
+      return;
     }
     
     stopReading();
@@ -291,30 +308,30 @@ export default function EnergyMeter() {
     );
   };
 
-  const MeterGrid = ({ isInteractive = true }) => (
-    <div className="meter-grid">
-      {Object.entries(readings).map(([meterId, data]) => (
+  const MeterRow = ({ meterId, data, isInteractive }) => {
+    const chartData = {
+      labels: historicalData[meterId]?.map((_, i) => i) || [],
+      datasets: [{
+        label: 'Energy Usage (kWh)',
+        data: historicalData[meterId]?.map(d => d.reading) || [],
+        borderColor: 'rgb(75, 192, 192)',
+        tension: 0.1,
+        fill: false
+      }]
+    };
+
+    return (
+      <div className="meter-row">
         <div
-          key={meterId}
-          className={`card ${
-            isInteractive ? "card-interactive" : "card-disabled"
-          }`}
-          onClick={
-            isInteractive ? (e) => handleMeterSelect(meterId, data, e) : undefined
-          }
-          role={isInteractive ? "button" : undefined}
-          tabIndex={isInteractive ? 0 : undefined}
+          className={`card ${isInteractive ? "card-interactive" : "card-disabled"}`}
+          onClick={isInteractive ? (e) => handleMeterSelect(meterId, data, e) : undefined}
         >
           <div className="card-header">
             <div className="card-title">
               {`Meter ${meterId}`}
               <span className="status-indicator">
-                <span
-                  className={`ping ${isReadingActive ? "active" : "stopped"}`}
-                ></span>
-                <span
-                  className={`dot ${isReadingActive ? "active" : "stopped"}`}
-                ></span>
+                <span className={`ping ${isReadingActive ? "active" : "stopped"}`}></span>
+                <span className={`dot ${isReadingActive ? "active" : "stopped"}`}></span>
               </span>
             </div>
           </div>
@@ -350,6 +367,39 @@ export default function EnergyMeter() {
             )}
           </div>
         </div>
+        
+        <div className="meter-graph">
+          <Line 
+            data={chartData}
+            options={{
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                legend: {
+                  display: false
+                }
+              },
+              scales: {
+                y: {
+                  beginAtZero: false
+                }
+              }
+            }}
+          />
+        </div>
+      </div>
+    );
+  };
+
+  const MeterGrid = ({ isInteractive = true }) => (
+    <div className="meter-grid">
+      {Object.entries(readings).map(([meterId, data]) => (
+        <MeterRow 
+          key={meterId}
+          meterId={meterId}
+          data={data}
+          isInteractive={isInteractive}
+        />
       ))}
     </div>
   );
@@ -428,7 +478,6 @@ export default function EnergyMeter() {
           <div className="ad-column">
             <div className="ad-label">
               <h3 className="ad-labelHeader">Race to zero emission future!</h3>
-              {/*<span className="ad-space">Advertise here!</span>*/}
               <div className="responsive-iframe-container">
                 <iframe
                   src="https://www.youtube.com/embed/O7ACNMj8NW0"
@@ -450,10 +499,9 @@ export default function EnergyMeter() {
 
           <div className="ad-column">
             <div className="ad-label">
-            <h3 className="ad-labelHeader2">
+              <h3 className="ad-labelHeader2">
                 <Link to="/advertising">Advertising space!</Link>
-            </h3>
-              {/*span className="ad-space">Advertise here!</span>*/}
+              </h3>
               <div className="media-grid">
                 <div className="media-container video">
                 <span>Available{/*VIDEO*/}</span>
@@ -465,7 +513,7 @@ export default function EnergyMeter() {
                     allowFullScreen
                   ></iframe>
                 </div>
-
+              
                 <div className="media-container image">
                   <span>Hello Fresh</span>
                   <iframe
@@ -476,7 +524,7 @@ export default function EnergyMeter() {
                     allowFullScreen
                   ></iframe>
                 </div>
-
+                      
                 <div className="media-container">
                 <span>Lidl</span>
                   <iframe
@@ -500,7 +548,7 @@ export default function EnergyMeter() {
                 </div>
 
                 <div className="media-container image">
-                 <a href="https://www.lovejoint.store"><span>Love Joint</span></a> 
+                <a href="https://www.lovejoint.store"><span>Love Joint</span></a> 
                   <iframe
                     src={lovejoint}
                     title="Love Joint"
@@ -551,7 +599,6 @@ export default function EnergyMeter() {
                     allowFullScreen
                   ></iframe>
                 </div>
-
               </div>
             </div>
           </div>
