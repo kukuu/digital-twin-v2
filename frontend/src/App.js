@@ -65,7 +65,6 @@ let meterData = {
   }
 };
 
-// Simple memoized modal component
 const Modal = memo(
   ({
     value,
@@ -157,6 +156,8 @@ export default function EnergyMeter() {
   const [isSending, setIsSending] = useState(false);
   const [modalData, setModalData] = useState(null);
   const [inputValue, setInputValue] = useState("");
+  const [calculatedResults, setCalculatedResults] = useState([]);
+  const [userReading, setUserReading] = useState("");
 
   const updateReading = useCallback(({ meter_id, reading, timestamp }) => {
     setReadings((prevReadings) => {
@@ -166,13 +167,12 @@ export default function EnergyMeter() {
         total: ((reading * meterData[meter_id].cost) / 100).toFixed(2),
       };
       
-      // Update historical data
       setHistoricalData(prev => ({
         ...prev,
         [meter_id]: [
           ...(prev[meter_id] || []),
           { reading, timestamp }
-        ].slice(-20) // Keep last 20 readings
+        ].slice(-20)
       }));
       
       return {
@@ -187,6 +187,18 @@ export default function EnergyMeter() {
     socket.on("newReading", updateReading);
     return () => socket.off("newReading", updateReading);
   }, [updateReading]);
+
+  const handleCalculate = (e) => {
+    e.preventDefault();
+    const reading = parseFloat(userReading);
+    if (!isNaN(reading)) {
+      const results = Object.entries(meterData).map(([id, data]) => ({
+        supplier: data.supplier,
+        cost: ((reading * data.cost) / 100).toFixed(2)
+      }));
+      setCalculatedResults(results);
+    }
+  };
 
   const stopReading = () => {
     socket.emit("stopReading");
@@ -339,7 +351,7 @@ export default function EnergyMeter() {
             <div className="reading-display">
               <span>{data.reading}</span>
               <span className="unit">kWh</span>
-              <p className="changeReading">Use my reading</p>
+              <p className="changeReading">Send your reading(s).</p>
             </div>
             <div className="other-display">
               <span className="unit2">Supplier:</span>
@@ -440,165 +452,193 @@ export default function EnergyMeter() {
           </p>
         </SignedOut>
         <SignedIn>
-          <p className="auth-prompt">
-            Start comparing now and make smarter choices for your electricity
-            usage. Please select a Smart Meter!
-          </p>
-        </SignedIn>
+          <div className="reading-form-container">
+            <form onSubmit={handleCalculate}>
+              <input
+                type="number"
+                value={userReading}
+                onChange={(e) => setUserReading(e.target.value)}
+                className="reading-input"
+                placeholder="Please Enter your reading"
+                step="0.01"
+                min="0"
+                required
+              />
+              <button type="submit" className="calculate-button">
+                Calculate
+              </button>
+            </form>
 
-        {loading ? (
-          <div className="loading">Loading meter readings...</div>
-        ) : (
-          <div className="meter-container">
-            <SignedOut>
-              <SignInButton mode="modal">
-                <MeterGrid isInteractive={false} />
-              </SignInButton>
-            </SignedOut>
-            <SignedIn>
-              <MeterGrid isInteractive={true} />
-              {renderModal()}
-
-              <div className="button-container">
-                {isReadingActive ? (
-                  <button onClick={() => stopReading()} className="stop-button">
-                    Stop
-                  </button>
-                ) : (
-                  <button onClick={() => startReading()} className="start-button">
-                    Start
-                  </button>
-                )}
+            {calculatedResults.length > 0 && (
+              <div className="results-container">
+                <table className="cost-table">
+                  <thead>
+                    <tr>
+                      <th>Energy Company</th>
+                      <th>Total Cost (£)</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {calculatedResults.map((result, index) => (
+                      <tr key={index}>
+                        <td>{result.supplier}</td>
+                        <td>{result.cost}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                <button 
+                  onClick={() => setCalculatedResults([])} 
+                  className="close-results-button"
+                >
+                  Close Results
+                </button>
+                <p><a className="subscribe-newsletter">Subscribe to our newsletter to be informed about the latest price updates.</a></p>
               </div>
-            </SignedIn>
+            )}
           </div>
-        )}
+
+          <MeterGrid isInteractive={true} />
+          {renderModal()}
+
+          <div className="button-container">
+            {isReadingActive ? (
+              <button onClick={() => stopReading()} className="stop-button">
+                Stop
+              </button>
+            ) : (
+              <button onClick={() => startReading()} className="start-button">
+                Start
+              </button>
+            )}
+          </div>
+        </SignedIn>
+      </div>
         
-        <div className="ad-container">
-          <div className="ad-column">
-            <div className="ad-label">
-              <h3 className="ad-labelHeader">Race to zero emission future!</h3>
-              <div className="responsive-iframe-container">
+      <div className="ad-container">
+        <div className="ad-column">
+          <div className="ad-label">
+            <h3 className="ad-labelHeader">Race to zero emission future!</h3>
+            <div className="responsive-iframe-container">
+              <iframe
+                src="https://www.youtube.com/embed/O7ACNMj8NW0"
+                title="Evolution of Tesla (Animation)"
+                alt="Evolution of Tesla"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerPolicy="strict-origin-when-cross-origin"
+                allowFullScreen
+              ></iframe>
+            </div>
+            <div className="responsive-image-container">
+              <img src={paperWhisky} alt="Whisky in Paper bottle" className="ad-image" />
+              <img src={woodenbike} alt="Wooden Bike" className="ad-image" />
+              <img src={heatpump} alt="Heat pump" className="ad-image" />
+            </div>
+          </div>
+        </div>
+
+        <div className="ad-column">
+          <div className="ad-label">
+            <h3 className="ad-labelHeader2">
+              <Link to="/advertising">Advertising space!</Link>
+            </h3>
+            <div className="media-grid">
+              <div className="media-container video">
+                <span>Available</span>
                 <iframe
-                  src="https://www.youtube.com/embed/O7ACNMj8NW0"
-                  title="Evolution of Tesla (Animation)"
-                  alt="Evolution of Tesla"
+                  src=""
+                  title="Dummy Video"
+                  alt="Dummy Video"
                   frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  referrerPolicy="strict-origin-when-cross-origin"
                   allowFullScreen
                 ></iframe>
               </div>
-              <div className="responsive-image-container">
-                <img src={paperWhisky} alt="Whisky in Paper bottle" className="ad-image" />
-                <img src={woodenbike} alt="Wooden Bike" className="ad-image" />
-                <img src={heatpump} alt="Heat pump" className="ad-image" />
+            
+              <div className="media-container image">
+                <span>Hello Fresh</span>
+                <iframe
+                  src={hellofresh}
+                  title="Hello Fresh"
+                  alt="Hello Fresh"
+                  frameBorder="0"
+                  allowFullScreen
+                ></iframe>
               </div>
-            </div>
-          </div>
-
-          <div className="ad-column">
-            <div className="ad-label">
-              <h3 className="ad-labelHeader2">
-                <Link to="/advertising">Advertising space!</Link>
-              </h3>
-              <div className="media-grid">
-                <div className="media-container video">
-                <span>Available{/*VIDEO*/}</span>
-                  <iframe
-                    src=""
-                    title="Dummy Video"
-                    alt="Dummy Video"
-                    frameBorder="0"
-                    allowFullScreen
-                  ></iframe>
-                </div>
-              
-                <div className="media-container image">
-                  <span>Hello Fresh</span>
-                  <iframe
-                    src={hellofresh}
-                    title="Hello Fresh"
-                    alt="Hello Fresh"
-                    frameBorder="0"
-                    allowFullScreen
-                  ></iframe>
-                </div>
-                      
-                <div className="media-container">
+                    
+              <div className="media-container">
                 <span>Lidl</span>
-                  <iframe
-                    src={lidl}
-                    title="Lidl"
-                    alt="Lidl"
-                    frameBorder="0"
-                    allowFullScreen
-                  ></iframe>
-                </div>
+                <iframe
+                  src={lidl}
+                  title="Lidl"
+                  alt="Lidl"
+                  frameBorder="0"
+                  allowFullScreen
+                ></iframe>
+              </div>
 
-                <div className="media-container video">
-                  <span>Available</span>
-                  <iframe
-                    src=""
-                    title=""
-                    alt=""
-                    frameBorder="0"
-                    allowFullScreen
-                  ></iframe>
-                </div>
+              <div className="media-container video">
+                <span>Available</span>
+                <iframe
+                  src=""
+                  title=""
+                  alt=""
+                  frameBorder="0"
+                  allowFullScreen
+                ></iframe>
+              </div>
 
-                <div className="media-container image">
+              <div className="media-container image">
                 <a href="https://www.lovejoint.store"><span>Love Joint</span></a> 
-                  <iframe
-                    src={lovejoint}
-                    title="Love Joint"
-                    frameBorder="0"
-                    allowFullScreen
-                  ></iframe>
-                </div>
+                <iframe
+                  src={lovejoint}
+                  title="Love Joint"
+                  frameBorder="0"
+                  allowFullScreen
+                ></iframe>
+              </div>
 
-                <div className="media-container">
-                  <span>Temu</span>
-                  <iframe
-                    src={temu}
-                    title="Temu"
-                    frameBorder="0"
-                    allowFullScreen
-                  ></iframe>
-                </div>
+              <div className="media-container">
+                <span>Temu</span>
+                <iframe
+                  src={temu}
+                  title="Temu"
+                  frameBorder="0"
+                  allowFullScreen
+                ></iframe>
+              </div>
 
-                <div className="media-container video">
-                <span>Available{/*VIDEO*/}</span>
-                  <iframe
-                    src=""
-                    title="Dummy Video"
-                    alt="Dummy Video"
-                    frameBorder="0"
-                    allowFullScreen
-                  ></iframe>
-                </div>
+              <div className="media-container video">
+                <span>Available</span>
+                <iframe
+                  src=""
+                  title="Dummy Video"
+                  alt="Dummy Video"
+                  frameBorder="0"
+                  allowFullScreen
+                ></iframe>
+              </div>
 
-                <div className="media-container video">
-                <span>Available{/*VIDEO*/}</span>
-                  <iframe
-                    src=""
-                    title="Dummy Video"
-                    alt="Dummy Video"
-                    frameBorder="0"
-                    allowFullScreen
-                  ></iframe>
-                </div>
+              <div className="media-container video">
+                <span>Available</span>
+                <iframe
+                  src=""
+                  title="Dummy Video"
+                  alt="Dummy Video"
+                  frameBorder="0"
+                  allowFullScreen
+                ></iframe>
+              </div>
 
-                <div className="media-container">
+              <div className="media-container">
                 <span>Vitamin D</span>
-                  <iframe
-                    src={VitaminD}
-                    title="Dummy Video"
-                    alt="Dummy Video"
-                    frameBorder="0"
-                    allowFullScreen
-                  ></iframe>
-                </div>
+                <iframe
+                  src={VitaminD}
+                  title="Dummy Video"
+                  alt="Dummy Video"
+                  frameBorder="0"
+                  allowFullScreen
+                ></iframe>
               </div>
             </div>
           </div>
