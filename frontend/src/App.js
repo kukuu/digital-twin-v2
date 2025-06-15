@@ -99,7 +99,7 @@ const Modal = memo(
                 className="account-input"
               />
             </div>
-            <h3>Current Reading (<span className="updateReader">Update with your reading</span>)</h3>
+            <h3><span className="updateReader">Update with your reading</span></h3>
             <div className="reading-input-container">
               <input
                 type="number"
@@ -498,7 +498,10 @@ export default function EnergyMeter() {
                 >
                   Close Results
                 </button>
-                <p><a href='#' className="subscribe-newsletter">Subscribe to our newsletter to be informed about the latest price updates.</a></p>
+                <p>To better serve your energy needs, we kindly request that you <a href='#' className="subscribe-newsletter"><strong>Subscribe to our NEWSLETTER </strong></a> and share your past electricity meter readings with us. This data will enable us to make informed decisions through careful monitoring and analysis. Based on our assessment, we can then recommend a more competitive energy provider with a tariff better suited to your consumption patterns.
+
+Your cooperation will help ensure you receive the most cost-effective and efficient energy solution available.</p>
+
               </div>
             )}
           </div>
