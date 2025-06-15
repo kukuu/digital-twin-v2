@@ -200,6 +200,11 @@ export default function EnergyMeter() {
     }
   };
 
+  const handleCloseResults = () => {
+    setCalculatedResults([]);
+    setUserReading(""); // Clear the input field
+  };
+
   const stopReading = () => {
     socket.emit("stopReading");
     setIsReadingActive(false);
@@ -488,12 +493,12 @@ export default function EnergyMeter() {
                   </tbody>
                 </table>
                 <button 
-                  onClick={() => setCalculatedResults([])} 
+                  onClick={handleCloseResults} 
                   className="close-results-button"
                 >
                   Close Results
                 </button>
-                <p><a className="subscribe-newsletter">Subscribe to our newsletter to be informed about the latest price updates.</a></p>
+                <p><a href='#' className="subscribe-newsletter">Subscribe to our newsletter to be informed about the latest price updates.</a></p>
               </div>
             )}
           </div>
