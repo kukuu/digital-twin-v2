@@ -223,6 +223,11 @@ h2 a {
   }
 }
 
-.subscribe-newsletter {
+a.subscribe-newsletter {
   color: green;
+  text-decoration: none;
+}
+
+.changeReading {
+  font-size: small;
 }
