@@ -24,6 +24,7 @@ import "./App.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useForm } from "react-hook-form";
+//import { FaPlus, FaTrash } from 'react-icons/fa';
 
 // Register Chart.js components
 Chart.register(...registerables);
@@ -67,81 +68,131 @@ let meterData = {
 
 const Modal = memo(
   ({
-    value,
-    onChange,
+    readings,
+    onReadingChange,
+    onDateChange,
+    onAddReading,
+    onRemoveReading,
     onClose,
     onSend,
     onPay,
     isSending,
     meterInfo,
     onAccountNumberChange,
-  }) => (
-    <div className="modal-overlay">
-      <div className="modal-content">
-        <div className="modal-header">
-          <div>
-            <h2>Meter Details - {meterInfo.id}</h2>
-          </div>
-          <button className="close-button" onClick={onClose}>
-            ×
-          </button>
-        </div>
-        <div className="modal-body">
-          <div className="detail-row">
-            <div className="account-number-input">
-              <h3>Customer Account Number:</h3>
-              <input
-                type="text"
-                id="accountNumber"
-                value={meterInfo.accountNumber}
-                onChange={onAccountNumberChange}
-                placeholder="Enter account number"
-                className="account-input"
-              />
+  }) => {
+    const calculateTotal = () => {
+      return readings.reduce((sum, reading) => {
+        const value = parseFloat(reading.value) || 0;
+        return sum + (value * meterInfo.cost) / 100;
+      }, 0).toFixed(2);
+    };
+
+    return (
+      <div className="modal-overlay">
+        <div className="modal-content">
+          <div className="modal-header">
+            <div>
+              <h2>Meter Details - {meterInfo.id}</h2>
             </div>
-            <h3><span className="updateReader">Update with your reading</span></h3>
-            <div className="reading-input-container">
-              <input
-                type="number"
-                value={value}
-                onChange={onChange}
-                className="reading-input"
-                step="0.01"
-                min="0"
-              />
-              <span className="reading-unit">kWh</span>
+            <button className="close-button" onClick={onClose}>
+              ×
+            </button>
+          </div>
+          <div className="modal-body">
+            <button 
+              className="switch-to-edf-button"
+              onClick={() => window.open("https://www.edfenergy.com/?affiliate=SPYDER", "_blank")}
+            >
+              Switch to EDF
+            </button>
+            <small>We earn a commission if you switch</small>
+
+            <div className="detail-row">
+              <div className="account-number-input">
+                <h3>Customer Account Number:</h3>
+                <input
+                  type="text"
+                  id="accountNumber"
+                  value={meterInfo.accountNumber}
+                  onChange={onAccountNumberChange}
+                  placeholder="Enter account number"
+                  className="account-input"
+                />
+              </div>
+              <h3><span className="updateReader">Send your reading(s)</span></h3>
+              {readings.map((reading, index) => (
+                <div key={index} className="reading-row">
+                  <div className="reading-input-container">
+                    <input
+                      type="number"
+                      value={reading.value}
+                      onChange={(e) => onReadingChange(index, e.target.value)}
+                      className="reading-input"
+                      step="0.01"
+                      min="0"
+                      placeholder="Reading value"
+                    />
+                    <span className="reading-unit">kWh</span>
+                  </div>
+                  <div className="date-input-container">
+                    <input
+                      type="date"
+                      value={reading.date}
+                      onChange={(e) => onDateChange(index, e.target.value)}
+                      className="date-input"
+                    />
+                  </div>
+                  {index === readings.length - 1 ? (
+                    <button 
+                      type="button" 
+                      className="add-reading-button"
+                      onClick={onAddReading}
+                    >
+                      {/*<FaPlus />*/} + 
+                    </button>
+                  ) : (
+                    <button 
+                      type="button" 
+                      className="remove-reading-button"
+                      onClick={() => onRemoveReading(index)}
+                    >
+                      {/*<FaTrash />*/} -
+                    </button>
+                  )}
+                </div>
+              ))}
             </div>
-          </div>
-          <div className="detail-row">
-            <h3>Supplier Information</h3>
-            <p>Supplier: <span className="energy-supplier">{meterInfo.supplier}</span></p>
-            <p>Tariff Type: {meterInfo.tariff}</p>
-          </div>
-          <div className="detail-row">
-            <h3>How much you will be paying</h3>
-            <p>Rate per kWh: {meterInfo.cost}p</p>
-            <p>Total Cost: £{meterInfo.total}</p>
-          </div>
-          <div className="detail-row">
-            <button
-              className="send-reading-button"
-              onClick={onSend}
-              disabled={isSending}
-            >
-              {isSending ? "Sending..." : "Send Meter Reading"}
-            </button>
-            <button
-              className="paypal-payment-button"
-              onClick={onPay}
-              disabled={isSending}
-            >
-              Payment Gateway
-            </button>
+            <div className="detail-row">
+              <h3>Supplier Information</h3>      
+              <p>Supplier: <span className="energy-supplier">{meterInfo.supplier}</span></p>
+              <p>Tariff Type: {meterInfo.tariff}</p>
+            </div>
+            <div className="detail-row">
+              <h3>How much you will be paying</h3>
+              <p>Rate per kWh: {meterInfo.cost}p</p>
+              <p>Total Cost: £{calculateTotal()}</p>
+            </div>
+            <div className="detail-row">
+              <button
+                className="send-reading-button"
+                onClick={onSend}
+                disabled={isSending}
+              >
+                {isSending ? "Sending..." : "Send Meter Reading"}
+              </button>
+              <button
+                className="paypal-payment-button"
+                onClick={onPay}
+                disabled={isSending}
+              >
+                Payment Gateway
+              </button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  )
+    );
+  }
 );
 
 Modal.displayName = "Modal";
@@ -155,7 +206,7 @@ export default function EnergyMeter() {
   const { user } = useUser();
   const [isSending, setIsSending] = useState(false);
   const [modalData, setModalData] = useState(null);
-  const [inputValue, setInputValue] = useState("");
+  const [meterReadings, setMeterReadings] = useState([{ value: "", date: new Date().toISOString().split('T')[0] }]);
   const [calculatedResults, setCalculatedResults] = useState([]);
   const [userReading, setUserReading] = useState("");
 
@@ -202,7 +253,7 @@ export default function EnergyMeter() {
 
   const handleCloseResults = () => {
     setCalculatedResults([]);
-    setUserReading(""); // Clear the input field
+    setUserReading("");
   };
 
   const stopReading = () => {
@@ -215,22 +266,33 @@ export default function EnergyMeter() {
     setIsReadingActive(true);
   };
 
-  const handleInputChange = useCallback((e) => {
-    const value = e.target.value;
-    setInputValue(value);
+  const handleReadingChange = (index, value) => {
+    const newReadings = [...meterReadings];
+    newReadings[index].value = value;
+    setMeterReadings(newReadings);
+  };
 
-    const numValue = parseFloat(value);
-    if (!isNaN(numValue)) {
-      setModalData((prev) => ({
-        ...prev,
-        editedReading: value,
-        total: ((numValue * prev.cost) / 100).toFixed(2),
-      }));
+  const handleDateChange = (index, date) => {
+    const newReadings = [...meterReadings];
+    newReadings[index].date = date;
+    setMeterReadings(newReadings);
+  };
+
+  const handleAddReading = () => {
+    setMeterReadings([...meterReadings, { value: "", date: new Date().toISOString().split('T')[0] }]);
+  };
+
+  const handleRemoveReading = (index) => {
+    if (meterReadings.length > 1) {
+      const newReadings = [...meterReadings];
+      newReadings.splice(index, 1);
+      setMeterReadings(newReadings);
     }
-  }, []);
+  };
 
   const handleModalClose = useCallback(() => {
     setShowModal(false);
+    setMeterReadings([{ value: "", date: new Date().toISOString().split('T')[0] }]);
     startReading();
   }, []);
 
@@ -248,11 +310,14 @@ export default function EnergyMeter() {
             userEmail: user.primaryEmailAddress.emailAddress,
             meterData: {
               id: modalData.id,
-              reading: modalData.editedReading,
+              readings: meterReadings,
               supplier: modalData.supplier,
               tariff: modalData.tariff,
               cost: modalData.cost,
-              total: modalData.total,
+              total: meterReadings.reduce((sum, reading) => {
+                const value = parseFloat(reading.value) || 0;
+                return sum + (value * modalData.cost) / 100;
+              }, 0).toFixed(2),
               accountNumber: modalData.accountNumber,
             },
           }),
@@ -263,6 +328,7 @@ export default function EnergyMeter() {
         if (data.success) {
           toast.success("Meter reading details sent to your email!");
           setShowModal(false);
+          setMeterReadings([{ value: "", date: new Date().toISOString().split('T')[0] }]);
           startReading();
         } else {
           throw new Error(data.error || "Failed to send email");
@@ -274,11 +340,15 @@ export default function EnergyMeter() {
         setIsSending(false);
       }
     }
-  }, [modalData, user]);
+  }, [modalData, user, meterReadings]);
 
   const handlePay = useCallback(() => {
-    console.log("Paying £" + modalData.total);
-  }, [modalData]);
+    const total = meterReadings.reduce((sum, reading) => {
+      const value = parseFloat(reading.value) || 0;
+      return sum + (value * modalData.cost) / 100;
+    }, 0).toFixed(2);
+    console.log("Paying £" + total);
+  }, [modalData, meterReadings]);
 
   const handleAccountNumberChange = useCallback((e) => {
     setModalData((prev) => ({
@@ -300,11 +370,10 @@ export default function EnergyMeter() {
       tariff: data.tariff,
       cost: data.cost,
       total: data.total,
-      editedReading: data.reading,
       accountNumber: "",
     };
     setModalData(meterSnapshot);
-    setInputValue(data.reading);
+    setMeterReadings([{ value: data.reading || "", date: new Date().toISOString().split('T')[0] }]);
     setShowModal(true);
   }, []);
 
@@ -313,8 +382,11 @@ export default function EnergyMeter() {
 
     return (
       <Modal
-        value={inputValue}
-        onChange={handleInputChange}
+        readings={meterReadings}
+        onReadingChange={handleReadingChange}
+        onDateChange={handleDateChange}
+        onAddReading={handleAddReading}
+        onRemoveReading={handleRemoveReading}
         onClose={handleModalClose}
         onSend={handleSendReading}
         onPay={handlePay}
