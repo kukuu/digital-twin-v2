@@ -21,7 +21,7 @@
     color: #7f8c8d;
     font-size: 1.2rem;
     margin:auto;
-   /* padding: 2rem;*/
+    /*padding: 2rem;*/
     width: 700px;
   }
   
@@ -178,7 +178,7 @@
   
   .auth-prompt {
     text-align: center;
-     /*padding: 1.5rem;*/
+    /*padding: 1.5rem;*/
     background-color: #f8f9fa;
     border-radius: 4px;
     margin-bottom: 1.5rem;
