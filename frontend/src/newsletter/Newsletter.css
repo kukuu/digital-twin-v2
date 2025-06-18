@@ -1,0 +1,212 @@
+/* Advertising Page Styles */
+.advertising-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  .advertising-header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  
+  .advertising-header h1 {
+    color: #2c3e50;
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .advertising-header p {
+    color: #7f8c8d;
+    font-size: 1.2rem;
+    margin:auto;
+    /*padding: 2rem;*/
+    width: 700px;
+  }
+  
+  .advertising-form {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+    width: 600px;
+    margin:auto;
+  }
+  
+  .form-section {
+    margin-bottom: 2.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #ecf0f1;
+  }
+  
+  .form-section h2 {
+    color: #3498db;
+    margin-bottom: 1rem;
+    font-size: 1.8rem;
+  }
+  
+  .section-description {
+    color: #7f8c8d;
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+  }
+  
+  .option-row {
+    display: flex;
+    margin-bottom: 1rem;
+    align-items: center;
+    padding: 0.8rem;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+  }
+  
+  .option-row:hover {
+    background-color: #f8f9fa;
+  }
+  
+  .option-cell {
+    flex: 1;
+    padding: 0.5rem;
+  }
+  
+  .option-cell.price {
+    text-align: right;
+    font-weight: bold;
+    color: #27ae60;
+  }
+  
+  .option-cell input[type="radio"] {
+    margin-right: 1rem;
+  }
+  
+  .payment-section {
+    margin-top: 2rem;
+  }
+  
+  .payment-section h2 {
+    color: #3498db;
+    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
+  }
+  
+  .payment-methods {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 2rem;
+  }
+  
+  .credit-card-form {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+  
+  .form-group {
+    margin-bottom: 1rem;
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #2c3e50;
+    font-weight: 500;
+  }
+  
+  .form-group input {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+  }
+  
+  .form-group input:focus {
+    outline: none;
+    border-color: #3498db;
+  }
+  
+  .error {
+    color: #e74c3c;
+    font-size: 0.9rem;
+    margin-top: 0.3rem;
+    display: block;
+  }
+  
+  .paypal-container {
+    flex: 1;
+    min-height: 200px;
+  }
+  
+  .total-section {
+    text-align: right;
+    padding-top: 1.5rem;
+    border-top: 1px solid #ecf0f1;
+  }
+  
+  .total-section h3 {
+    font-size: 1.5rem;
+    color: #2c3e50;
+    margin-bottom: 1.5rem;
+  }
+  
+  .payment-button {
+    background-color: #27ae60;
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .payment-button:hover {
+    background-color: #219653;
+  }
+  
+  .payment-button:disabled {
+    background-color: #95a5a6;
+    cursor: not-allowed;
+  }
+  
+  .payment-error {
+    color: #e74c3c;
+    margin-top: 1rem;
+  }
+  
+  .auth-prompt {
+    text-align: center;
+    /*padding: 1.5rem;*/
+    background-color: #f8f9fa;
+    border-radius: 4px;
+    margin-bottom: 1.5rem;
+  }
+  
+  .login-button {
+    color: #3498db;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  
+  /* Responsive styles */
+  @media (max-width: 768px) {
+    .payment-methods {
+      flex-direction: column;
+    }
+    
+    .credit-card-form {
+      grid-template-columns: 1fr;
+    }
+    
+    .option-row {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    
+    .option-cell.price {
+      text-align: left;
+      margin-top: 0.5rem;
+    }
+  }
