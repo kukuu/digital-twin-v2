@@ -549,7 +549,7 @@ Your cooperation will help ensure you receive the most cost-effective and effici
         <div className="ad-column">
           <div className="ad-label">
             <h3 className="ad-labelHeader2">
-              <Link to="/advertising">Advertising space!</Link>
+              <Link to="/advertising">Partner with us - advertise here!</Link>
             </h3>
             <div className="media-grid">
               <div className="media-container video">
@@ -574,12 +574,12 @@ Your cooperation will help ensure you receive the most cost-effective and effici
                 ></iframe>
               </div>
                     
-              <div className="media-container">
-                <span>Lidl</span>
+              <div className="media-container video">
+                <span>Available</span>
                 <iframe
-                  src={lidl}
-                  title="Lidl"
-                  alt="Lidl"
+                  src=""
+                  title=""
+                  alt=""
                   frameBorder="0"
                   allowFullScreen
                 ></iframe>
@@ -597,7 +597,7 @@ Your cooperation will help ensure you receive the most cost-effective and effici
               </div>
 
               <div className="media-container image">
-                <a href="https://www.lovejoint.store"><span>Love Joint</span></a> 
+                <a href="https://www.lovejoint.store"><span>6 DRIVE</span></a> 
                 <iframe
                   src={lovejoint}
                   title="Love Joint"
@@ -606,11 +606,11 @@ Your cooperation will help ensure you receive the most cost-effective and effici
                 ></iframe>
               </div>
 
-              <div className="media-container">
-                <span>Temu</span>
+              <div className="media-container video">
+                <span>Available</span>
                 <iframe
-                  src={temu}
-                  title="Temu"
+                  src=""
+                  title=""
                   frameBorder="0"
                   allowFullScreen
                 ></iframe>
