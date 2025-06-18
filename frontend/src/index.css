@@ -265,6 +265,39 @@ body {
   background-color: #0e9d80;
 }
 
+/* Switch to EDF Button */
+.switch-to-edf-button {
+  background-color: #2e7d32;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 12px 15px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 8px;
+  display: block;
+  width: 100%;
+  text-align: center;
+  font-weight: 600;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.switch-to-edf-button:hover {
+  background-color: #1b5e20;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.modal-body small {
+  display: block;
+  text-align: center;
+  margin-bottom: 15px;
+  color: #666;
+  font-size: 0.8rem;
+  font-style: italic;
+}
+
 /* Modal Styles */
 .modal-overlay {
   position: fixed;
@@ -322,7 +355,7 @@ body {
 }
 
 .detail-row h3 {
-  margin-top: 0;
+  margin-top: 10px;
   margin-bottom: 10px;
   color: #2c3e50;
 }
@@ -340,19 +373,69 @@ body {
   margin-top: 5px;
 }
 
+/* Multiple Reading Input Styles */
+.reading-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  gap: 10px;
+}
+
 .reading-input-container {
+  flex: 2;
   display: flex;
   align-items: center;
 }
 
+.date-input-container {
+  flex: 2;
+}
+
+.date-input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.add-reading-button, .remove-reading-button {
+  flex: 0 0 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 5px;
+  background-color: #f0f0f0;
+  color: #333;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.add-reading-button:hover {
+  background-color: #2e7d32;
+  color: white;
+}
+
+.remove-reading-button:hover {
+  background-color: #ff6b46;
+  color: white;
+}
+
 .reading-input {
   flex: 1;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 1rem;
   margin-right: 10px;
 }
 
 .reading-unit {
   font-size: 1rem;
   color: #666;
+  white-space: nowrap;
 }
 
 .send-reading-button, .paypal-payment-button {
@@ -393,8 +476,6 @@ body {
 .ad-container {
   display: flex;
   flex-direction: column;
-  /*gap: 30px;
-  margin-top: 40px;*/
   width: 100%;
 }
 
@@ -421,15 +502,15 @@ body {
 .ad-labelHeader {
   margin-top: 0;
   margin-bottom: 10px;
-  color: #2e7d32; /* Green color */
-  font-weight: bold; /* Added for better visibility */
+  color: #2e7d32;
+  font-weight: bold;
 }
 
 .ad-labelHeader2 {
   margin-top: 0;
   margin-bottom: 10px;
-  color: red; /* Red color */
-  font-weight: bold; /* Added for better visibility */
+  color: red;
+  font-weight: bold;
 }
 
 .ad-space {
@@ -444,7 +525,7 @@ body {
   position: relative;
   overflow: hidden;
   width: 100%;
-  padding-top: 56.25%; /* 16:9 Aspect Ratio */
+  padding-top: 56.25%;
   margin: 15px 0;
   border-radius: 8px;
   background-color: #eee;
@@ -491,7 +572,7 @@ body {
 .media-container {
   position: relative;
   width: 100%;
-  padding-top: 75%; /* 4:3 Aspect Ratio */
+  padding-top: 75%;
   margin: 0;
   border-radius: 8px;
   overflow: hidden;
@@ -541,6 +622,116 @@ body {
   color: #666;
 }
 
+/* Target Link Styles */
+.target-link {
+  margin-top: 10px;
+  padding: 8px 0;
+}
+
+.target-link a {
+  color: #2e7d32;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s ease;
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 4px;
+  background-color: rgba(46, 125, 50, 0.1);
+}
+
+.target-link a:hover {
+  color: #1b5e20;
+  background-color: rgba(46, 125, 50, 0.2);
+  text-decoration: underline;
+}
+
+.changeReading {
+  color: red;
+  font-weight: 600;
+}
+
+.ad-labelHeader2 a {
+  color: red;
+  text-decoration: none;
+}
+
+/* Results Container */
+.results-container {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.cost-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 15px;
+}
+
+.cost-table th, .cost-table td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.cost-table th {
+  background-color: #2e7d32;
+  color: white;
+}
+
+.close-results-button {
+  background-color: #ff6b46;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 8px 15px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.close-results-button:hover {
+  background-color: #e05535;
+}
+
+.subscribe-newsletter {
+  color: #2e7d32;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.subscribe-newsletter:hover {
+  text-decoration: underline;
+}
+
+/* Meter Graph Styles */
+.meter-graph {
+  height: 200px;
+  width: 100%;
+  margin-top: 15px;
+}
+
+.updateReader {
+  color: #2e7d32;
+  font-weight: 600;
+}
+
+/* Login Button Styles */
+.login-button {
+  background-color: #2e7d32;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 4px;
+  text-decoration: none;
+  transition: background-color 0.3s;
+}
+
+.login-button:hover {
+  background-color: #1b5e20;
+}
+
 /* Mobile-specific adjustments */
 @media (max-width: 600px) {
   .navbar {
@@ -564,14 +755,20 @@ body {
     margin-bottom: 10px;
   }
   
-  .reading-input-container {
+  .reading-row {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: stretch;
   }
   
-  .reading-input {
-    margin-right: 0;
-    margin-bottom: 10px;
+  .reading-input-container,
+  .date-input-container {
+    width: 100%;
+  }
+  
+  .add-reading-button, 
+  .remove-reading-button {
+    width: 100%;
+    margin-top: 5px;
   }
 }
 
@@ -609,37 +806,4 @@ body {
   .app-description, .auth-prompt {
     padding: 0 10px;
   }
-}
-
-/* Add this to your existing CSS */
-.target-link {
-  margin-top: 10px;
-  padding: 8px 0;
-}
-
-.target-link a {
-  color: #2e7d32; /* Green color to match your theme */
-  text-decoration: none;
-  font-weight: 600;
-  transition: color 0.3s ease;
-  display: inline-block;
-  padding: 5px 10px;
-  border-radius: 4px;
-  background-color: rgba(46, 125, 50, 0.1);
-}
-
-.target-link a:hover {
-  color: #1b5e20; /* Darker green on hover */
-  background-color: rgba(46, 125, 50, 0.2);
-  text-decoration: underline;
-}
-
-.changeReading {
-  color: red;
-  font-weight: 600;
-}
-
-.ad-labelHeader2 a {
-  color: red;
-  text-decoration: none;
 }
