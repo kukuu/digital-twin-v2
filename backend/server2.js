@@ -12,7 +12,7 @@ const server = http.createServer(app);
 app.use(cors());
 const ORIGIN =
   process.env.NODE_ENV === "production"
-    ? "https://www.energytariffscheck.com"
+    ? process.env.FRONTEND_URL
     : "http://localhost:3000";
 
 const io = new Server(server, {
