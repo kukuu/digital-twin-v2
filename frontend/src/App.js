@@ -24,7 +24,6 @@ import "./App.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useForm } from "react-hook-form";
-//import { FaPlus, FaTrash } from 'react-icons/fa';
 
 // Register Chart.js components
 Chart.register(...registerables);
@@ -46,7 +45,8 @@ let meterData = {
     tariff: "Fixed",
     total: 0,
     contact: "0808 164 1088",
-    target: "https://octopus.energy/"
+    target: "https://octopus.energy/",
+    affiliateLink: "https://octopus.energy/"
   },
   "SMR-43563-2-A": {
     supplier: "EDF Energy",
@@ -54,7 +54,8 @@ let meterData = {
     tariff: "Fixed",
     total: 0,
     contact: "0333 200 5100",
-    target: "https://www.edfenergy.com/"
+    target: "https://www.edfenergy.com/",
+    affiliateLink: "https://www.edfenergy.com/?affiliate=SPYDER"
   },
   "SMR-65228-1-B": {
     supplier: "E.ON Next",
@@ -62,7 +63,8 @@ let meterData = {
     tariff: "Standard",
     total: 0,
     contact: "0808 501 5200",
-    target: "https://www.eonnext.com/"
+    target: "https://www.eonnext.com/",
+    affiliateLink: "https://www.eonnext.com/"
   }
 };
 
@@ -83,7 +85,7 @@ const Modal = memo(
     const calculateTotal = () => {
       return readings.reduce((sum, reading) => {
         const value = parseFloat(reading.value) || 0;
-        return sum + (value * meterInfo.cost) / 100;
+        return sum + (value * (meterInfo.cost / 100));
       }, 0).toFixed(2);
     };
 
@@ -100,10 +102,10 @@ const Modal = memo(
           </div>
           <div className="modal-body">
             <button 
-              className="switch-to-edf-button"
-              onClick={() => window.open("https://www.edfenergy.com/?affiliate=SPYDER", "_blank")}
+              className="switch-supplier-button"
+              onClick={() => window.open(meterInfo.affiliateLink, "_blank")}
             >
-              Switch to EDF
+              Switch to {meterInfo.supplier}
             </button>
             <small>We earn a commission if you switch</small>
 
@@ -148,7 +150,7 @@ const Modal = memo(
                       className="add-reading-button"
                       onClick={onAddReading}
                     >
-                      {/*<FaPlus />*/} + 
+                      +
                     </button>
                   ) : (
                     <button 
@@ -156,7 +158,7 @@ const Modal = memo(
                       className="remove-reading-button"
                       onClick={() => onRemoveReading(index)}
                     >
-                      {/*<FaTrash />*/} -
+                      -
                     </button>
                   )}
                 </div>
@@ -212,10 +214,13 @@ export default function EnergyMeter() {
 
   const updateReading = useCallback(({ meter_id, reading, timestamp }) => {
     setReadings((prevReadings) => {
+      const currentReading = parseFloat(reading) || 0;
+      const totalCost = (currentReading * (meterData[meter_id].cost / 100)).toFixed(2);
+      
       const newReading = {
         ...meterData[meter_id],
         reading: reading.toFixed(2),
-        total: ((reading * meterData[meter_id].cost) / 100).toFixed(2),
+        total: totalCost,
       };
       
       setHistoricalData(prev => ({
@@ -243,10 +248,19 @@ export default function EnergyMeter() {
     e.preventDefault();
     const reading = parseFloat(userReading);
     if (!isNaN(reading)) {
-      const results = Object.entries(meterData).map(([id, data]) => ({
-        supplier: data.supplier,
-        cost: ((reading * data.cost) / 100).toFixed(2)
-      }));
+      const results = Object.entries(meterData).map(([id, data]) => {
+        const calculatedCost = (reading * (data.cost / 100)).toFixed(2);
+        return {
+          id,
+          supplier: data.supplier,
+          cost: calculatedCost,
+          tariff: data.tariff,
+          contact: data.contact,
+          target: data.target,
+          affiliateLink: data.affiliateLink,
+          total: calculatedCost
+        };
+      });
       setCalculatedResults(results);
     }
   };
@@ -316,7 +330,7 @@ export default function EnergyMeter() {
               cost: modalData.cost,
               total: meterReadings.reduce((sum, reading) => {
                 const value = parseFloat(reading.value) || 0;
-                return sum + (value * modalData.cost) / 100;
+                return sum + (value * (modalData.cost / 100));
               }, 0).toFixed(2),
               accountNumber: modalData.accountNumber,
             },
@@ -326,7 +340,7 @@ export default function EnergyMeter() {
         const data = await response.json();
 
         if (data.success) {
-          toast.success("Meter reading details sent to your email!");
+          toast.success("Meter reading details sent!");
           setShowModal(false);
           setMeterReadings([{ value: "", date: new Date().toISOString().split('T')[0] }]);
           startReading();
@@ -345,7 +359,7 @@ export default function EnergyMeter() {
   const handlePay = useCallback(() => {
     const total = meterReadings.reduce((sum, reading) => {
       const value = parseFloat(reading.value) || 0;
-      return sum + (value * modalData.cost) / 100;
+      return sum + (value * (modalData.cost / 100));
     }, 0).toFixed(2);
     console.log("Paying £" + total);
   }, [modalData, meterReadings]);
@@ -371,11 +385,32 @@ export default function EnergyMeter() {
       cost: data.cost,
       total: data.total,
       accountNumber: "",
+      affiliateLink: data.affiliateLink
     };
     setModalData(meterSnapshot);
     setMeterReadings([{ value: data.reading || "", date: new Date().toISOString().split('T')[0] }]);
     setShowModal(true);
   }, []);
+
+  const handleResultClick = (result) => {
+    stopReading();
+    const currentReading = parseFloat(userReading) || 0;
+    const totalCost = (currentReading * (result.cost / 100)).toFixed(2);
+    
+    const meterSnapshot = {
+      id: result.id,
+      reading: userReading || "0",
+      supplier: result.supplier,
+      tariff: result.tariff,
+      cost: result.cost,
+      total: totalCost,
+      accountNumber: "",
+      affiliateLink: result.affiliateLink
+    };
+    setModalData(meterSnapshot);
+    setMeterReadings([{ value: userReading || "", date: new Date().toISOString().split('T')[0] }]);
+    setShowModal(true);
+  };
 
   const renderModal = () => {
     if (!modalData || !showModal) return null;
@@ -408,6 +443,9 @@ export default function EnergyMeter() {
         fill: false
       }]
     };
+
+    const currentReading = parseFloat(data.reading) || 0;
+    const totalCost = (currentReading * (data.cost / 100)).toFixed(2);
 
     return (
       <div className="meter-row">
@@ -444,7 +482,7 @@ export default function EnergyMeter() {
             </div>
             <div className="other-display">
               <span className="unit2">Total Cost:</span>
-              <span>£{data.total}</span>
+              <span>£{totalCost}</span>
             </div>
             <div>Contact: {data.contact}</div>
             {data.target && (
@@ -499,8 +537,9 @@ export default function EnergyMeter() {
       <nav className="navbar">
         <div className="navbar-brand">
           <h2 style={{ fontWeight: "bold", color: "green" }}><a href="/">SPYDER</a></h2>
-          <Link to="/newsletter" className="crumbtrail"><small>Newsletter</small></Link> | 
-          <Link to="/advertising" className="crumbtrail"> <small>Advertising</small></Link>
+          <Link to="/newsletter" className="crumbtrail"><small>Newsletter | </small></Link> 
+          <Link to="/advertising" className="crumbtrail"> <small>Advertising | </small></Link>
+          <Link to="/pricing" className="crumbtrail"> <small>Pricing</small></Link>
         </div>
         <div className="navbar-auth">
           <SignedOut>
@@ -559,9 +598,9 @@ export default function EnergyMeter() {
                   </thead>
                   <tbody>
                     {calculatedResults.map((result, index) => (
-                      <tr key={index}>
-                        <td>{result.supplier}</td>
-                        <td>{result.cost}</td>
+                      <tr key={index} onClick={() => handleResultClick(result)} className="result-row">
+                        <td><span className="switch-tariff-supplier">{result.supplier} <strong>(SWITCH!)</strong></span></td>
+                        <td>£{result.cost}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -572,7 +611,7 @@ export default function EnergyMeter() {
                 >
                   Close Results
                 </button>
-                <p>To better serve your energy needs, we kindly request that you <a href='#' className="subscribe-newsletter"><strong>Subscribe to our NEWSLETTER </strong></a> and share your past electricity meter readings with us. This data will enable us to make informed decisions through careful monitoring and analysis. Based on our assessment, we can then recommend a more competitive energy provider with a tariff better suited to your consumption patterns.
+                <p>To better serve your energy needs, we kindly request that you <br /><a href='/newsletter' className="subscribe-newsletter"><strong>Subscribe to our NEWSLETTER </strong></a> <br />and share your past electricity meter readings with us. This data will enable us to make informed decisions through careful monitoring and analysis. Based on our assessment, we can then recommend a more competitive energy provider with a tariff better suited to your consumption patterns.
 
 Your cooperation will help ensure you receive the most cost-effective and efficient energy solution available.</p>
 
@@ -600,7 +639,7 @@ Your cooperation will help ensure you receive the most cost-effective and effici
       <div className="ad-container">
         <div className="ad-column">
           <div className="ad-label">
-            <h3 className="ad-labelHeader">Race to zero emission future!</h3>
+            <h3 className="ad-labelHeader">Race to zero emission future! - <span className="tariff-section">Featured Sponsor Ad Spot</span> </h3>
             <div className="responsive-iframe-container">
               <iframe
                 src="https://www.youtube.com/embed/O7ACNMj8NW0"
@@ -616,6 +655,63 @@ Your cooperation will help ensure you receive the most cost-effective and effici
               <img src={paperWhisky} alt="Whisky in Paper bottle" className="ad-image" />
               <img src={woodenbike} alt="Wooden Bike" className="ad-image" />
               <img src={heatpump} alt="Heat pump" className="ad-image" />
+
+              <div className="media-container video">
+                <span>Available</span>
+                <iframe
+                  src=""
+                  title="Dummy Video"
+                  alt="Dummy Video"
+                  frameBorder="0"
+                  allowFullScreen
+                ></iframe>
+              </div>
+
+              <div className="media-container video">
+                <span>Available</span>
+                <iframe
+                  src=""
+                  title="Dummy Video"
+                  alt="Dummy Video"
+                  frameBorder="0"
+                  allowFullScreen
+                ></iframe>
+              </div>
+
+              <div className="media-container video">
+                <span>Available</span>
+                <iframe
+                  src=""
+                  title="Dummy Video"
+                  alt="Dummy Video"
+                  frameBorder="0"
+                  allowFullScreen
+                ></iframe>
+              </div>
+
+              <div className="media-container video">
+                <span>Available</span>
+                <iframe
+                  src=""
+                  title="Dummy Video"
+                  alt="Dummy Video"
+                  frameBorder="0"
+                  allowFullScreen
+                ></iframe>
+              </div>
+
+              <div className="media-container video">
+                <span>Available</span>
+                <iframe
+                  src=""
+                  title="Dummy Video"
+                  alt="Dummy Video"
+                  frameBorder="0"
+                  allowFullScreen
+                ></iframe>
+              </div>
+
+
             </div>
           </div>
         </div>
@@ -623,7 +719,7 @@ Your cooperation will help ensure you receive the most cost-effective and effici
         <div className="ad-column">
           <div className="ad-label">
             <h3 className="ad-labelHeader2">
-              <Link to="/advertising">Partner with us - advertise here!</Link>
+              <Link to="/advertising">Partner with us! - <span className="tariff-section">Premium Ad Placement</span> </Link>
             </h3>
             <div className="media-grid">
               <div className="media-container video">
@@ -648,7 +744,7 @@ Your cooperation will help ensure you receive the most cost-effective and effici
                 ></iframe>
               </div>
                     
-              <div className="media-container video">
+             {/* <div className="media-container video">
                 <span>Available</span>
                 <iframe
                   src=""
@@ -721,7 +817,7 @@ Your cooperation will help ensure you receive the most cost-effective and effici
                   frameBorder="0"
                   allowFullScreen
                 ></iframe>
-              </div>
+              </div>*/}
             </div>
           </div>
         </div>
