@@ -4,6 +4,8 @@ import "./index.css";
 import App from "./App";
 import AdvertisingPage from "./advertising/AdvertisingPage"; // Add this import
 import NewsletterPage from "./newsletter/NewsletterPage"; // Add this import
+import PricingPage from "./pricing/PricingPage"; // Add this import
+
 import { ClerkProvider } from "@clerk/clerk-react";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter, Routes, Route } from 'react-router-dom'; // Add Routes and Route
@@ -23,6 +25,7 @@ root.render(
           <Route path="/" element={<App />} />
           <Route path="/advertising" element={<AdvertisingPage />} />
           <Route path="/newsletter" element={<NewsletterPage />} />
+          <Route path="/pricing" element={<PricingPage />} />
         </Routes>
       </ClerkProvider>
     </BrowserRouter>
