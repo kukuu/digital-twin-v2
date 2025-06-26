@@ -233,7 +233,7 @@ body {
   display: flex;
   justify-content: center;
   width: 100%;
-  margin-top: 25px;
+  /*margin-top: 25px;*/
 }
 
 .stop-button, .start-button {
@@ -245,6 +245,7 @@ body {
   transition: all 0.3s ease;
   font-weight: 600;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  margin-top: 20px;
 }
 
 .stop-button {
@@ -509,7 +510,7 @@ body {
 .ad-labelHeader2 {
   margin-top: 0;
   margin-bottom: 10px;
-  color: red;
+  color:#2e7d32;
   font-weight: bold;
 }
 
@@ -564,7 +565,8 @@ body {
 /* Media Grid for Google Ads */
 .media-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  grid-template-columns: repeat(auto-fit);
+  /*grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));*/
   gap: 15px;
   margin-top: 15px;
 }
@@ -651,7 +653,7 @@ body {
 }
 
 .ad-labelHeader2 a {
-  color: red;
+  color:#2e7d32;
   text-decoration: none;
 }
 
@@ -811,5 +813,14 @@ body {
 .crumbtrail {
   color: blue;
   text-decoration: none;
-  font-weight: 500;
+  font-weight: 800;
+}
+
+.switch-tariff-supplier {
+  text-decoration: none;
+  color: #0e9d80;
+}
+
+switch-tariff-label{
+  color: #ffcc33;
 }
