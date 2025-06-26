@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/clerk-react";
@@ -16,6 +16,8 @@ export default function PricingPage() {
   const [paymentError, setPaymentError] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
   const [activeAdExample, setActiveAdExample] = useState(null);
+  const [paypalLoaded, setPaypalLoaded] = useState(false);
+  const [paypalError, setPaypalError] = useState(false);
 
   // Form handling
   const {
@@ -28,18 +30,18 @@ export default function PricingPage() {
 
   // Constants for ad options
   const imageAdOptions = [
-    { id: "image-1month", duration: "1 ", price: 30, discount: "" },
-    { id: "image-3months", duration: "3 ", price: 85, discount: "5% off" },
-    { id: "image-6months", duration: "6 ", price: 160, discount: "10% off" },
-    { id: "image-9months", duration: "9", price: 240, discount: "15% off" },
-    { id: "image-12months", duration: "12", price: 330, discount: "20% off" },
-    { id: "image-18months", duration: "18", price: 415, discount: "25% off" }
+    { id: "image-1month", duration: "1 month", price: 30, discount: "" },
+    { id: "image-3months", duration: "3 months", price: 85, discount: "5% off" },
+    { id: "image-6months", duration: "6 months", price: 160, discount: "10% off" },
+    { id: "image-9months", duration: "9 months", price: 240, discount: "15% off" },
+    { id: "image-12months", duration: "12 months", price: 330, discount: "20% off" },
+    { id: "image-18months", duration: "18 months", price: 415, discount: "25% off" }
   ];
 
   const videoAdOptions = [
-    { id: "video-6months", duration: "6", price: 180, discount: "10% off" },
-    { id: "video-9months", duration: "9", price: 260, discount: "15% off" },
-    { id: "video-12months", duration: "12", price: 350, discount: "20% off" }
+    { id: "video-6months", duration: "6 months", price: 180, discount: "10% off" },
+    { id: "video-9months", duration: "9 months", price: 260, discount: "15% off" },
+    { id: "video-12months", duration: "12 months", price: 350, discount: "20% off" }
   ];
 
   const adExamples = [
@@ -53,7 +55,7 @@ export default function PricingPage() {
     },
     {
       id: "sidebar-ad",
-      title: "Sidebar Placement  - Advertising",
+      title: "Sidebar Placement - Advertising",
       description: "Persistent visibility on all pages. Great for targeted promotions.",
       dimensions: "300x600px",
       impressions: "30,000+ monthly",
@@ -77,18 +79,38 @@ export default function PricingPage() {
     }
   ];
 
+  // Load PayPal script
+  useEffect(() => {
+    const loadPayPalScript = () => {
+      if (typeof window !== 'undefined' && window.paypal) {
+        setPaypalLoaded(true);
+        return;
+      }
+      
+      const timer = setTimeout(() => {
+        if (window.paypal) {
+          setPaypalLoaded(true);
+        }
+      }, 1000);
+
+      return () => clearTimeout(timer);
+    };
+
+    loadPayPalScript();
+  }, []);
+
   // Form submission handler
   const onSubmit = async (data) => {
     setIsProcessing(true);
     try {
       console.log("Form submitted:", data);
-      // Simulate payment processing
       await new Promise(resolve => setTimeout(resolve, 1500));
-      alert(`Payment successful! Total: $${calculateTotal()}`);
+      toast.success(`Payment successful! Total: $${calculateTotal()}`);
       resetForm();
     } catch (error) {
       setPaymentError("Payment processing failed. Please try again.");
       console.error("Payment error:", error);
+      toast.error("Payment failed. Please try again.");
     } finally {
       setIsProcessing(false);
     }
@@ -96,6 +118,11 @@ export default function PricingPage() {
 
   // PayPal integration
   const createOrder = (data, actions) => {
+    if (!selectedImageAd && !selectedVideoAd) {
+      setPaymentError("Please select at least one ad option");
+      return actions.reject();
+    }
+    
     return actions.order.create({
       purchase_units: [
         {
@@ -111,15 +138,30 @@ export default function PricingPage() {
           },
           items: getSelectedItems()
         }
-      ]
+      ],
+      application_context: {
+        shipping_preference: "NO_SHIPPING"
+      }
     });
   };
 
   const onApprove = (data, actions) => {
     return actions.order.capture().then((details) => {
-      alert(`Transaction completed by ${details.payer.name.given_name}`);
+      toast.success(`Transaction completed by ${details.payer.name.given_name}`);
       resetForm();
     });
+  };
+
+  const onError = (err) => {
+    console.error("PayPal error:", err);
+    setPaymentError("Payment failed. Please try another method.");
+    toast.error("Payment failed. Please try another method.");
+  };
+
+  const onCancel = (data) => {
+    console.log("Payment cancelled:", data);
+    setPaymentError("Payment was cancelled");
+    toast.warning("Payment was cancelled");
   };
 
   // Helper functions
@@ -172,10 +214,9 @@ export default function PricingPage() {
     setActiveAdExample(adId === activeAdExample ? null : adId);
   };
 
-  // Render function
   return (
     <div className="app-container">
-      {/* Navigation */}
+      <ToastContainer position="top-right" autoClose={3000} />
       <nav className="navbar">
         <div className="navbar-brand">
           <h2 style={{ fontWeight: "bold", color: "green" }}><a href="/">SPYDER</a></h2>
@@ -193,27 +234,24 @@ export default function PricingPage() {
         </div>
       </nav>
 
-      {/* Page Header */}
       <div className="advertising-header">
-        <h1>Pricing Model</h1>
-        <p className="header-description">
+        <h1>Advertising Pricing Plans</h1>
+        <p>
           Promote your business on our platform to reach thousands of energy-conscious consumers.
           The <strong>SPYDER</strong> Digital Twin Smart Energy Meter Reader helps users find the
           best electricity meters at competitive prices.
         </p>
       </div>
 
-      {/* Two-Column Layout */}
       <div className="advertising-columns">
-        {/* Left Column - Tariffs and Payment Form (30%) */}
-        <div className="tariffs-column">
+        <div className="form-section">
           <form onSubmit={handleSubmit(onSubmit)} className="advertising-form">
-          <h2><i className="icon-image"></i> Image Ads</h2>
-             <p className="section-description">Static image advertisements displayed throughout our platform.
-                Perfect for product promotions and brand awareness. Prices are listed in months.
+            <div className="form-group">
+              <h2><i className="icon-image"></i> Image Ads</h2>
+              <p className="section-description">
+                Static image advertisements displayed throughout our platform.
+                Perfect for product promotions and brand awareness.
               </p>
-            {/* Image Ads Section */}
-            <div className="form-section">
               <div className="options-grid">
                 {imageAdOptions.map((option) => (
                   <div 
@@ -239,16 +277,12 @@ export default function PricingPage() {
               </div>
             </div>
 
-            {/* Video Ads Section */}
-
-            <h2 className="video-ads"><i className="icon-video"></i> Video Ads</h2>
+            <div className="form-group">
+              <h2 className="video-ads"><i className="icon-video"></i> Video Ads</h2>
               <p className="section-description">
                 Dynamic video content in premium placements. Higher engagement
-                and conversion rates. Prices are listed in months.
+                and conversion rates.
               </p>
-            <div className="form-section">
-             
-
               <div className="options-grid">
                 {videoAdOptions.map((option) => (
                   <div 
@@ -274,9 +308,8 @@ export default function PricingPage() {
               </div>
             </div>
 
-            {/* Payment Section */}
             <div className="payment-section">
-              <h2><i className="icon-payment"></i> Payment Details</h2>
+              <h2><i className="icon-payment"></i> Payment</h2>
               
               <SignedOut>
                 <div className="auth-prompt">
@@ -285,9 +318,8 @@ export default function PricingPage() {
               </SignedOut>
 
               <SignedIn>
-                {/* Order Summary */}
                 <div className="order-summary">
-                  <h3>Your Order</h3>
+                  <h3>Order Summary</h3>
                   <div className="order-items">
                     {selectedImageAd && (
                       <div className="order-item">
@@ -308,112 +340,127 @@ export default function PricingPage() {
                   </div>
                 </div>
 
-                {/* Payment Methods */}
-                <div className="payment-methods">
-                  <div className="credit-card-form">
-                    <h4>Credit/Debit Card</h4>
-                    <div className="form-group">
-                      <label htmlFor="cardNumber">Card Number</label>
-                      <input
-                        type="text"
-                        id="cardNumber"
-                        {...register("cardNumber", { 
-                          required: "Card number is required",
-                          pattern: {
-                            value: /^[0-9]{16}$/,
-                            message: "Invalid card number"
-                          }
-                        })}
-                        placeholder="1234 5678 9012 3456"
-                      />
-                      {errors.cardNumber && <span className="error">{errors.cardNumber.message}</span>}
-                    </div>
-
-                    <div className="form-row">
-                      <div className="form-group">
-                        <label htmlFor="expiry">Expiry Date</label>
-                        <input
-                          type="text"
-                          id="expiry"
-                          {...register("expiry", { 
-                            required: "Expiry date is required",
-                            pattern: {
-                              value: /^(0[1-9]|1[0-2])\/?([0-9]{2})$/,
-                              message: "MM/YY format required"
-                            }
-                          })}
-                          placeholder="MM/YY"
-                        />
-                        {errors.expiry && <span className="error">{errors.expiry.message}</span>}
+                <div className="paypal-container">
+                  <h4>Pay with PayPal</h4>
+                  <p className="paypal-description">Safe and secure payments</p>
+                  
+                  <PayPalScriptProvider 
+                    options={{ 
+                      "client-id": process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || "test",
+                      "currency": "USD",
+                      "intent": "capture",
+                      "components": "buttons",
+                      "disable-funding": "credit,card"
+                    }}
+                    onError={() => setPaypalError(true)}
+                    onLoad={() => setPaypalLoaded(true)}
+                  >
+                    {paypalError ? (
+                      <div className="paypal-error">
+                        Failed to load PayPal. Please refresh the page or try another payment method.
                       </div>
-
-                      <div className="form-group">
-                        <label htmlFor="cvc">CVC</label>
-                        <input
-                          type="text"
-                          id="cvc"
-                          {...register("cvc", { 
-                            required: "CVC is required",
-                            pattern: {
-                              value: /^[0-9]{3,4}$/,
-                              message: "Invalid CVC"
-                            }
-                          })}
-                          placeholder="123"
-                        />
-                        {errors.cvc && <span className="error">{errors.cvc.message}</span>}
-                      </div>
-                    </div>
-
-                    <div className="form-group">
-                      <label htmlFor="name">Name on Card</label>
-                      <input
-                        type="text"
-                        id="name"
-                        {...register("name", { 
-                          required: "Name is required",
-                          minLength: {
-                            value: 2,
-                            message: "Name must be at least 2 characters"
-                          }
-                        })}
-                        placeholder="John Smith"
-                      />
-                      {errors.name && <span className="error">{errors.name.message}</span>}
-                    </div>
-                  </div>
-
-                  <div className="paypal-container">
-                    <h4>PayPal</h4>
-                    <PayPalScriptProvider 
-                      options={{ 
-                        "client-id": "test",
-                        "currency": "USD",
-                        "intent": "capture"
-                      }}
-                    >
+                    ) : paypalLoaded ? (
                       <PayPalButtons
                         style={{ 
                           layout: "vertical",
                           color: "blue",
                           shape: "rect",
-                          label: "paypal"
+                          label: "paypal",
+                          height: 48,
+                          tagline: false
                         }}
                         createOrder={createOrder}
                         onApprove={onApprove}
-                        onError={(err) => {
-                          setPaymentError("PayPal payment failed: " + err.message);
-                          console.error("PayPal error:", err);
-                        }}
-                        onCancel={() => {
-                          setPaymentError("PayPal payment was cancelled");
-                        }}
+                        onError={onError}
+                        onCancel={onCancel}
+                        disabled={!selectedImageAd && !selectedVideoAd}
+                        forceReRender={[selectedImageAd, selectedVideoAd]}
                       />
-                    </PayPalScriptProvider>
+                    ) : (
+                      <div className="paypal-loading">
+                        Loading PayPal...
+                      </div>
+                    )}
+                  </PayPalScriptProvider>
+                  
+                  <div className="payment-divider">
+                    <span>OR</span>
                   </div>
                 </div>
 
-                {/* Submit Section */}
+                <div className="credit-card-section">
+                  <h4>Pay with Credit/Debit Card</h4>
+                  <div className="form-control">
+                    <label htmlFor="cardNumber">Card Number</label>
+                    <input
+                      type="text"
+                      id="cardNumber"
+                      {...register("cardNumber", { 
+                        required: "Card number is required",
+                        pattern: {
+                          value: /^[0-9]{16}$/,
+                          message: "Invalid card number"
+                        }
+                      })}
+                      placeholder="1234 5678 9012 3456"
+                    />
+                    {errors.cardNumber && <span className="error">{errors.cardNumber.message}</span>}
+                  </div>
+
+                  <div className="form-row">
+                    <div className="form-control">
+                      <label htmlFor="expiry">Expiry Date</label>
+                      <input
+                        type="text"
+                        id="expiry"
+                        {...register("expiry", { 
+                          required: "Expiry date is required",
+                          pattern: {
+                            value: /^(0[1-9]|1[0-2])\/?([0-9]{2})$/,
+                            message: "MM/YY format required"
+                          }
+                        })}
+                        placeholder="MM/YY"
+                      />
+                      {errors.expiry && <span className="error">{errors.expiry.message}</span>}
+                    </div>
+
+                    <div className="form-control">
+                      <label htmlFor="cvc">CVC</label>
+                      <input
+                        type="text"
+                        id="cvc"
+                        {...register("cvc", { 
+                          required: "CVC is required",
+                          pattern: {
+                            value: /^[0-9]{3,4}$/,
+                            message: "Invalid CVC"
+                          }
+                        })}
+                        placeholder="123"
+                      />
+                      {errors.cvc && <span className="error">{errors.cvc.message}</span>}
+                    </div>
+                  </div>
+
+                  <div className="form-control">
+                    <label htmlFor="name">Name on Card</label>
+                    <input
+                      type="text"
+                      id="name"
+                      {...register("name", { 
+                        required: "Name is required",
+                        minLength: {
+                          value: 2,
+                          message: "Name must be at least 2 characters"
+                        }
+                      })}
+                      placeholder="John Smith"
+                    />
+                    {errors.name && <span className="error">{errors.name.message}</span>}
+                  </div>
+                </div>
+
                 <div className="submit-section">
                   <button
                     type="submit"
@@ -439,7 +486,6 @@ export default function PricingPage() {
           </form>
         </div>
 
-        {/* Right Column - Advertising Examples (70%) */}
         <div className="ads-column">
           <h2 className="examples-title">Advertising Placement Examples</h2>
           <p className="examples-description">
@@ -488,7 +534,6 @@ export default function PricingPage() {
             ))}
           </div>
 
-          {/* Additional Advertising Info */}
           <div className="advertising-info">
             <h3>Why Advertise With Us?</h3>
             <div className="info-cards">
