@@ -220,9 +220,6 @@ export default function PricingPage() {
       <nav className="navbar">
         <div className="navbar-brand">
           <h2 style={{ fontWeight: "bold", color: "green" }}><a href="/">SPYDER</a></h2>
-          <Link to="/newsletter" className="crumbtrail"><small>Newsletter | </small></Link> 
-          <Link to="/advertising" className="crumbtrail"> <small>Advertising | </small></Link>
-          <Link to="/pricing" className="crumbtrail"> <small>Pricing</small></Link>
         </div>
         <div className="navbar-auth">
           <SignedOut>
@@ -231,6 +228,11 @@ export default function PricingPage() {
           <SignedIn>
             <UserButton afterSignOutUrl="/" />
           </SignedIn>
+        </div>
+         <div>
+            <Link to="/newsletter" className="crumbtrail"><small>Newsletter | </small></Link> 
+            <Link to="/advertising" className="crumbtrail"> <small>Advertising | </small></Link>
+            <Link to="/pricing" className="crumbtrail"> <small>Pricing</small></Link>
         </div>
       </nav>
 
