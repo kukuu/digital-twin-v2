@@ -230,7 +230,7 @@ export default function PricingPage() {
           </SignedIn>
         </div>
          <div>
-            <Link to="/newsletter" className="crumbtrail"><small>Newsletter | </small></Link> 
+           {/*<Link to="/newsletter" className="crumbtrail"><small>Newsletter | </small></Link> */}
             <Link to="/advertising" className="crumbtrail"> <small>Advertising | </small></Link>
             <Link to="/pricing" className="crumbtrail"> <small>Pricing</small></Link>
         </div>
