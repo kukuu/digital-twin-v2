@@ -614,7 +614,7 @@ export default function EnergyMeter() {
                 >
                   Close Results
                 </button>
-                <p>To better serve your energy needs, we kindly request that you <br /><a href='/newsletter' className="subscribe-newsletter"><strong>Subscribe to our NEWSLETTER </strong></a> <br />and share your past electricity meter readings with us. This data will enable us to make informed decisions through careful monitoring and analysis. Based on our assessment, we can then recommend a more competitive energy provider with a tariff better suited to your consumption patterns.
+                <p>To better serve your energy needs, we kindly request that you <br /><a href='/newsletter' className="subscribe-newsletter"><strong>Subscribe to our NEWSLETTER </strong></a> - $1.99 per month, <br />and share your past electricity meter readings with us. This data will enable us to make informed decisions through careful monitoring and analysis. Based on our assessment, we can then recommend a more competitive energy provider with a tariff better suited to your consumption patterns.
 
 Your cooperation will help ensure you receive the most cost-effective and efficient energy solution available.</p>
 
