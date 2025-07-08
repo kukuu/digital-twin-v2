@@ -41,7 +41,7 @@ html, body {
 
 .navbar-brand h2 {
   margin: 0;
-  /*font-size: 1.5rem;*/
+  font-size: 3rem;
 }
 
 .crumbtrail {
@@ -272,6 +272,97 @@ html, body {
   border-top: 1px solid #e0e0e0;
   font-weight: bold;
   font-size: 1.05rem;
+}
+
+/* ============ CREDIT CARD SECTION ============ */
+.credit-card-section {
+  background: white;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  border: 1px solid #e0e0e0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.credit-card-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.credit-card-header h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #2c3e50;
+  flex-grow: 1;
+}
+
+.credit-card-icons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.credit-card-icon {
+  width: 40px;
+  height: 25px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+}
+
+.credit-card-icon.active {
+  opacity: 1;
+}
+
+.credit-card-form {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 480px) {
+  .credit-card-form {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .credit-card-number {
+    grid-column: span 2;
+  }
+}
+
+.form-row {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-row label {
+  font-size: 0.9rem;
+  color: #7f8c8d;
+  margin-bottom: 0.75rem;
+  font-weight: 500;
+  padding-left: 0.25rem;
+}
+
+.form-row input {
+  padding: 1rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.2s;
+}
+
+.form-row input:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+.form-row-half {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
 }
 
 /* ============ PAYPAL CONTAINER ============ */
@@ -692,13 +783,22 @@ html, body {
   .info-cards {
     grid-template-columns: 1fr;
   }
+  
+  .credit-card-form {
+    grid-template-columns: 1fr;
+  }
+  
+  .credit-card-number {
+    grid-column: span 1;
+  }
 }
 
 /* ============ PRINT STYLES ============ */
 @media print {
   .navbar,
   .payment-button,
-  .paypal-container {
+  .paypal-container,
+  .credit-card-section {
     display: none;
   }
   
