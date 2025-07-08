@@ -393,7 +393,7 @@ export default function PricingPage() {
                 <div className="credit-card-section">
                   <h4>Pay with Credit/Debit Card</h4>
                   <div className="form-control">
-                    <label htmlFor="cardNumber">Card Number</label>
+                    <label htmlFor="cardNumber">Card Number &nbsp;</label>
                     <input
                       type="text"
                       id="cardNumber"
@@ -411,7 +411,7 @@ export default function PricingPage() {
 
                   <div className="form-row">
                     <div className="form-control">
-                      <label htmlFor="expiry">Expiry Date</label>
+                      <label htmlFor="expiry">Expiry Date &nbsp;</label>
                       <input
                         type="text"
                         id="expiry"
@@ -428,7 +428,7 @@ export default function PricingPage() {
                     </div>
 
                     <div className="form-control">
-                      <label htmlFor="cvc">CVC</label>
+                      <label htmlFor="cvc">CVC &nbsp;</label>
                       <input
                         type="text"
                         id="cvc"
@@ -446,7 +446,7 @@ export default function PricingPage() {
                   </div>
 
                   <div className="form-control">
-                    <label htmlFor="name">Name on Card</label>
+                    <label htmlFor="name">Name on Card &nbsp;</label>
                     <input
                       type="text"
                       id="name"
