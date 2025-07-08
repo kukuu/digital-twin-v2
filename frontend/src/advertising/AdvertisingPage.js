@@ -26,155 +26,63 @@ export default function AdvertisingPage() {
     reset
   } = useForm();
 
-  // Constants for ad options
-  const imageAdOptions = [
-    { id: "image-1month", duration: "1 month", price: 30, discount: "" },
-    { id: "image-3months", duration: "3 months", price: 85, discount: "5% off" },
-    { id: "image-6months", duration: "6 months", price: 160, discount: "10% off" },
-    { id: "image-9months", duration: "9 months", price: 240, discount: "15% off" },
-    { id: "image-12months", duration: "12 months", price: 330, discount: "20% off" }
-  ];
-
-  const videoAdOptions = [
-    { id: "video-6months", duration: "6 months", price: 180, discount: "10% off" },
-    { id: "video-9months", duration: "9 months", price: 260, discount: "15% off" },
-    { id: "video-12months", duration: "12 months", price: 350, discount: "20% off" }
-  ];
-
-  const adExamples = [
+  // Ad content data
+  const leftColumnAds = [
     {
-      id: "banner-ad",
-      title: "Premium Banner Placement",
-      description: "Top-of-page placement with maximum visibility. Perfect for brand awareness campaigns.",
-      dimensions: "1200x200px",
-      impressions: "50,000+ monthly",
-      type: "banner"
+      id: 1,
+      title: "Premium Banner",
+      type: "banner",
+      description: "Top placement with maximum visibility for brand awareness campaigns (50 chars)"
     },
     {
-      id: "sidebar-ad",
-      title: "Sidebar Advertisement",
-      description: "Persistent visibility on all pages. Great for targeted promotions.",
-      dimensions: "300x600px",
-      impressions: "30,000+ monthly",
-      type: "sidebar"
+      id: 2,
+      title: "Sidebar Ad",
+      type: "sidebar",
+      description: "Persistent visibility on all pages for targeted promotions (50 chars)"
     },
     {
-      id: "content-ad",
-      title: "In-Content Promotion",
-      description: "Native-style ads within article content. Higher engagement rates.",
-      dimensions: "Flexible",
-      impressions: "Varies by content",
-      type: "content"
+      id: 3,
+      title: "In-Content Ad",
+      type: "content",
+      description: "Native-style ads within content for higher engagement (50 chars)"
     },
     {
-      id: "featured-ad",
-      title: "Featured Sponsor Spot",
-      description: "Exclusive placement in our featured section. Limited availability.",
-      dimensions: "800x400px",
-      impressions: "25,000+ monthly",
-      type: "featured"
+      id: 4,
+      title: "Sponsored Link",
+      type: "link",
+      description: "Text-based ads with direct click-through to your site (50 chars)"
     }
   ];
 
-  // Form submission handler
-  const onSubmit = async (data) => {
-    setIsProcessing(true);
-    try {
-      console.log("Form submitted:", data);
-      // Simulate payment processing
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      alert(`Payment successful! Total: $${calculateTotal()}`);
-      resetForm();
-    } catch (error) {
-      setPaymentError("Payment processing failed. Please try again.");
-      console.error("Payment error:", error);
-    } finally {
-      setIsProcessing(false);
+  const rightColumnAds = [
+    {
+      id: 1,
+      title: "Featured Video",
+      type: "video",
+      description: "This premium placement offers maximum visibility with our featured video spot. Your content will be prominently displayed in our main content area, reaching thousands of engaged users daily. Perfect for product launches or high-impact campaigns."
+    },
+    {
+      id: 2,
+      title: "Product Showcase",
+      type: "image",
+      description: "Showcase your products with large, high-quality images. This format is perfect for e-commerce businesses looking to highlight product details and drive direct sales."
+    },
+    {
+      id: 3,
+      title: "Interactive Ad",
+      type: "interactive",
+      description: "Engage users with rich interactive content. These ads allow for user interaction directly within the ad unit, providing higher engagement and better conversion rates."
+    },
+    {
+      id: 4,
+      title: "Brand Story",
+      type: "story",
+      description: "Tell your brand story with our immersive full-width ad format. Combine images, text and video to create an engaging narrative about your company or products."
     }
-  };
+  ];
 
-  // PayPal integration
-  const createOrder = (data, actions) => {
-    return actions.order.create({
-      purchase_units: [
-        {
-          amount: {
-            value: calculateTotal().toString(),
-            currency_code: "USD",
-            breakdown: {
-              item_total: {
-                value: calculateTotal().toString(),
-                currency_code: "USD"
-              }
-            }
-          },
-          items: getSelectedItems()
-        }
-      ]
-    });
-  };
-
-  const onApprove = (data, actions) => {
-    return actions.order.capture().then((details) => {
-      alert(`Transaction completed by ${details.payer.name.given_name}`);
-      resetForm();
-    });
-  };
-
-  // Helper functions
-  const calculateTotal = () => {
-    let total = 0;
-    const imageAd = imageAdOptions.find(opt => opt.duration === selectedImageAd);
-    const videoAd = videoAdOptions.find(opt => opt.duration === selectedVideoAd);
-    
-    if (imageAd) total += imageAd.price;
-    if (videoAd) total += videoAd.price;
-    
-    return total;
-  };
-
-  const getSelectedItems = () => {
-    const items = [];
-    if (selectedImageAd) {
-      const option = imageAdOptions.find(opt => opt.duration === selectedImageAd);
-      items.push({
-        name: `Image Ad (${option.duration})`,
-        unit_amount: {
-          value: option.price.toString(),
-          currency_code: "USD"
-        },
-        quantity: "1"
-      });
-    }
-    if (selectedVideoAd) {
-      const option = videoAdOptions.find(opt => opt.duration === selectedVideoAd);
-      items.push({
-        name: `Video Ad (${option.duration})`,
-        unit_amount: {
-          value: option.price.toString(),
-          currency_code: "USD"
-        },
-        quantity: "1"
-      });
-    }
-    return items;
-  };
-
-  const resetForm = () => {
-    setSelectedImageAd("");
-    setSelectedVideoAd("");
-    setPaymentError("");
-    reset();
-  };
-
-  const handleAdExampleClick = (adId) => {
-    setActiveAdExample(adId === activeAdExample ? null : adId);
-  };
-
-  // Render function
   return (
     <div className="app-container">
-      {/* Navigation */}
       <ToastContainer position="top-right" autoClose={3000} />
       <nav className="navbar">
         <div className="navbar-brand">
@@ -188,26 +96,74 @@ export default function AdvertisingPage() {
             <UserButton afterSignOutUrl="/" />
           </SignedIn>
         </div>
-         <div>
-         {/*<Link to="/newsletter" className="crumbtrail"><small>Newsletter | </small></Link> */}
-            <Link to="/advertising" className="crumbtrail"> <small>Advertising | </small></Link>
-            <Link to="/pricing" className="crumbtrail"> <small>Pricing</small></Link>
-          </div>
+        <div>
+          <Link to="/advertising" className="crumbtrail"> <small>Advertising | </small></Link>
+          <Link to="/pricing" className="crumbtrail"> <small>Pricing</small></Link>
+        </div>
       </nav>
 
-      {/* Page Header */}
       <div className="advertising-header">
         <h1>Advertising Opportunities</h1>
       </div>
       <div className="main-content">
-          <p className="header-description">
-              Promote your business on our platform to reach thousands of energy-conscious consumers.
-              The <strong>SPYDER</strong> Digital Twin Smart Energy Meter Reader helps users find the
-              best electricity meters at competitive prices.
-            </p>
+        <p className="header-description">
+          Promote your business on our platform to reach thousands of energy-conscious consumers.
+          The <strong>SPYDER</strong> Digital Twin Smart Energy Meter Reader helps users find the
+          best electricity meters at competitive prices.
+        </p>
+        
+        <div className="AdvertisingContent">
+          {/* Left Column (20%) */}
+          <div className="left-column">
+            <div className="media-grid">
+              {leftColumnAds.map(ad => (
+                <div key={ad.id} className="media-card">
+                  <div className="media-header">
+                    <span className="media-title">{ad.title}</span>
+                  </div>
+                  <div className="media-content">
+                    <iframe
+                      src=""
+                      title={ad.title}
+                      alt={ad.title}
+                      frameBorder="0"
+                      allowFullScreen
+                    ></iframe>
+                  </div>
+                  <div className="media-footer">
+                    <p className="ad-description">{ad.description}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+          
+          {/* Right Column (80%) */}
+          <div className="right-column">
+            <div className="featured-grid">
+              {rightColumnAds.map(ad => (
+                <div key={ad.id} className="featured-card">
+                  <div className="featured-header">
+                    <span className="featured-title">{ad.title}</span>
+                  </div>
+                  <div className="featured-content">
+                    <iframe
+                      src=""
+                      title={ad.title}
+                      alt={ad.title}
+                      frameBorder="0"
+                      allowFullScreen
+                    ></iframe>
+                  </div>
+                  <div className="featured-footer">
+                    <p className="featured-description">{ad.description}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
 }
-
-
