@@ -488,7 +488,7 @@ export default function EnergyMeter() {
             {data.target && (
               <div className="target-link" onClick={(e) => e.stopPropagation()}>
                 <a href={data.target} target="_blank" rel="noopener noreferrer">
-                  Find out more!
+                  SWITCH!
                 </a>
               </div>
             )}
