@@ -722,11 +722,11 @@ Your cooperation will help ensure you receive the most cost-effective and effici
         <div className="ad-column">
           <div className="ad-label">
             <h3 className="ad-labelHeader2">
-              <Link to="/advertising">Partner with us! - <span className="tariff-section">Premium Ad Placement</span> </Link>
+              <Link to="/advertising">Partner with us!</Link>
             </h3>
             <div className="media-grid">
               <div className="media-container video">
-                <span>Available</span>
+                <span>Premium Ad Placement - Available!</span>
                 <iframe
                   src=""
                   title="Dummy Video"
