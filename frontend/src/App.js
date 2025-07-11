@@ -11,6 +11,7 @@ import hellofresh from './images/dt-1-hello-fresh-co-uk.png';
 import lovejoint from './images/dt-2-love-joint.png';
 import temu from './images/dt-4-temu.png';
 import lidl from './images/dt-5-lidl.png';
+import productShowcase from './images/product-showcase-2.png';
 import VitaminD from './images/dt-6-VD.png';
 import { Link } from 'react-router-dom';
 import {
@@ -55,7 +56,7 @@ let meterData = {
     total: 0,
     contact: "0333 200 5100",
     target: "https://www.edfenergy.com/",
-    affiliateLink: "https://www.edfenergy.com/?affiliate=SPYDER"
+    affiliateLink: "https://www.edfenergy.com/?affiliate=SPYDER",
   },
   "SMR-65228-1-B": {
     supplier: "E.ON Next",
@@ -548,7 +549,7 @@ export default function EnergyMeter() {
           </SignedIn>
         </div>
         <div>
-         {/*<Link to="/newsletter" className="crumbtrail"><small>Newsletter | </small></Link> */}
+          {/*<Link to="/newsletter" className="crumbtrail"><small>Newsletter | </small></Link> */}
           <Link to="/advertising" className="crumbtrail"> <small>Advertising | </small></Link>
           <Link to="/pricing" className="crumbtrail"> <small>Pricing</small></Link>
         </div>
@@ -614,9 +615,9 @@ export default function EnergyMeter() {
                 >
                   Close Results
                 </button>
-                <p>To better serve your energy needs, we kindly request that you <br /><a href='/newsletter' className="subscribe-newsletter"><strong>Subscribe to our NEWSLETTER </strong></a> - $1.99 per month, <br />and share your past electricity meter readings with us. This data will enable us to make informed decisions through careful monitoring and analysis. Based on our assessment, we can then recommend a more competitive energy provider with a tariff better suited to your consumption patterns.
-
-Your cooperation will help ensure you receive the most cost-effective and efficient energy solution available.</p>
+                <p>To better serve your energy needs, we kindly request that you <br /><a href='/newsletter' className="subscribe-newsletter"><strong>Subscribe to our NEWSLETTER </strong></a> - $1.99 per month, <br />and share your past electricity meter readings with us. This data will enable us to make informed decisions through careful monitoring and analysis. Based on our assessment, we can provide you with a personalised account page with interactive Visualisation Dashboard, 
+                and recommend a more competitive energy provider with a tariff better suited to your consumption patterns.
+                Your cooperation will help ensure you receive the most cost-effective and efficient energy solution available.</p>
 
               </div>
             )}
@@ -636,13 +637,15 @@ Your cooperation will help ensure you receive the most cost-effective and effici
               </button>
             )}
           </div>
+          <div className="race-to-zero">
+            <Link to="/advertising">Race to zero emission future - Partner with us!</Link>
+          </div>
         </SignedIn>
       </div>
-        
+
       <div className="ad-container">
         <div className="ad-column">
           <div className="ad-label">
-            <h3 className="ad-labelHeader">Race to zero emission future! - <span className="tariff-section">Featured Sponsor Ad Spot</span> </h3>
             <div className="responsive-iframe-container">
               <iframe
                 src="https://www.youtube.com/embed/O7ACNMj8NW0"
@@ -654,13 +657,33 @@ Your cooperation will help ensure you receive the most cost-effective and effici
                 allowFullScreen
               ></iframe>
             </div>
+            <div className="media-container video">
+                <span>Interactive Multimedia Premium Ad Placement - Available!</span>
+                <iframe
+                  src=""
+                  title="Dummy Video"
+                  alt="Dummy Video"
+                  frameBorder="0"
+                  allowFullScreen
+                ></iframe>
+              </div>
             <div className="responsive-image-container">
+              <div className="media-container video">
+                <span>In content Ad - Available!</span>
+                <iframe
+                  src=""
+                  title="Dummy Video"
+                  alt="Dummy Video"
+                  frameBorder="0"
+                  allowFullScreen
+                ></iframe>
+              </div>
               <img src={paperWhisky} alt="Whisky in Paper bottle" className="ad-image" />
               <img src={woodenbike} alt="Wooden Bike" className="ad-image" />
               <img src={heatpump} alt="Heat pump" className="ad-image" />
 
               <div className="media-container video">
-                <span>Available</span>
+              <span>In content Ad - Available!</span>
                 <iframe
                   src=""
                   title="Dummy Video"
@@ -671,7 +694,7 @@ Your cooperation will help ensure you receive the most cost-effective and effici
               </div>
 
               <div className="media-container video">
-                <span>Available</span>
+              <span>In content Ad - Available!</span>
                 <iframe
                   src=""
                   title="Dummy Video"
@@ -682,7 +705,7 @@ Your cooperation will help ensure you receive the most cost-effective and effici
               </div>
 
               <div className="media-container video">
-                <span>Available</span>
+              <span>In content Ad - Available!</span>
                 <iframe
                   src=""
                   title="Dummy Video"
@@ -693,7 +716,7 @@ Your cooperation will help ensure you receive the most cost-effective and effici
               </div>
 
               <div className="media-container video">
-                <span>Available</span>
+              <span>In content Ad - Available!</span>
                 <iframe
                   src=""
                   title="Dummy Video"
@@ -704,7 +727,7 @@ Your cooperation will help ensure you receive the most cost-effective and effici
               </div>
 
               <div className="media-container video">
-                <span>Available</span>
+              <span>In content Ad - Available!</span>
                 <iframe
                   src=""
                   title="Dummy Video"
@@ -714,16 +737,115 @@ Your cooperation will help ensure you receive the most cost-effective and effici
                 ></iframe>
               </div>
 
+              <div className="media-container video">
+              <span>In content Ad - Available!</span>
+                <iframe
+                  src=""
+                  title="Dummy Video"
+                  alt="Dummy Video"
+                  frameBorder="0"
+                  allowFullScreen
+                ></iframe>
+              </div>
 
+              <div className="media-container video">
+              <span>In content Ad - Available!</span>
+                <iframe
+                  src=""
+                  title="Dummy Video"
+                  alt="Dummy Video"
+                  frameBorder="0"
+                  allowFullScreen
+                ></iframe>
+              </div>
+
+              <div className="media-container video">
+              <span>In content Ad - Available!</span>
+                <iframe
+                  src=""
+                  title="Dummy Video"
+                  alt="Dummy Video"
+                  frameBorder="0"
+                  allowFullScreen
+                ></iframe>
+              </div>
+
+              <div className="media-container video">
+              <span>In content Ad - Available!</span>
+                <iframe
+                  src=""
+                  title="Dummy Video"
+                  alt="Dummy Video"
+                  frameBorder="0"
+                  allowFullScreen
+                ></iframe>
+              </div>
+              <div className="media-container video">
+              <span>In content Ad - Available!</span>
+                <iframe
+                  src=""
+                  title="Dummy Video"
+                  alt="Dummy Video"
+                  frameBorder="0"
+                  allowFullScreen
+                ></iframe>
+              </div>
+              <div className="media-container video">
+              <span>In content Ad - Available!</span>
+                <iframe
+                  src=""
+                  title="Dummy Video"
+                  alt="Dummy Video"
+                  frameBorder="0"
+                  allowFullScreen
+                ></iframe>
+              </div>
+              <div className="media-container video">
+              <span>In content Ad - Available!</span>
+                <iframe
+                  src=""
+                  title="Dummy Video"
+                  alt="Dummy Video"
+                  frameBorder="0"
+                  allowFullScreen
+                ></iframe>
+              </div>
+              <div className="media-container video">
+              <span>In content Ad - Available!</span>
+                <iframe
+                  src=""
+                  title="Dummy Video"
+                  alt="Dummy Video"
+                  frameBorder="0"
+                  allowFullScreen
+                ></iframe>
+              </div>
+              <div className="media-container video">
+              <span>In content Ad - Available!</span>
+                <iframe
+                  src=""
+                  title="Dummy Video"
+                  alt="Dummy Video"
+                  frameBorder="0"
+                  allowFullScreen
+                ></iframe>
+              </div>
+              <div className="media-container video">
+              <span>In content Ad - Available!</span>
+                <iframe
+                  src=""
+                  title="Dummy Video"
+                  alt="Dummy Video"
+                  frameBorder="0"
+                  allowFullScreen
+                ></iframe>
+              </div>
             </div>
           </div>
         </div>
 
         <div className="ad-column">
           <div className="ad-label">
-            <h3 className="ad-labelHeader2">
-              <Link to="/advertising">Partner with us!</Link>
-            </h3>
             <div className="media-grid">
               <div className="media-container video">
                 <span>Premium Ad Placement - Available!</span>
@@ -746,85 +868,36 @@ Your cooperation will help ensure you receive the most cost-effective and effici
                   allowFullScreen
                 ></iframe>
               </div>
+
+              <div className="media-container video">
+                <span>Product Showcase - Available</span>
+                <iframe
+                  src=""
+                  title="Dummy Video"
+                  alt="Dummy Video"
+                  frameBorder="0"
+                  allowFullScreen
+                ></iframe>
+              </div>
                     
-             {/* <div className="media-container video">
-                <span>Available</span>
-                <iframe
-                  src=""
-                  title=""
-                  alt=""
-                  frameBorder="0"
-                  allowFullScreen
-                ></iframe>
-              </div>
-
-              <div className="media-container video">
-                <span>Available</span>
-                <iframe
-                  src=""
-                  title=""
-                  alt=""
-                  frameBorder="0"
-                  allowFullScreen
-                ></iframe>
-              </div>
-
-              <div className="media-container image">
-                <a href="https://www.lovejoint.store"><span>6 DRIVE</span></a> 
-                <iframe
-                  src={lovejoint}
-                  title="Love Joint"
-                  frameBorder="0"
-                  allowFullScreen
-                ></iframe>
-              </div>
-
-              <div className="media-container video">
-                <span>Available</span>
-                <iframe
-                  src=""
-                  title=""
-                  frameBorder="0"
-                  allowFullScreen
-                ></iframe>
-              </div>
-
-              <div className="media-container video">
-                <span>Available</span>
-                <iframe
-                  src=""
-                  title="Dummy Video"
-                  alt="Dummy Video"
-                  frameBorder="0"
-                  allowFullScreen
-                ></iframe>
-              </div>
-
-              <div className="media-container video">
-                <span>Available</span>
-                <iframe
-                  src=""
-                  title="Dummy Video"
-                  alt="Dummy Video"
-                  frameBorder="0"
-                  allowFullScreen
-                ></iframe>
-              </div>
-
-              <div className="media-container">
-                <span>Vitamin D</span>
-                <iframe
-                  src={VitaminD}
-                  title="Dummy Video"
-                  alt="Dummy Video"
-                  frameBorder="0"
-                  allowFullScreen
-                ></iframe>
-              </div>*/}
             </div>
           </div>
+         
         </div>
+       
       </div>
+
+      <div className="media-container video brand-story">
+                <span>Brand Story - Available</span>
+                <iframe
+                  src=""
+                  title="Dummy Video"
+                  alt="Dummy Video"
+                  frameBorder="0"
+                  allowFullScreen
+                ></iframe>
+              </div>
+
     </div>
   );
 }
