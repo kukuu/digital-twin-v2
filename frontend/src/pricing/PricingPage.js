@@ -47,12 +47,22 @@ export default function PricingPage() {
   const adExamples = [
     {
       id: "banner-ad",
-      title: "Premium Banner Placement - Homepage",
+      title: "Premium Banner Placement",
       description: "Top-of-page placement with maximum visibility. Perfect for brand awareness campaigns.",
       dimensions: "1200x200px",
       impressions: "50,000+ monthly",
       type: "banner"
     },
+
+    {
+      id: "premiumhomepage-ad",
+      title: "Premium Homepage Placement",
+      description: "Top-of-page placement with maximum visibility. Perfect for brand awareness campaigns.",
+      dimensions: "1200x200px",
+      impressions: "50,000+ monthly",
+      type: "banner"
+    },
+
     {
       id: "sidebar-ad",
       title: "Sidebar Placement - Advertising",
@@ -63,16 +73,25 @@ export default function PricingPage() {
     },
     {
       id: "content-ad",
-      title: "In-Content Promotion - Advertising",
+      title: "In-Content Promotion",
       description: "Native-style ads within article content. Higher engagement rates.",
       dimensions: "Flexible",
       impressions: "Varies by content",
       type: "content"
     },
     {
-      id: "featured-ad",
-      title: "Featured Sponsor Spot - Homepage",
+      id: "brand-ad",
+      title: "Brand Story",
       description: "Exclusive placement in our featured section. Limited availability.",
+      dimensions: "800x400px",
+      impressions: "25,000+ monthly",
+      type: "featured"
+    },
+
+    {
+      id: "productshowcase-ad",
+      title: "Product Showcase",
+      description: "Exclusive placement in our Product Showcase section. Limited availability.",
       dimensions: "800x400px",
       impressions: "25,000+ monthly",
       type: "featured"
@@ -237,7 +256,7 @@ export default function PricingPage() {
       </nav>
 
       <div className="advertising-header">
-        <h1>Advertising Pricing Plans</h1>
+        <h1>Pricing Plans</h1>
         <p>
           Promote your business on our platform to reach thousands of energy-conscious consumers.
           The <strong>SPYDER</strong> Digital Twin Smart Energy Meter Reader helps users find the
@@ -248,8 +267,74 @@ export default function PricingPage() {
       <div className="advertising-columns">
         <div className="form-section">
           <form onSubmit={handleSubmit(onSubmit)} className="advertising-form">
+
+          <div className="form-group">
+              <h2><i className="icon-image"></i> Premium Banner Placement</h2>
+              <p className="section-description">
+                Static image advertisements displayed throughout our platform.
+                Perfect for product promotions and brand awareness.
+              </p>
+              <div className="options-grid">
+                {imageAdOptions.map((option) => (
+                  <div 
+                    className={`option-card ${selectedImageAd === option.duration ? 'selected' : ''}`}
+                    key={option.id}
+                    onClick={() => setSelectedImageAd(option.duration)}
+                  >
+                    <input
+                      type="radio"
+                      id={option.id}
+                      name="imageAd"
+                      checked={selectedImageAd === option.duration}
+                      onChange={() => {}}
+                      hidden
+                    />
+                    <label htmlFor={option.id}>
+                      <span className="duration">{option.duration}</span>
+                      {option.discount && <span className="discount-badge">{option.discount}</span>}
+                      <span className="price">${option.price}</span>
+                    </label>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+
+
+          <div className="form-group">
+              <h2><i className="icon-image"></i> Premium Homepage Placement</h2>
+              <p className="section-description">
+                Static image advertisements displayed throughout our platform.
+                Perfect for product promotions and brand awareness.
+              </p>
+              <div className="options-grid">
+                {imageAdOptions.map((option) => (
+                  <div 
+                    className={`option-card ${selectedImageAd === option.duration ? 'selected' : ''}`}
+                    key={option.id}
+                    onClick={() => setSelectedImageAd(option.duration)}
+                  >
+                    <input
+                      type="radio"
+                      id={option.id}
+                      name="imageAd"
+                      checked={selectedImageAd === option.duration}
+                      onChange={() => {}}
+                      hidden
+                    />
+                    <label htmlFor={option.id}>
+                      <span className="duration">{option.duration}</span>
+                      {option.discount && <span className="discount-badge">{option.discount}</span>}
+                      <span className="price">${option.price}</span>
+                    </label>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+
             <div className="form-group">
-              <h2><i className="icon-image"></i> Image Ads</h2>
+              <h2><i className="icon-image"></i> In-Content Image Promotion</h2>
               <p className="section-description">
                 Static image advertisements displayed throughout our platform.
                 Perfect for product promotions and brand awareness.
@@ -280,7 +365,7 @@ export default function PricingPage() {
             </div>
 
             <div className="form-group">
-              <h2 className="video-ads"><i className="icon-video"></i> Video Ads</h2>
+              <h2 className="video-ads"><i className="icon-video"></i> In-Content Video Promotion</h2>
               <p className="section-description">
                 Dynamic video content in premium placements. Higher engagement
                 and conversion rates.
@@ -309,6 +394,100 @@ export default function PricingPage() {
                 ))}
               </div>
             </div>
+
+            <div className="form-group">
+              <h2 className="video-ads"><i className="icon-video"></i> Side Bar Placement</h2>
+              <p className="section-description">
+                Dynamic video content in premium placements. Higher engagement
+                and conversion rates.
+              </p>
+              <div className="options-grid">
+                {videoAdOptions.map((option) => (
+                  <div 
+                    className={`option-card ${selectedVideoAd === option.duration ? 'selected' : ''}`}
+                    key={option.id}
+                    onClick={() => setSelectedVideoAd(option.duration)}
+                  >
+                    <input
+                      type="radio"
+                      id={option.id}
+                      name="videoAd"
+                      checked={selectedVideoAd === option.duration}
+                      onChange={() => {}}
+                      hidden
+                    />
+                    <label htmlFor={option.id}>
+                      <span className="duration">{option.duration}</span>
+                      {option.discount && <span className="discount-badge">{option.discount}</span>}
+                      <span className="price">${option.price}</span>
+                    </label>
+                  </div>
+                ))}
+              </div>
+
+               <div className="form-group">
+              <h2 className="video-ads"><i className="icon-video"></i> Brand Story Placement</h2>
+              <p className="section-description">
+                Dynamic video content in premium placements. Higher engagement
+                and conversion rates.
+              </p>
+              <div className="options-grid">
+                {videoAdOptions.map((option) => (
+                  <div 
+                    className={`option-card ${selectedVideoAd === option.duration ? 'selected' : ''}`}
+                    key={option.id}
+                    onClick={() => setSelectedVideoAd(option.duration)}
+                  >
+                    <input
+                      type="radio"
+                      id={option.id}
+                      name="videoAd"
+                      checked={selectedVideoAd === option.duration}
+                      onChange={() => {}}
+                      hidden
+                    />
+                    <label htmlFor={option.id}>
+                      <span className="duration">{option.duration}</span>
+                      {option.discount && <span className="discount-badge">{option.discount}</span>}
+                      <span className="price">${option.price}</span>
+                    </label>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+
+            <div className="form-group">
+              <h2 className="video-ads"><i className="icon-video"></i> Product Showcase</h2>
+              <p className="section-description">
+                Dynamic video content in premium placements. Higher engagement
+                and conversion rates.
+              </p>
+              <div className="options-grid">
+                {videoAdOptions.map((option) => (
+                  <div 
+                    className={`option-card ${selectedVideoAd === option.duration ? 'selected' : ''}`}
+                    key={option.id}
+                    onClick={() => setSelectedVideoAd(option.duration)}
+                  >
+                    <input
+                      type="radio"
+                      id={option.id}
+                      name="videoAd"
+                      checked={selectedVideoAd === option.duration}
+                      onChange={() => {}}
+                      hidden
+                    />
+                    <label htmlFor={option.id}>
+                      <span className="duration">{option.duration}</span>
+                      {option.discount && <span className="discount-badge">{option.discount}</span>}
+                      <span className="price">${option.price}</span>
+                    </label>
+                  </div>
+                ))}
+              </div>
+            </div>
+
 
             <div className="payment-section">
               <h2><i className="icon-payment"></i> Payment</h2>
@@ -484,6 +663,8 @@ export default function PricingPage() {
                   )}
                 </div>
               </SignedIn>
+            </div>
+
             </div>
           </form>
         </div>
