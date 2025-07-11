@@ -27,7 +27,7 @@ html, body {
 .navbar-brand h2 {
   margin: 0;
   color: #333;
-  font-size: 3.5rem;
+  font-size: 3rem;
 }
 
 .navbar-brand  a {
@@ -364,6 +364,38 @@ a.subscribe-newsletter {
   }
 }
 
+/* ============ RACE TO ZERO STYLES ============ */
+.race-to-zero {
+  text-align: center;
+  padding: 10px;
+}
+
+.race-to-zero a {
+  color: green;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 1.2rem;
+  position: relative;
+  padding-right: 25px;
+  transition: color 0.3s;
+}
+
+.race-to-zero a:hover {
+  color: limegreen;
+}
+
+.race-to-zero a::after {
+  content: "🔗";
+  position: absolute;
+  right: 0;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.race-to-zero a:hover::after {
+  opacity: 1;
+}
+
 /* ============ RESPONSIVE ADJUSTMENTS ============ */
 @media (max-width: 768px) {
   .navbar {
@@ -399,4 +431,8 @@ a.subscribe-newsletter {
 
 .tariff-section {
   color: #dc3545;
+}
+
+.brand-story {
+  margin:0 100px 10px 15px;
 }
