@@ -30,7 +30,7 @@ body {
 
 .navbar-brand h2 {
   margin: 0;
-  font-size: 1.5rem;
+  font-size: 3rem;
 }
 
 .navbar-auth {
@@ -478,6 +478,8 @@ body {
   display: flex;
   flex-direction: column;
   width: 100%;
+
+  margin-top: -40px;
 }
 
 @media (min-width: 768px) {
@@ -608,9 +610,9 @@ body {
   background-color: #4285F4;
 }
 
-.image {
+/*.image {
   background-color: #34A853;
-}
+}*/
 
 .carousel {
   background-color: #FF69B4;
