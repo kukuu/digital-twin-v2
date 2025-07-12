@@ -15,6 +15,7 @@ const ORIGIN =
     ? process.env.FRONTEND_URL
     : "http://localhost:3000";
 
+//Initialise instance of socket.io
 const io = new Server(server, {
   cors: {
     origin: ORIGIN,
@@ -23,16 +24,19 @@ const io = new Server(server, {
   },
 });
 
+// Create a Supabase Client . Load from .env file
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-// Use the provided meter IDs
-let readings = {
+// Initial meter readings
+const initialReadings = {
   "SMR-98756-1-A": 1000,
   "SMR-43563-2-A": 2000,
   "SMR-65228-1-B": 3000,
 };
+
+let readings = {...initialReadings};
 
 // Fetch the last saved reading for each meter from Supabase on server start
 const fetchLastReading = async (meter_id) => {
@@ -53,9 +57,16 @@ const fetchLastReading = async (meter_id) => {
   return data.length > 0 ? data[0].reading : null;
 };
 
-// Function to generate new reading
+// Function to generate new reading (Simulation)
 const generateReading = (meter_id) => {
   readings[meter_id] += Math.random() * 10; // Small random changes to the reading
+  
+  // Check if reading exceeds 10000 kWh
+  if (readings[meter_id] > 10000) {
+    console.log(`Meter ${meter_id} exceeded 10000 kWh. Resetting to initial value.`);
+    readings[meter_id] = initialReadings[meter_id];
+  }
+  
   return readings[meter_id];
 };
 
@@ -63,7 +74,7 @@ const generateReading = (meter_id) => {
 const saveReadingToDb = async (meter_id, reading) => {
   const timestamp = new Date().toISOString(); // Current timestamp
   const { data, error } = await supabase.from("readings").insert([
-    {
+    {//Insert Data
       timestamp: timestamp,
       meter_id: meter_id, // Save meter_id
       reading: reading,
@@ -99,64 +110,36 @@ const saveReadingToDb = async (meter_id, reading) => {
     }
   }
 
-  // WebSocket connection
+  // WebSocket connection. emitInterval and saveInterval both run concurrently to maintain data ingestion
   io.on("connection", (socket) => {
     console.log("A user connected");
 
     const latestReadings = {}; // Store the latest reading for each meter
-    let isReadingStopped = false; // Track if readings have been stopped
-    let emitInterval, saveInterval;
 
-    // Function to start emitting readings
-    const startEmittingReadings = () => {
-      emitInterval = setInterval(() => {
-        if (isReadingStopped) return; // Skip emitting if readings are stopped
+    // Emit readings every 2 seconds
+    const emitInterval = setInterval(() => {
+      for (const meter_id of Object.keys(readings)) {
+        const newReading = generateReading(meter_id);
 
-        for (const meter_id of Object.keys(readings)) {
-          const newReading = generateReading(meter_id);
+        // Send the reading to the client
+        socket.emit("newReading", { meter_id, reading: newReading });
 
-          // Send the reading to the client
-          socket.emit("newReading", { meter_id, reading: newReading });
-
-          // Store the latest reading for each meter
-          latestReadings[meter_id] = newReading;
-        }
-      }, 2000); // Emit every 2 seconds
-
-      // Start saving readings every 60 seconds
-      saveInterval = setInterval(() => {
-        if (isReadingStopped) return; // Skip saving if readings are stopped
-
-        for (const meter_id of Object.keys(latestReadings)) {
-          const latestReading = latestReadings[meter_id];
-
-          // Save the latest reading for the meter to the DB
-          if (latestReading) {
-            saveReadingToDb(meter_id, latestReading);
-          }
-        }
-      }, 60000); // Save every 60 seconds
-    };
-
-    // Start emitting when the client connects
-    startEmittingReadings();
-
-    // Handle stopReading event from the client
-    socket.on("stopReading", () => {
-      console.log("Meter Stopped");
-      clearInterval(emitInterval); // Stop the emit interval
-      clearInterval(saveInterval); // Stop the save interval
-      isReadingStopped = true; // Set the flag to prevent further emissions
-    });
-
-    // Handle startReading event from the client to resume
-    socket.on("startReading", () => {
-      if (isReadingStopped) {
-        console.log("Meter Resumed");
-        isReadingStopped = false; // Clear the stopped flag
-        startEmittingReadings(); // Restart the intervals
+        // Store the latest reading for each meter
+        latestReadings[meter_id] = newReading;
       }
-    });
+    }, 2000); // Emit every 2 seconds
+
+    // Save the latest reading to the database every 60 seconds
+    const saveInterval = setInterval(() => {
+      for (const meter_id of Object.keys(latestReadings)) {
+        const latestReading = latestReadings[meter_id];
+
+        // Save the latest reading for the meter to the DB
+        if (latestReading) {
+          saveReadingToDb(meter_id, latestReading);
+        }
+      }
+    }, 60000); // Save every 60 seconds
 
     // Clean up on socket disconnect
     socket.on("disconnect", () => {
