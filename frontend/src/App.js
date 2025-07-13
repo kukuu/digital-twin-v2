@@ -112,13 +112,14 @@ const Modal = memo(
 
             <div className="detail-row">
               <div className="account-number-input">
-                <h3>Customer Account Number:</h3>
+                {/*<h3>Customer Account Number:</h3>*/}
+                <h3>Customer Email:</h3>
                 <input
                   type="text"
                   id="accountNumber"
                   value={meterInfo.accountNumber}
                   onChange={onAccountNumberChange}
-                  placeholder="Enter account number"
+                  placeholder="Enter your email"
                   className="account-input"
                 />
               </div>
@@ -385,6 +386,7 @@ export default function EnergyMeter() {
       tariff: data.tariff,
       cost: data.cost,
       total: data.total,
+      emailAddress: "",
       accountNumber: "",
       affiliateLink: data.affiliateLink
     };
@@ -405,6 +407,7 @@ export default function EnergyMeter() {
       tariff: result.tariff,
       cost: result.cost,
       total: totalCost,
+      emailAddress: "",
       accountNumber: "",
       affiliateLink: result.affiliateLink
     };
@@ -538,7 +541,6 @@ export default function EnergyMeter() {
       <nav className="navbar">
         <div className="navbar-brand">
           <h2 style={{ fontWeight: "bold", color: "green" }}><a href="/">SPYDER</a></h2>
-      
         </div>
         <div className="navbar-auth">
           <SignedOut>
@@ -549,355 +551,408 @@ export default function EnergyMeter() {
           </SignedIn>
         </div>
         <div>
-          {/*<Link to="/newsletter" className="crumbtrail"><small>Newsletter | </small></Link> */}
           <Link to="/advertising" className="crumbtrail"> <small>Advertising | </small></Link>
           <Link to="/pricing" className="crumbtrail"> <small>Pricing</small></Link>
         </div>
       </nav>
 
-      <div className="container">
-        <h3 className="title">Price Comparison Smart Energy Meter Reader</h3>
-        <p className="app-description">
-          The <strong>SPYDER</strong> Digital Twin Smart Energy Meter Reader,
-          helps you find the best electricity tariff at the most competitive
-          price. Compare different meters, check prices and choose the right
-          option to save on energy bills. The Reader also serves as a forecasting system, a settlement tool and a Net Zero initiative.
-        </p>
-        <SignedOut>
-          <p className="auth-prompt">
-            Start comparing now and make smarter choices for your electricity
-            usage. Please &nbsp;
-            <SignInButton mode="modal" className="login-button">
-              Sign in &nbsp;
-            </SignInButton>
-            &nbsp;&nbsp; and select a Smart Meter!
-          </p>
-        </SignedOut>
-        <SignedIn>
-          <div className="reading-form-container">
-            <form onSubmit={handleCalculate}>
-              <input
-                type="number"
-                value={userReading}
-                onChange={(e) => setUserReading(e.target.value)}
-                className="reading-input"
-                placeholder="Please Enter your reading"
-                step="0.01"
-                min="0"
-                required
-              />
-              <button type="submit" className="calculate-button">
-                Calculate
-              </button>
-            </form>
+      <div className="main-content-container">
+        <div className="sideBar">
+          <div className="ad-card">
+            <h4>Premium Ad Spot</h4>
+            <p>Available for your brand</p>
+            <div className="ad-placeholder"></div>
+          </div>
+          <div className="ad-card">
+            <h4>Featured Partner</h4>
+            <p>Special offer for users</p>
+            <div className="ad-placeholder"></div>
+          </div>
+          <div className="ad-card">
+            <h4>Energy Tips</h4>
+            <p>Save money on bills</p>
+            <div className="ad-placeholder"></div>
+          </div>
+          <div className="ad-card">
+            <h4>Green Energy</h4>
+            <p>Eco-friendly solutions</p>
+            <div className="ad-placeholder"></div>
+          </div>
+          <div className="ad-card">
+            <h4>Tech Gadgets</h4>
+            <p>Smart home devices</p>
+            <div className="ad-placeholder"></div>
+          </div>
 
-            {calculatedResults.length > 0 && (
-              <div className="results-container">
-                <table className="cost-table">
-                  <thead>
-                    <tr>
-                      <th>Energy Company</th>
-                      <th>Total Cost (£)</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {calculatedResults.map((result, index) => (
-                      <tr key={index} onClick={() => handleResultClick(result)} className="result-row">
-                        <td><span className="switch-tariff-supplier">{result.supplier} <strong>(SWITCH!)</strong></span></td>
-                        <td>£{result.cost}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-                <button 
-                  onClick={handleCloseResults} 
-                  className="close-results-button"
-                >
-                  Close Results
-                </button>
-                <p>To better serve your energy needs, we kindly request that you <br /><a href='/newsletter' className="subscribe-newsletter"><strong>Subscribe to our NEWSLETTER </strong></a> - $1.99 per month, <br />and share your past electricity meter readings with us. This data will enable us to make informed decisions through careful monitoring and analysis. Based on our assessment, we can provide you with a personalised account page with interactive Visualisation Dashboard, 
-                and recommend a more competitive energy provider with a tariff better suited to your consumption patterns.
-                Your cooperation will help ensure you receive the most cost-effective and efficient energy solution available.</p>
+          <div className="ad-card">
+            <h4>Tech Gadgets</h4>
+            <p>Smart home devices</p>
+            <div className="ad-placeholder"></div>
+          </div>
 
+          <div className="ad-card">
+            <h4>Tech Gadgets</h4>
+            <p>Smart home devices</p>
+            <div className="ad-placeholder"></div>
+          </div>
+
+          <div className="ad-card">
+            <h4>Tech Gadgets</h4>
+            <p>Smart home devices</p>
+            <div className="ad-placeholder"></div>
+          </div>
+          
+        </div>
+        
+
+        <div className="content-area">
+          <div className="container">
+            <h3 className="title">Price Comparison Smart Energy Meter Reader</h3>
+            <p className="app-description">
+              The <strong>SPYDER</strong> Digital Twin Smart Energy Meter Reader,
+              helps you find the best electricity tariff at the most competitive
+              price. Compare different meters, check prices and choose the right
+              option to save on energy bills. The Reader also serves as a forecasting system, a settlement tool and a Net Zero initiative.
+            </p>
+            <SignedOut>
+              <p className="auth-prompt">
+                Start comparing now and make smarter choices for your electricity
+                usage. Please &nbsp;
+                <SignInButton mode="modal" className="login-button">
+                  Sign in &nbsp;
+                </SignInButton>
+                &nbsp;&nbsp; and select a Smart Meter!
+              </p>
+            </SignedOut>
+            <SignedIn>
+              <div className="reading-form-container">
+                <form onSubmit={handleCalculate}>
+                  <input
+                    type="number"
+                    value={userReading}
+                    onChange={(e) => setUserReading(e.target.value)}
+                    className="reading-input"
+                    placeholder="Please Enter your reading"
+                    step="0.01"
+                    min="0"
+                    required
+                  />
+                  <button type="submit" className="calculate-button">
+                    Calculate
+                  </button>
+                </form>
+
+                {calculatedResults.length > 0 && (
+                  <div className="results-container">
+                    <table className="cost-table">
+                      <thead>
+                        <tr>
+                          <th>Energy Company</th>
+                          <th>Total Cost (£)</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {calculatedResults.map((result, index) => (
+                          <tr key={index} onClick={() => handleResultClick(result)} className="result-row">
+                            <td><span className="switch-tariff-supplier">{result.supplier} <strong>(SWITCH!)</strong></span></td>
+                            <td>£{result.cost}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                    <button 
+                      onClick={handleCloseResults} 
+                      className="close-results-button"
+                    >
+                      Close Results
+                    </button>
+                    <p>To better serve your energy needs, we kindly request that you <br /><a href='/newsletter' className="subscribe-newsletter"><strong>Subscribe to our NEWSLETTER </strong></a> - $1.99 per month, <br />and share your past electricity meter readings with us. This data will enable us to make informed decisions through careful monitoring and analysis. Based on our assessment, we can provide you with a personalised account page with interactive Visualisation Dashboard, 
+                    and recommend a more competitive energy provider with a tariff better suited to your consumption patterns.
+                    Your cooperation will help ensure you receive the most cost-effective and efficient energy solution available.</p>
+                  </div>
+                )}
               </div>
-            )}
+
+              <MeterGrid isInteractive={true} />
+              {renderModal()}
+
+              <div className="button-container">
+                {isReadingActive ? (
+                  <button onClick={() => stopReading()} className="stop-button">
+                    Stop
+                  </button>
+                ) : (
+                  <button onClick={() => startReading()} className="start-button">
+                    Start
+                  </button>
+                )}
+              </div>
+              <div className="race-to-zero">
+                <Link to="/advertising">Race to zero emission future - Partner with us!</Link>
+              </div>
+            </SignedIn>
           </div>
 
-          <MeterGrid isInteractive={true} />
-          {renderModal()}
+          <div className="ad-container">
+            <div className="ad-column">
+              <div className="ad-label">
+                <div className="responsive-iframe-container">
+                  <iframe
+                    src="https://www.youtube.com/embed/O7ACNMj8NW0"
+                    title="Evolution of Tesla (Animation)"
+                    alt="Evolution of Tesla"
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerPolicy="strict-origin-when-cross-origin"
+                    allowFullScreen
+                  ></iframe>
+                </div>
+                <div className="media-container video">
+                  <span>Interactive Multimedia Premium Ad Placement - Available!</span>
+                  <iframe
+                    src=""
+                    title="Dummy Video"
+                    alt="Dummy Video"
+                    frameBorder="0"
+                    allowFullScreen
+                  ></iframe>
+                </div>
+                <div className="responsive-image-container">
+                  <div className="media-container video">
+                    <span>In content Ad - Available!</span>
+                    <iframe
+                      src=""
+                      title="Dummy Video"
+                      alt="Dummy Video"
+                      frameBorder="0"
+                      allowFullScreen
+                    ></iframe>
+                  </div>
+                  <img src={paperWhisky} alt="Whisky in Paper bottle" className="ad-image" />
+                  <img src={woodenbike} alt="Wooden Bike" className="ad-image" />
+                  <img src={heatpump} alt="Heat pump" className="ad-image" />
 
-          <div className="button-container">
-            {isReadingActive ? (
-              <button onClick={() => stopReading()} className="stop-button">
-                Stop
-              </button>
-            ) : (
-              <button onClick={() => startReading()} className="start-button">
-                Start
-              </button>
-            )}
-          </div>
-          <div className="race-to-zero">
-            <Link to="/advertising">Race to zero emission future - Partner with us!</Link>
-          </div>
-        </SignedIn>
-      </div>
+                  <div className="media-container video">
+                    <span>Available!</span>
+                    <iframe
+                      src=""
+                      title="Dummy Video"
+                      alt="Dummy Video"
+                      frameBorder="0"
+                      allowFullScreen
+                    ></iframe>
+                  </div>
 
-      <div className="ad-container">
-        <div className="ad-column">
-          <div className="ad-label">
-            <div className="responsive-iframe-container">
-              <iframe
-                src="https://www.youtube.com/embed/O7ACNMj8NW0"
-                title="Evolution of Tesla (Animation)"
-                alt="Evolution of Tesla"
-                frameBorder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                referrerPolicy="strict-origin-when-cross-origin"
-                allowFullScreen
-              ></iframe>
+                  <div className="media-container video">
+                    <span>Available!</span>
+                    <iframe
+                      src=""
+                      title="Dummy Video"
+                      alt="Dummy Video"
+                      frameBorder="0"
+                      allowFullScreen
+                    ></iframe>
+                  </div>
+
+                  <div className="media-container video">
+                    <span>Available!</span>
+                    <iframe
+                      src=""
+                      title="Dummy Video"
+                      alt="Dummy Video"
+                      frameBorder="0"
+                      allowFullScreen
+                    ></iframe>
+                  </div>
+
+                  <div className="media-container video">
+                    <span>Available!</span>
+                    <iframe
+                      src=""
+                      title="Dummy Video"
+                      alt="Dummy Video"
+                      frameBorder="0"
+                      allowFullScreen
+                    ></iframe>
+                  </div>
+
+                  <div className="media-container video">
+                    <span>Available!n</span>
+                    <iframe
+                      src=""
+                      title="Dummy Video"
+                      alt="Dummy Video"
+                      frameBorder="0"
+                      allowFullScreen
+                    ></iframe>
+                  </div>
+
+                </div>
+              </div>
             </div>
-            <div className="media-container video">
-                <span>Interactive Multimedia Premium Ad Placement - Available!</span>
-                <iframe
-                  src=""
-                  title="Dummy Video"
-                  alt="Dummy Video"
-                  frameBorder="0"
-                  allowFullScreen
-                ></iframe>
-              </div>
-            <div className="responsive-image-container">
-              <div className="media-container video">
-                <span>In content Ad - Available!</span>
-                <iframe
-                  src=""
-                  title="Dummy Video"
-                  alt="Dummy Video"
-                  frameBorder="0"
-                  allowFullScreen
-                ></iframe>
-              </div>
-              <img src={paperWhisky} alt="Whisky in Paper bottle" className="ad-image" />
-              <img src={woodenbike} alt="Wooden Bike" className="ad-image" />
-              <img src={heatpump} alt="Heat pump" className="ad-image" />
 
-              <div className="media-container video">
-              <span>In content Ad - Available!</span>
-                <iframe
-                  src=""
-                  title="Dummy Video"
-                  alt="Dummy Video"
-                  frameBorder="0"
-                  allowFullScreen
-                ></iframe>
-              </div>
+            <div className="ad-column">
+              <div className="ad-label">
+                <div className="media-grid">
+                  <div className="media-container video">
+                    <span>Premium Ad Placement - Available!</span>
+                    <iframe
+                      src=""
+                      title="Dummy Video"
+                      alt="Dummy Video"
+                      frameBorder="0"
+                      allowFullScreen
+                    ></iframe>
+                  </div>
+                
+                  <div className="media-container image">
+                    <span>Hello Fresh</span>
+                    <iframe
+                      src={hellofresh}
+                      title="Hello Fresh"
+                      alt="Hello Fresh"
+                      frameBorder="0"
+                      allowFullScreen
+                    ></iframe>
+                  </div>
 
-              <div className="media-container video">
-              <span>In content Ad - Available!</span>
-                <iframe
-                  src=""
-                  title="Dummy Video"
-                  alt="Dummy Video"
-                  frameBorder="0"
-                  allowFullScreen
-                ></iframe>
-              </div>
-
-              <div className="media-container video">
-              <span>In content Ad - Available!</span>
-                <iframe
-                  src=""
-                  title="Dummy Video"
-                  alt="Dummy Video"
-                  frameBorder="0"
-                  allowFullScreen
-                ></iframe>
-              </div>
-
-              <div className="media-container video">
-              <span>In content Ad - Available!</span>
-                <iframe
-                  src=""
-                  title="Dummy Video"
-                  alt="Dummy Video"
-                  frameBorder="0"
-                  allowFullScreen
-                ></iframe>
-              </div>
-
-              <div className="media-container video">
-              <span>In content Ad - Available!</span>
-                <iframe
-                  src=""
-                  title="Dummy Video"
-                  alt="Dummy Video"
-                  frameBorder="0"
-                  allowFullScreen
-                ></iframe>
-              </div>
-
-              <div className="media-container video">
-              <span>In content Ad - Available!</span>
-                <iframe
-                  src=""
-                  title="Dummy Video"
-                  alt="Dummy Video"
-                  frameBorder="0"
-                  allowFullScreen
-                ></iframe>
-              </div>
-
-              <div className="media-container video">
-              <span>In content Ad - Available!</span>
-                <iframe
-                  src=""
-                  title="Dummy Video"
-                  alt="Dummy Video"
-                  frameBorder="0"
-                  allowFullScreen
-                ></iframe>
-              </div>
-
-              <div className="media-container video">
-              <span>In content Ad - Available!</span>
-                <iframe
-                  src=""
-                  title="Dummy Video"
-                  alt="Dummy Video"
-                  frameBorder="0"
-                  allowFullScreen
-                ></iframe>
-              </div>
-
-              <div className="media-container video">
-              <span>In content Ad - Available!</span>
-                <iframe
-                  src=""
-                  title="Dummy Video"
-                  alt="Dummy Video"
-                  frameBorder="0"
-                  allowFullScreen
-                ></iframe>
-              </div>
-              <div className="media-container video">
-              <span>In content Ad - Available!</span>
-                <iframe
-                  src=""
-                  title="Dummy Video"
-                  alt="Dummy Video"
-                  frameBorder="0"
-                  allowFullScreen
-                ></iframe>
-              </div>
-              <div className="media-container video">
-              <span>In content Ad - Available!</span>
-                <iframe
-                  src=""
-                  title="Dummy Video"
-                  alt="Dummy Video"
-                  frameBorder="0"
-                  allowFullScreen
-                ></iframe>
-              </div>
-              <div className="media-container video">
-              <span>In content Ad - Available!</span>
-                <iframe
-                  src=""
-                  title="Dummy Video"
-                  alt="Dummy Video"
-                  frameBorder="0"
-                  allowFullScreen
-                ></iframe>
-              </div>
-              <div className="media-container video">
-              <span>In content Ad - Available!</span>
-                <iframe
-                  src=""
-                  title="Dummy Video"
-                  alt="Dummy Video"
-                  frameBorder="0"
-                  allowFullScreen
-                ></iframe>
-              </div>
-              <div className="media-container video">
-              <span>In content Ad - Available!</span>
-                <iframe
-                  src=""
-                  title="Dummy Video"
-                  alt="Dummy Video"
-                  frameBorder="0"
-                  allowFullScreen
-                ></iframe>
-              </div>
-              <div className="media-container video">
-              <span>In content Ad - Available!</span>
-                <iframe
-                  src=""
-                  title="Dummy Video"
-                  alt="Dummy Video"
-                  frameBorder="0"
-                  allowFullScreen
-                ></iframe>
+                  <div className="media-container video">
+                    <span>Product Showcase - Available</span>
+                    <iframe
+                      src=""
+                      title="Dummy Video"
+                      alt="Dummy Video"
+                      frameBorder="0"
+                      allowFullScreen
+                    ></iframe>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
-
-        <div className="ad-column">
-          <div className="ad-label">
-            <div className="media-grid">
-              <div className="media-container video">
-                <span>Premium Ad Placement - Available!</span>
-                <iframe
-                  src=""
-                  title="Dummy Video"
-                  alt="Dummy Video"
-                  frameBorder="0"
-                  allowFullScreen
-                ></iframe>
-              </div>
-            
-              <div className="media-container image">
-                <span>Hello Fresh</span>
-                <iframe
-                  src={hellofresh}
-                  title="Hello Fresh"
-                  alt="Hello Fresh"
-                  frameBorder="0"
-                  allowFullScreen
-                ></iframe>
-              </div>
-
-              <div className="media-container video">
-                <span>Product Showcase - Available</span>
-                <iframe
-                  src=""
-                  title="Dummy Video"
-                  alt="Dummy Video"
-                  frameBorder="0"
-                  allowFullScreen
-                ></iframe>
-              </div>
-                    
-            </div>
-          </div>
-         
-        </div>
-       
       </div>
 
-      <div className="media-container video brand-story">
-                <span>Brand Story - Available</span>
-                <iframe
-                  src=""
-                  title="Dummy Video"
-                  alt="Dummy Video"
-                  frameBorder="0"
-                  allowFullScreen
-                ></iframe>
+      <div className="brand-story-container">
+        <div className="brand-story-column">
+          <div className="immersive-brand-ad">
+            <div className="brand-hero-video">
+              <video 
+                autoPlay
+                loop
+                muted
+                playsInline
+                poster="/images/green-energy-poster.jpg"
+                className="brand-video"
+              >
+                <source src="/videos/green-energy-transition.mp4" type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+              <div className="video-overlay">
+                <h2>The Future of Clean Energy</h2>
+                <p>How we're powering tomorrow's world today</p>
               </div>
+            </div>
 
+            <div className="brand-narrative">
+              <div className="narrative-content">
+                <div className="narrative-text">
+                  <h3>Our Journey to Sustainability</h3>
+                  <p>
+                    Founded in 2010, GreenPower Solutions began with a simple mission: to make renewable energy 
+                    accessible to everyone. What started as a small team of engineers in a garage has grown into 
+                    a global movement powering over 1 million homes with clean energy.
+                  </p>
+                  <div className="brand-stats">
+                    <div className="stat-item">
+                      <span className="stat-number">1M+</span>
+                      <span className="stat-label">Homes Powered</span>
+                    </div>
+                    <div className="stat-item">
+                      <span className="stat-number">85%</span>
+                      <span className="stat-label">Carbon Reduction</span>
+                    </div>
+                    <div className="stat-item">
+                      <span className="stat-number">24/7</span>
+                      <span className="stat-label">Clean Energy</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="narrative-image">
+                  <img 
+                    src="/images/founders-team.jpg" 
+                    alt="GreenPower Solutions founding team" 
+                    className="brand-story-image"
+                  />
+                  <p className="image-caption">Our founding team in 2012, working on the first prototypes</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="product-showcase">
+              <h3>Innovation That Powers Life</h3>
+              <div className="product-features">
+                <div className="feature">
+                  <div className="feature-video-container">
+                    <video 
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      className="feature-video"
+                    >
+                      <source src="/videos/solar-panel-demo.mp4" type="video/mp4" />
+                    </video>
+                  </div>
+                  <h4>Next-Gen Solar Panels</h4>
+                  <p>40% more efficient than conventional panels with our patented nano-coating technology</p>
+                </div>
+                <div className="feature">
+                  <div className="feature-video-container">
+                    <video 
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      className="feature-video"
+                    >
+                      <source src="/videos/battery-demo.mp4" type="video/mp4" />
+                    </video>
+                  </div>
+                  <h4>Home Battery Systems</h4>
+                  <p>Store excess energy with our compact, high-capacity home batteries</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="brand-cta">
+              <h3>Join the Energy Revolution</h3>
+              <p>Get a personalized quote and see how much you could save</p>
+              <div className="cta-buttons">
+                <button className="cta-primary">Calculate Savings</button>
+                <button className="cta-secondary">Watch Our Story</button>
+              </div>
+              <div className="trust-badges">
+                <img src="/images/energy-trust-badge.png" alt="Energy Trust Certified" />
+                <img src="/images/green-business-certified.png" alt="Green Business Certified" />
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div className="brand-story-column">
+          <div className="media-container video">
+            <span>Brand Story Part 2</span>
+            <iframe
+              src=""
+              title="Brand Story Video Part 2"
+              alt="Brand Story Video Part 2"
+              frameBorder="0"
+              allowFullScreen
+            ></iframe>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
