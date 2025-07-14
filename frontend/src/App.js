@@ -942,7 +942,7 @@ export default function EnergyMeter() {
         
         <div className="brand-story-column">
           <div className="media-container video">
-            <span>Brand Story Part 2</span>
+            <span>Brand Story</span>
             <iframe
               src=""
               title="Brand Story Video Part 2"
