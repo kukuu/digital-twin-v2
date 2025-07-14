@@ -9,10 +9,10 @@ import woodenbike from './images/wooden-bicycle.jpg';
 import heatpump from './images/heat-pump.png';
 import hellofresh from './images/dt-1-hello-fresh-co-uk.png';
 import lovejoint from './images/dt-2-love-joint.png';
-import temu from './images/dt-4-temu.png';
-import lidl from './images/dt-5-lidl.png';
 import productShowcase from './images/product-showcase-2.png';
 import VitaminD from './images/dt-6-VD.png';
+import PrtableSolarFan from './images/edf-portable-solar-fan.png';
+import ElectricGreenerBiker from './images/temu-electric-bike.png';
 import { Link } from 'react-router-dom';
 import {
   SignedIn,
@@ -564,44 +564,46 @@ export default function EnergyMeter() {
             <div className="ad-placeholder"></div>
           </div>
           <div className="ad-card">
-            <h4>Featured Partner</h4>
+            <h4>Portable Solar Fan</h4>
             <p>Special offer for users</p>
+            <div className="ad-placeholder">
+              <img src={PrtableSolarFan} alt="Portable Solar Fan" className="ad-image" />
+            </div>
+          </div>
+          <div className="ad-card">
+            <h4>Energy Booster</h4>
+            <p>The Power of Nature. 100% Organic Tree Bark.</p>
+            <div className="ad-placeholder">
+            <img src={lovejoint} alt="6 DRIVE" className="ad-image" />
+            </div>
+          </div>
+          <div className="ad-card">
+            <h4>Eco-friendly</h4>
+            <p>Electric Bike</p>
+            <div className="ad-placeholder">
+              <img src={ElectricGreenerBiker} alt="Electric Green Bike" className="ad-image" />
+            </div>
+          </div>
+          <div className="ad-card">
+            <h4>Side bar</h4>
+            <p>Featured Ads - Available</p>
             <div className="ad-placeholder"></div>
           </div>
           <div className="ad-card">
-            <h4>Energy Tips</h4>
-            <p>Save money on bills</p>
+            <h4>Side bar</h4>
+            <p>Featured Ads - Available</p>
             <div className="ad-placeholder"></div>
           </div>
           <div className="ad-card">
-            <h4>Green Energy</h4>
-            <p>Eco-friendly solutions</p>
+            <h4>Side bar</h4>
+            <p>Featured Ads - Available</p>
             <div className="ad-placeholder"></div>
           </div>
           <div className="ad-card">
-            <h4>Tech Gadgets</h4>
-            <p>Smart home devices</p>
+            <h4>Side bar</h4>
+            <p>Featured Ads - Available</p>
             <div className="ad-placeholder"></div>
-          </div>
-
-          <div className="ad-card">
-            <h4>Tech Gadgets</h4>
-            <p>Smart home devices</p>
-            <div className="ad-placeholder"></div>
-          </div>
-
-          <div className="ad-card">
-            <h4>Tech Gadgets</h4>
-            <p>Smart home devices</p>
-            <div className="ad-placeholder"></div>
-          </div>
-
-          <div className="ad-card">
-            <h4>Tech Gadgets</h4>
-            <p>Smart home devices</p>
-            <div className="ad-placeholder"></div>
-          </div>
-          
+          </div> 
         </div>
         
 
@@ -845,7 +847,7 @@ export default function EnergyMeter() {
                 poster="/images/green-energy-poster.jpg"
                 className="brand-video"
               >
-                <source src="/videos/green-energy-transition.mp4" type="video/mp4" />
+                <source src="https://goods-vod.kwcdn.com/goods-video/2e893b7d49267bbcf912d457f659eede65dad719.f30.mp4" type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
               <div className="video-overlay">
@@ -879,12 +881,12 @@ export default function EnergyMeter() {
                   </div>
                 </div>
                 <div className="narrative-image">
-                  <img 
+                  {/*<img 
                     src="/images/founders-team.jpg" 
                     alt="GreenPower Solutions founding team" 
                     className="brand-story-image"
-                  />
-                  <p className="image-caption">Our founding team in 2012, working on the first prototypes</p>
+                  />*/}
+                  <p className="image-caption"><i>Our founding team in 2012, working on the first prototypes</i></p>
                 </div>
               </div>
             </div>
@@ -901,7 +903,7 @@ export default function EnergyMeter() {
                       playsInline
                       className="feature-video"
                     >
-                      <source src="/videos/solar-panel-demo.mp4" type="video/mp4" />
+                      <source src="https://goods-vod.kwcdn.com/goods-video/991226355a5aed619dd7b4e8c443e418184d438b.f30.mp4" type="video/mp4" />
                     </video>
                   </div>
                   <h4>Next-Gen Solar Panels</h4>
@@ -916,7 +918,7 @@ export default function EnergyMeter() {
                       playsInline
                       className="feature-video"
                     >
-                      <source src="/videos/battery-demo.mp4" type="video/mp4" />
+                      <source src="https://goods-vod-eu.kwcdn.com/local-goods-vod/f17793572598e526aef7d74d7b03f277a1e56ea6.f30.mp4" type="video/mp4" />
                     </video>
                   </div>
                   <h4>Home Battery Systems</h4>
