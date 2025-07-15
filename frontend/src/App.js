@@ -15,7 +15,8 @@ import PrtableSolarFan from './images/edf-portable-solar-fan.png';
 import ElectricGreenerBiker from './images/temu-electric-bike.png';
 import BubbleGun from './images/bubble-gun.png';
 import EnergyCertTrust from './images/energy-saving-certified.png';
-import GreenBusinessCertified from './images/green-business-cert.png'
+import GreenBusinessCertified from './images/green-business-cert.png';
+import EDFSmartMeter from './images/edf-smart-meter.png';
 import { Link } from 'react-router-dom';
 import {
   SignedIn,
@@ -595,9 +596,11 @@ export default function EnergyMeter() {
             </div>
           </div>
           <div className="ad-card">
-            <h4>Side bar</h4>
-            <p>Featured Ads - Available</p>
-            <div className="ad-placeholder"></div>
+            <h4>Smart Meter</h4>
+            <p>The rise of smart tariffs</p>
+            <div className="ad-placeholder">
+              <img src={EDFSmartMeter} alt="EDF Smart Energy Meter" className="ad-image" />
+            </div>
           </div>
           <div className="ad-card">
             <h4>Side bar</h4>
