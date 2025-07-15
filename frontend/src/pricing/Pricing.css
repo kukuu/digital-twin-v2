@@ -284,85 +284,57 @@ html, body {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
-.credit-card-header {
-  display: flex;
-  align-items: center;
-  margin-bottom: 1.5rem;
-}
-
-.credit-card-header h3 {
-  margin: 0;
-  font-size: 1.1rem;
+.credit-card-section h4 {
   color: #2c3e50;
-  flex-grow: 1;
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
 }
 
-.credit-card-icons {
-  display: flex;
-  gap: 0.5rem;
+.form-control {
+  margin-bottom: 1.5rem;
+  width: 100%;
 }
 
-.credit-card-icon {
-  width: 40px;
-  height: 25px;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-  opacity: 0.6;
-  transition: opacity 0.2s;
-}
-
-.credit-card-icon.active {
-  opacity: 1;
-}
-
-.credit-card-form {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1.5rem;
-}
-
-@media (min-width: 480px) {
-  .credit-card-form {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  
-  .credit-card-number {
-    grid-column: span 2;
-  }
-}
-
-.form-row {
-  display: flex;
-  flex-direction: column;
-}
-
-.form-row label {
+.form-control label {
+  display: block;
+  margin-bottom: 0.5rem;
   font-size: 0.9rem;
   color: #7f8c8d;
-  margin-bottom: 0.75rem;
   font-weight: 500;
-  padding-left: 0.25rem;
 }
 
-.form-row input {
-  padding: 1rem;
+.form-control input {
+  width: 100%;
+  padding: 0.8rem 1rem;
   border: 1px solid #e0e0e0;
   border-radius: 8px;
   font-size: 1rem;
   transition: all 0.2s;
 }
 
-.form-row input:focus {
+.form-control input:focus {
   outline: none;
   border-color: #3498db;
   box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
 }
 
-.form-row-half {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+.form-row {
+  display: flex;
   gap: 1rem;
+  width: 100%;
+}
+
+.form-row .form-control {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+.error {
+  color: #e74c3c;
+  font-size: 0.8rem;
+  margin-top: 0.25rem;
+  display: block;
 }
 
 /* ============ PAYPAL CONTAINER ============ */
@@ -378,6 +350,13 @@ html, body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+
+.paypal-description {
+  color: #7f8c8d;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+  text-align: center;
 }
 
 .paypal-loading,
@@ -397,6 +376,26 @@ html, body {
   background-color: #fdecea;
   color: #e74c3c;
   border: 1px solid #e74c3c;
+}
+
+.payment-divider {
+  display: flex;
+  align-items: center;
+  margin: 1.5rem 0;
+  color: #7f8c8d;
+  font-size: 0.9rem;
+  width: 100%;
+}
+
+.payment-divider::before,
+.payment-divider::after {
+  content: "";
+  flex: 1;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.payment-divider span {
+  padding: 0 1rem;
 }
 
 /* ============ SUBMIT SECTION ============ */
@@ -750,6 +749,11 @@ html, body {
     margin-top: 1.5rem;
   }
   
+  .form-row {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
   .info-cards {
     gap: 1.5rem;
   }
@@ -782,14 +786,6 @@ html, body {
   
   .info-cards {
     grid-template-columns: 1fr;
-  }
-  
-  .credit-card-form {
-    grid-template-columns: 1fr;
-  }
-  
-  .credit-card-number {
-    grid-column: span 1;
   }
 }
 
