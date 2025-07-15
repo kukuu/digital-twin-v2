@@ -14,6 +14,8 @@ import VitaminD from './images/dt-6-VD.png';
 import PrtableSolarFan from './images/edf-portable-solar-fan.png';
 import ElectricGreenerBiker from './images/temu-electric-bike.png';
 import BubbleGun from './images/bubble-gun.png';
+import EnergyCertTrust from './images/energy-saving-certified.png';
+import GreenBusinessCertified from './images/green-business-cert.png'
 import { Link } from 'react-router-dom';
 import {
   SignedIn,
@@ -944,8 +946,8 @@ export default function EnergyMeter() {
                 <button className="cta-secondary">Watch Our Story</button>
               </div>
               <div className="trust-badges">
-                <img src="/images/energy-trust-badge.png" alt="Energy Trust Certified" />
-                <img src="/images/green-business-certified.png" alt="Green Business Certified" />
+                <img src={EnergyCertTrust} alt="Energy Trust Certified" />
+                <img src={GreenBusinessCertified} alt="Green Business Certified" />
               </div>
             </div>
           </div>
