@@ -814,8 +814,8 @@ export default function EnergyMeter() {
                     <span>100% Organic</span>
                     <iframe
                       src={hellofresh}
-                      title="Hello Fresh"
-                      alt="Hello Fresh"
+                      title="100% Organic"
+                      alt="100% Organic"
                       frameBorder="0"
                       allowFullScreen
                     ></iframe>
