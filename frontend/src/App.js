@@ -13,6 +13,7 @@ import productShowcase from './images/product-showcase-2.png';
 import VitaminD from './images/dt-6-VD.png';
 import PrtableSolarFan from './images/edf-portable-solar-fan.png';
 import ElectricGreenerBiker from './images/temu-electric-bike.png';
+import BubbleGun from './images/bubble-gun.png';
 import { Link } from 'react-router-dom';
 import {
   SignedIn,
@@ -585,9 +586,11 @@ export default function EnergyMeter() {
             </div>
           </div>
           <div className="ad-card">
-            <h4>Side bar</h4>
-            <p>Featured Ads - Available</p>
-            <div className="ad-placeholder"></div>
+            <h4>Toy Gadget</h4>
+            <p>Bubble Gun</p>
+            <div className="ad-placeholder">
+            <img src={BubbleGun} alt="Bubble Gun" className="ad-image" />
+            </div>
           </div>
           <div className="ad-card">
             <h4>Side bar</h4>
