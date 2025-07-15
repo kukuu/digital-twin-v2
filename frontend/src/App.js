@@ -723,22 +723,26 @@ export default function EnergyMeter() {
                   ></iframe>
                 </div>
                 <div className="responsive-image-container">
-                  <div className="media-container video">
-                    <span>In content Ad - Available!</span>
-                    <iframe
-                      src=""
-                      title="Dummy Video"
-                      alt="Dummy Video"
-                      frameBorder="0"
-                      allowFullScreen
-                    ></iframe>
-                  </div>
+                    <video 
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      poster="/images/green-energy-poster.jpg"
+                      className="brand-video">
+                      <source src=" https://goods-vod.kwcdn.com/goods-video/7c8b321c557108bd6103f8bbc13bb9c0ac06cfa9.f30.mp4" type="video/mp4" />
+                      Your browser does not support the video tag.
+                    </video>
+                    {/*<div className="video-overlay">
+                      <h2>The Future of Clean Energy</h2>
+                      <p>How we're powering tomorrow's world today</p>
+                    </div>*/}
                   <img src={paperWhisky} alt="Whisky in Paper bottle" className="ad-image" />
                   <img src={woodenbike} alt="Wooden Bike" className="ad-image" />
                   <img src={heatpump} alt="Heat pump" className="ad-image" />
 
                   <div className="media-container video">
-                    <span>Available!</span>
+                    <span>In content Ad - Available!</span>
                     <iframe
                       src=""
                       title="Dummy Video"
