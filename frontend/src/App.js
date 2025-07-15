@@ -811,7 +811,7 @@ export default function EnergyMeter() {
                   </div>
                 
                   <div className="media-container image">
-                    <span>Hello Fresh</span>
+                    <span>100% Organic</span>
                     <iframe
                       src={hellofresh}
                       title="Hello Fresh"
