@@ -586,7 +586,7 @@ export default function EnergyMeter() {
             </div>
           </div>
           <div className="ad-card">
-            <h4>Toy Gadget</h4>
+            <h4>Gadget</h4>
             <p>Bubble Gun</p>
             <div className="ad-placeholder">
             <img src={BubbleGun} alt="Bubble Gun" className="ad-image" />
