@@ -30,17 +30,12 @@ export default function PricingPage() {
 
   // Constants for ad options
   const imageAdOptions = [
-    { id: "image-1month", duration: "1 month", price: 30, discount: "" },
-    { id: "image-3months", duration: "3 months", price: 85, discount: "5% off" },
-    { id: "image-6months", duration: "6 months", price: 160, discount: "10% off" },
-    { id: "image-9months", duration: "9 months", price: 240, discount: "15% off" },
-    { id: "image-12months", duration: "12 months", price: 330, discount: "20% off" },
-    { id: "image-18months", duration: "18 months", price: 415, discount: "25% off" }
+    { id: "image-6months", duration: "6 months", price: 160, discount: "" },
+    { id: "image-12months", duration: "12 months", price: 330, discount: "20% off" }
   ];
 
   const videoAdOptions = [
-    { id: "video-6months", duration: "6 months", price: 180, discount: "10% off" },
-    { id: "video-9months", duration: "9 months", price: 260, discount: "15% off" },
+    { id: "video-6months", duration: "6 months", price: 180, discount: "" },
     { id: "video-12months", duration: "12 months", price: 350, discount: "20% off" }
   ];
 
