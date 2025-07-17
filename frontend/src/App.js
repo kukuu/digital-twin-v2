@@ -1,4 +1,4 @@
-"use client";
+
 
 import React, { useState, useEffect, useCallback, useRef, memo } from "react";
 import io from "socket.io-client";
@@ -919,5 +919,5 @@ export default function EnergyMeter() {
      </div>
     </div>
   );
-  
+
 }
