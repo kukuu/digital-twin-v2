@@ -567,34 +567,39 @@ export default function EnergyMeter() {
             <p>Available for your brand</p>
             <div className="ad-placeholder"></div>
           </div>
+          
           <div className="ad-card">
-            <h4>Portable Solar Fan</h4>
+            <h4>Portable Solar Panel</h4>
             <p>Special offer for users</p>
             <div className="ad-placeholder">
-              <img src={PrtableSolarFan} alt="Portable Solar Fan" className="ad-image" />
+            <video 
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      poster="/images/green-energy-poster.jpg"
+                      className="brand-video">
+                      <source src=" https://goods-vod.kwcdn.com/goods-video/7c8b321c557108bd6103f8bbc13bb9c0ac06cfa9.f30.mp4" type="video/mp4" />
+                      Your browser does not support the video tag.
+                    </video>
             </div>
           </div>
-          <div className="ad-card">
-            <h4>Energy Booster</h4>
-            <p>The Power of Nature. 100% Organic Tree Bark.</p>
+
+          {/*<div className="ad-card">
+            <h4>100% Organic  Booster</h4>
+            <p>The Power of Nature.Organic Tree Bark.</p>
             <div className="ad-placeholder">
             <img src={lovejoint} alt="6 DRIVE" className="ad-image" />
             </div>
           </div>
+
           <div className="ad-card">
             <h4>Eco-friendly</h4>
             <p>Electric Bike</p>
             <div className="ad-placeholder">
               <img src={ElectricGreenerBiker} alt="Electric Green Bike" className="ad-image" />
             </div>
-          </div>
-          <div className="ad-card">
-            <h4>Gadget</h4>
-            <p>Bubble Gun</p>
-            <div className="ad-placeholder">
-            <img src={BubbleGun} alt="Bubble Gun" className="ad-image" />
-            </div>
-          </div>
+          </div>*/}
           <div className="ad-card">
             <h4>Smart Meter</h4>
             <p>The rise of smart tariffs</p>
@@ -602,16 +607,18 @@ export default function EnergyMeter() {
               <img src={EDFSmartMeter} alt="EDF Smart Energy Meter" className="ad-image" />
             </div>
           </div>
-          <div className="ad-card">
-            <h4>Side bar</h4>
-            <p>Featured Ads - Available</p>
-            <div className="ad-placeholder"></div>
+         <div className="ad-card">
+            <h4>Portable Solar Fan</h4>
+            <p>Special offer for users</p>
+            <div className="ad-placeholder">
+              <img src={PrtableSolarFan} alt="Portable Solar Fan" className="ad-image" />
+            </div>
           </div>
           <div className="ad-card">
-            <h4>Side bar</h4>
-            <p>Featured Ads - Available</p>
+            <h4>Ad Spot</h4>
+            <p>Available</p>
             <div className="ad-placeholder"></div>
-          </div> 
+          </div>
         </div>
         
 
@@ -719,7 +726,8 @@ export default function EnergyMeter() {
                     allowFullScreen
                   ></iframe>
                 </div>
-                <div className="media-container video">
+               
+                {/*<div className="media-container video">
                   <span>Interactive Multimedia Premium Ad Placement - Available!</span>
                   <iframe
                     src=""
@@ -728,81 +736,16 @@ export default function EnergyMeter() {
                     frameBorder="0"
                     allowFullScreen
                   ></iframe>
-                </div>
+                </div>*/}
+
                 <div className="responsive-image-container">
-                    <video 
-                      autoPlay
-                      loop
-                      muted
-                      playsInline
-                      poster="/images/green-energy-poster.jpg"
-                      className="brand-video">
-                      <source src=" https://goods-vod.kwcdn.com/goods-video/7c8b321c557108bd6103f8bbc13bb9c0ac06cfa9.f30.mp4" type="video/mp4" />
-                      Your browser does not support the video tag.
-                    </video>
+                   
                     {/*<div className="video-overlay">
                       <h2>The Future of Clean Energy</h2>
                       <p>How we're powering tomorrow's world today</p>
                     </div>*/}
-                  <img src={paperWhisky} alt="Whisky in Paper bottle" className="ad-image" />
-                  <img src={woodenbike} alt="Wooden Bike" className="ad-image" />
+              
                   <img src={heatpump} alt="Heat pump" className="ad-image" />
-
-                  <div className="media-container video">
-                    <span>In content Ad - Available!</span>
-                    <iframe
-                      src=""
-                      title="Dummy Video"
-                      alt="Dummy Video"
-                      frameBorder="0"
-                      allowFullScreen
-                    ></iframe>
-                  </div>
-
-                  <div className="media-container video">
-                    <span>Available!</span>
-                    <iframe
-                      src=""
-                      title="Dummy Video"
-                      alt="Dummy Video"
-                      frameBorder="0"
-                      allowFullScreen
-                    ></iframe>
-                  </div>
-
-                  <div className="media-container video">
-                    <span>Available!</span>
-                    <iframe
-                      src=""
-                      title="Dummy Video"
-                      alt="Dummy Video"
-                      frameBorder="0"
-                      allowFullScreen
-                    ></iframe>
-                  </div>
-
-                  <div className="media-container video">
-                    <span>Available!</span>
-                    <iframe
-                      src=""
-                      title="Dummy Video"
-                      alt="Dummy Video"
-                      frameBorder="0"
-                      allowFullScreen
-                    ></iframe>
-                  </div>
-
-                  <div className="media-container video">
-                    <span>Available!n</span>
-                    <iframe
-                      src=""
-                      title="Dummy Video"
-                      alt="Dummy Video"
-                      frameBorder="0"
-                      allowFullScreen
-                    ></iframe>
-                  </div>
-
                 </div>
               </div>
             </div>
@@ -832,7 +775,7 @@ export default function EnergyMeter() {
                     ></iframe>
                   </div>
 
-                  <div className="media-container video">
+                  {/*<div className="media-container video">
                     <span>Product Showcase - Available</span>
                     <iframe
                       src=""
@@ -841,15 +784,14 @@ export default function EnergyMeter() {
                       frameBorder="0"
                       allowFullScreen
                     ></iframe>
-                  </div>
+                  </div>*/}
+
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </div>
 
-      <div className="brand-story-container">
+          <div className="brand-story-container">
         <div className="brand-story-column">
           <div className="immersive-brand-ad">
             <div className="brand-hero-video">
@@ -904,8 +846,21 @@ export default function EnergyMeter() {
                 </div>
               </div>
             </div>
-
-            <div className="product-showcase">
+          </div>
+        </div>
+        
+        <div className="brand-story-column">
+          <div className="media-container video">
+            <span>Brand Story - Available</span>
+            <iframe
+              src=""
+              title="Brand Story Video Part 2"
+              alt="Brand Story Video Part 2"
+              frameBorder="0"
+              allowFullScreen
+            ></iframe>
+          </div>
+          <div className="product-showcase">
               <h3>Innovation That Powers Life</h3>
               <div className="product-features">
                 <div className="feature">
@@ -940,8 +895,14 @@ export default function EnergyMeter() {
                 </div>
               </div>
             </div>
+           </div>
+          </div>
 
-            <div className="brand-cta">
+          <div>
+
+          </div>
+
+          <div className="brand-cta">
               <h3>Join the Energy Revolution</h3>
               <p>Get a personalized quote and see how much you could save</p>
               <div className="cta-buttons">
@@ -952,23 +913,10 @@ export default function EnergyMeter() {
                 <img src={EnergyCertTrust} alt="Energy Trust Certified" />
                 <img src={GreenBusinessCertified} alt="Green Business Certified" />
               </div>
-            </div>
           </div>
-        </div>
-        
-        <div className="brand-story-column">
-          <div className="media-container video">
-            <span>Brand Story</span>
-            <iframe
-              src=""
-              title="Brand Story Video Part 2"
-              alt="Brand Story Video Part 2"
-              frameBorder="0"
-              allowFullScreen
-            ></iframe>
-          </div>
-        </div>
-      </div>
+      
+      </div>    
+     </div>
     </div>
   );
 }
