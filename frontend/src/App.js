@@ -919,4 +919,5 @@ export default function EnergyMeter() {
      </div>
     </div>
   );
+  
 }
