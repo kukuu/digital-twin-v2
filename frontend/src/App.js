@@ -555,13 +555,15 @@ export default function EnergyMeter() {
           </SignedIn>
         </div>
         <div>
-          <Link to="/advertising" className="crumbtrail"> <small>Advertising | </small></Link>
-          <Link to="/pricing" className="crumbtrail"> <small>Pricing</small></Link>
+          {/*<Link to="/advertising" className="crumbtrail"> <small>Advertising | </small></Link>
+          <Link to="/pricing" className="crumbtrail"> <small>Pricing | </small></Link>*/}
+
+          <Link to="" className="crumbtrail"> <small> Newsletter</small></Link>
         </div>
       </nav>
 
       <div className="main-content-container">
-        <div className="sideBar">
+       {/*<div className="sideBar">
           <div className="ad-card">
             <h4>Premium Ad Spot</h4>
             <p>Available for your brand</p>
@@ -585,7 +587,10 @@ export default function EnergyMeter() {
             </div>
           </div>
 
-          {/*<div className="ad-card">
+
+
+
+          <div className="ad-card">
             <h4>100% Organic  Booster</h4>
             <p>The Power of Nature.Organic Tree Bark.</p>
             <div className="ad-placeholder">
@@ -599,7 +604,11 @@ export default function EnergyMeter() {
             <div className="ad-placeholder">
               <img src={ElectricGreenerBiker} alt="Electric Green Bike" className="ad-image" />
             </div>
-          </div>*/}
+          </div>
+
+
+
+
           <div className="ad-card">
             <h4>Smart Meter</h4>
             <p>The rise of smart tariffs</p>
@@ -619,7 +628,7 @@ export default function EnergyMeter() {
             <p>Available</p>
             <div className="ad-placeholder"></div>
           </div>
-        </div>
+        </div>*/}
         
 
         <div className="content-area">
@@ -683,7 +692,7 @@ export default function EnergyMeter() {
                     >
                       Close Results
                     </button>
-                    <p>To better serve your energy needs, we kindly request that you <br /><a href='/newsletter' className="subscribe-newsletter"><strong>Subscribe to our NEWSLETTER </strong></a> - $1.99 per month, <br />and share your past electricity meter readings with us. This data will enable us to make informed decisions through careful monitoring and analysis.
+                    <p>To better serve your energy needs, we kindly request that you <br /><a href='' className="subscribe-newsletter"><strong>Subscribe to our NEWSLETTER </strong></a> - $1.99 per month, <br />and share your past electricity meter readings with us. This data will enable us to make informed decisions through careful monitoring and analysis.
                     We have provided samples of how Meter Readings are modelled using AI and Machine Learning models to reflect peaks, load shedding and other anomalies including tampering.
                     Based on our assessment, we can provide you with a personalised account page with interactive Visualisation Dashboard, 
                     and recommend a more competitive energy provider with a tariff better suited to your consumption patterns.
@@ -754,7 +763,7 @@ export default function EnergyMeter() {
               <div className="ad-label">
                 <div className="media-grid">
                   <div className="media-container video">
-                    <span>Premium Ad Placement - Available!</span>
+                    <span><a href="/pricing">Premium Ad Placement - Available!</a></span>
                     <iframe
                       src=""
                       title="Dummy Video"
@@ -851,7 +860,7 @@ export default function EnergyMeter() {
         
         <div className="brand-story-column">
           <div className="media-container video">
-            <span>Brand Story - Available</span>
+            <span><a href="/pricing">Brand Story - Available</a></span>
             <iframe
               src=""
               title="Brand Story Video Part 2"
