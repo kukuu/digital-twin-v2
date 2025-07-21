@@ -1,3 +1,4 @@
+"use strict";
 import React, { useState, useEffect, useCallback, useRef, memo } from "react";
 import io from "socket.io-client";
 import { Line } from 'react-chartjs-2';
