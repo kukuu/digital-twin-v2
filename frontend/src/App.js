@@ -2,16 +2,8 @@ import React, { useState, useEffect, useCallback, useRef, memo } from "react";
 import io from "socket.io-client";
 import { Line } from 'react-chartjs-2';
 import { Chart, registerables } from 'chart.js';
-import paperWhisky from './images/whisky-in-paper-bottle.png';
-import woodenbike from './images/wooden-bicycle.jpg';
 import heatpump from './images/heat-pump.png';
 import hellofresh from './images/dt-1-hello-fresh-co-uk.png';
-import lovejoint from './images/dt-2-love-joint.png';
-import productShowcase from './images/product-showcase-2.png';
-import VitaminD from './images/dt-6-VD.png';
-import PrtableSolarFan from './images/edf-portable-solar-fan.png';
-import ElectricGreenerBiker from './images/temu-electric-bike.png';
-import BubbleGun from './images/bubble-gun.png';
 import EnergyCertTrust from './images/energy-saving-certified.png';
 import GreenBusinessCertified from './images/green-business-cert.png';
 import EDFSmartMeter from './images/edf-smart-meter.png';
@@ -644,9 +636,9 @@ export default function EnergyMeter() {
             <UserButton afterSignOutUrl="/" />
           </SignedIn>
         </div>
-        <div>
+        {/*<div>
           <Link to="" className="crumbtrail"> <small> Newsletter</small></Link>
-        </div>
+        </div>*/}
       </nav>
 
       <div className="main-content-container">
