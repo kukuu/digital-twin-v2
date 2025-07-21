@@ -1,337 +1,633 @@
-"use client";
-
-import React, { useState, useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
-import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/clerk-react";
+import React, { useState, useEffect, useCallback, useRef, memo } from "react";
+import io from "socket.io-client";
+import { Line } from 'react-chartjs-2';
+import { Chart, registerables } from 'chart.js';
+import paperWhisky from './images/whisky-in-paper-bottle.png';
+import woodenbike from './images/wooden-bicycle.jpg';
+import heatpump from './images/heat-pump.png';
+import hellofresh from './images/dt-1-hello-fresh-co-uk.png';
+import lovejoint from './images/dt-2-love-joint.png';
+import productShowcase from './images/product-showcase-2.png';
+import VitaminD from './images/dt-6-VD.png';
+import PrtableSolarFan from './images/edf-portable-solar-fan.png';
+import ElectricGreenerBiker from './images/temu-electric-bike.png';
+import BubbleGun from './images/bubble-gun.png';
+import EnergyCertTrust from './images/energy-saving-certified.png';
+import GreenBusinessCertified from './images/green-business-cert.png';
+import EDFSmartMeter from './images/edf-smart-meter.png';
 import { Link } from 'react-router-dom';
-import "./Pricing.css";
-import "../App.css";
+import {
+  SignedIn,
+  SignedOut,
+  SignInButton,
+  UserButton,
+  useUser,
+} from "@clerk/clerk-react";
+import "./App.css";
 import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useForm } from "react-hook-form";
 
-export default function PricingPage() {
-  // State management
-  const [selectedImageAd, setSelectedImageAd] = useState("");
-  const [selectedVideoAd, setSelectedVideoAd] = useState("");
-  const [paymentError, setPaymentError] = useState("");
-  const [isProcessing, setIsProcessing] = useState(false);
-  const [activeAdExample, setActiveAdExample] = useState(null);
-  const [paypalLoaded, setPaypalLoaded] = useState(false);
-  const [paypalError, setPaypalError] = useState(false);
+// Register Chart.js components
+Chart.register(...registerables);
 
-  // Form handling
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    watch,
-    reset
-  } = useForm();
+// Define socket connection based on environment
+const socket = io(
+  process.env.NODE_ENV === "production"
+    ? process.env.REACT_APP_BACKEND_URL_PROD
+    : process.env.REACT_APP_BACKEND_URL_DEV
+);
 
-  // Constants for ad options
-  const imageAdOptions = [
-    { id: "image-6months", duration: "6 months", price: 160, discount: "" },
-    { id: "image-12months", duration: "12 months", price: 330, discount: "20% off" }
-  ];
+// Apps Script URL from environment variable
+const APPS_SCRIPT_URL = process.env.REACT_APP_APPS_SCRIPT_URL;
 
-  const videoAdOptions = [
-    { id: "video-6months", duration: "6 months", price: 180, discount: "" },
-    { id: "video-12months", duration: "12 months", price: 350, discount: "20% off" }
-  ];
+// Affiliate configuration for energy suppliers
+const AFFILIATE_CONFIG = {
+  "Octopus Energy": {
+    baseUrl: "https://octopus.energy/",
+    affiliateParam: "?ref=SPYDER-AFFILIATE",
+    trackingId: "SPYDER-OCTOPUS",
+    commissionRate: 0.05, // 5% commission
+    contact: "0808 164 1088",
+    defaultTariff: "Flexible Octopus",
+    defaultCost: 23.28
+  },
+  "EDF Energy": {
+    baseUrl: "https://www.edfenergy.com/",
+    affiliateParam: "?affiliate=SPYDER",
+    trackingId: "SPYDER-EDF",
+    commissionRate: 0.04, // 4% commission
+    contact: "0333 200 5100",
+    defaultTariff: "Fixed",
+    defaultCost: 23.28
+  },
+  "E.ON Next": {
+    baseUrl: "https://www.eonnext.com/",
+    affiliateParam: "?utm_source=SPYDER",
+    trackingId: "SPYDER-EON",
+    commissionRate: 0.03, // 3% commission
+    contact: "0808 501 5200",
+    defaultTariff: "Next Flex",
+    defaultCost: 25.69
+  }
+};
 
+// Function to generate affiliate links
+const generateAffiliateLink = (supplier, customParams = {}) => {
+  const config = AFFILIATE_CONFIG[supplier];
+  if (!config) return null;
   
+  const url = new URL(config.baseUrl);
+  url.searchParams.set('affiliate_id', config.trackingId);
+  url.searchParams.set('utm_source', 'SPYDER');
+  url.searchParams.set('utm_medium', 'affiliate');
+  url.searchParams.set('utm_campaign', 'energy_switch');
+  
+  // Add custom parameters if provided
+  Object.entries(customParams).forEach(([key, value]) => {
+    url.searchParams.set(key, value);
+  });
+  
+  return url.toString();
+};
 
+// Meter data with dynamic affiliate links
+let meterData = {
+  "SMR-98756-1-A": {
+    supplier: "Octopus Energy",
+    cost: AFFILIATE_CONFIG["Octopus Energy"].defaultCost,
+    tariff: AFFILIATE_CONFIG["Octopus Energy"].defaultTariff,
+    total: 0,
+    contact: AFFILIATE_CONFIG["Octopus Energy"].contact,
+    target: AFFILIATE_CONFIG["Octopus Energy"].baseUrl,
+    affiliateLink: generateAffiliateLink("Octopus Energy", { tariff: "flexible" }),
+    commissionRate: AFFILIATE_CONFIG["Octopus Energy"].commissionRate
+  },
+  "SMR-43563-2-A": {
+    supplier: "EDF Energy",
+    cost: AFFILIATE_CONFIG["EDF Energy"].defaultCost,
+    tariff: AFFILIATE_CONFIG["EDF Energy"].defaultTariff,
+    total: 0,
+    contact: AFFILIATE_CONFIG["EDF Energy"].contact,
+    target: AFFILIATE_CONFIG["EDF Energy"].baseUrl,
+    affiliateLink: generateAffiliateLink("EDF Energy", { plan: "fixed" }),
+    commissionRate: AFFILIATE_CONFIG["EDF Energy"].commissionRate
+  },
+  "SMR-65228-1-B": {
+    supplier: "E.ON Next",
+    cost: AFFILIATE_CONFIG["E.ON Next"].defaultCost,
+    tariff: AFFILIATE_CONFIG["E.ON Next"].defaultTariff,
+    total: 0,
+    contact: AFFILIATE_CONFIG["E.ON Next"].contact,
+    target: AFFILIATE_CONFIG["E.ON Next"].baseUrl,
+    affiliateLink: generateAffiliateLink("E.ON Next", { plan: "nextflex" }),
+    commissionRate: AFFILIATE_CONFIG["E.ON Next"].commissionRate
+  }
+};
 
-  const sideBarPremiumImage = [
-    { id: "image-6months", duration: "6 months", price: 180, discount: "" },
-    { id: "image-12months", duration: "12 months", price: 288, discount: "20% off" }
-  ];
+// Function to track affiliate clicks
+const trackAffiliateClick = (supplier, meterId) => {
+  // In a real implementation, this would send data to your analytics backend
+  console.log(`Affiliate click tracked for ${supplier} from meter ${meterId}`);
+  
+  // Example: Send to Google Analytics or your tracking system
+  if (window.gtag) {
+    window.gtag('event', 'affiliate_click', {
+      'event_category': 'affiliate',
+      'event_label': supplier,
+      'value': meterId
+    });
+  }
+  
+  // Store in localStorage for session tracking
+  const clickData = {
+    supplier,
+    meterId,
+    timestamp: new Date().toISOString(),
+    userId: localStorage.getItem('userId') || 'anonymous'
+  };
+  
+  localStorage.setItem(`lastAffiliateClick_${meterId}`, JSON.stringify(clickData));
+};
 
-  const sideBarPremiumVideo = [
-    { id: "video-6months", duration: "6 months", price: 200, discount: "" },
-    { id: "video-12months", duration: "12 months", price: 320, discount: "20% off" }
-  ];
-
-  const sideBarStandardImage = [
-    { id: "image-6months", duration: "6 months", price: 140, discount: "" },
-    { id: "image-12months", duration: "12 months", price: 224, discount: "20% off" }
-  ];
-
-  const sideBarStandardVideo = [
-    { id: "image-6months", duration: "6 months", price: 165, discount: "" },
-    { id: "image-12months", duration: "12 months", price: 264, discount: "20% off" }
-  ];
-
-  const adPlacementInContentImage= [
-    { id: "image-6months", duration: "6 months", price: 380, discount: "" },
-    { id: "image-12months", duration: "12 months", price: 608, discount: "20% off" }
-  ];
-
-
-  const adPlacementInContentVideo = [
-    { id: "video-6months", duration: "6 months", price: 400, discount: "" },
-    { id: "video-12months", duration: "12 months", price: 640, discount: "20% off" }
-  ];
-
-  const productShowCaseImage = [
-    { id: "image-6months", duration: "6 months", price: 670, discount: "" },
-    { id: "image-12months", duration: "12 months", price: 1072, discount: "20% off" }
-  ];
-
-  const productShowCaseVideo= [
-    { id: "video-6months", duration: "6 months", price: 690, discount: "" },
-    { id: "video-12months", duration: "12 months", price: 1104, discount: "20% off" }
-  ];
-
-  const premiumAdPlacementImage = [
-    { id: "image-6months", duration: "6 months", price: 600, discount: "" },
-    { id: "image-12months", duration: "12 months", price: 960, discount: "20% off" }
-  ];
-
-  const premiumAdPlacementVideo = [
-    { id: "video-6months", duration: "6 months", price: 700, discount: "" },
-    { id: "video-12months", duration: "12 months", price: 1120, discount: "20% off" }
-  ];
-
-  const productBrandStory= [
-    { id: "6months", duration: "6 months", price: 850, discount: "" },
-    { id: "12months", duration: "12 months", price: 1410, discount: "20% off" }
-  ];
-
-
-
-
-  const adExamples = [
-    {
-      id: "banner-ad",
-      title: "Premium Banner",
-      description: "Top-of-page placement with maximum visibility. Perfect for brand awareness campaigns.",
-      dimensions: "1200x200px",
-      impressions: "50,000+ monthly",
-      type: "banner"
-    },
-
-    {
-      id: "sidebar-ad-premium-image",
-      title: "Sidebar  Image",
-      description: "Persistent visibility on all pages. Great for targeted promotions.",
-      dimensions: "300x600px",
-      impressions: "30,000+ monthly",
-      type: "sidebar"
-    },
-
-    {
-      id: "sidebar-ad-premium-video",
-      title: "Sidebar  Video",
-      description: "Persistent visibility on all pages. Great for targeted promotions.",
-      dimensions: "300x600px",
-      impressions: "30,000+ monthly",
-      type: "sidebar"
-    },
-
-    {
-      id: "inContent-ad-image",
-      title: "In Content Image",
-      description: "Persistent visibility on all pages. Great for targeted promotions.",
-      dimensions: "Flexible",
-      impressions: "30,000+ monthly",
-      type: "inContent"
-    },
-
-    {
-      id: "inContent-ad-video",
-      title: "In Content Video",
-      description: "Persistent visibility on all pages. Great for targeted promotions.",
-      dimensions: "Flexible",
-      impressions: "30,000+ monthly",
-      type: "inContent"
-    },
-
-    {
-      id: "premium-ad-image",
-      title: "Premium Image",
-      description: "Persistent visibility on all pages. Great for targeted promotions.",
-      dimensions: "1200x200px",
-      impressions: "30,000+ monthly",
-      type: "premiumImage"
-    },
-
-
-    {
-      id: "premium-ad-video",
-      title: "Premium Video",
-      description: "Persistent visibility on all pages. Great for targeted promotions.",
-      dimensions: "1200x200px",
-      impressions: "30,000+ monthly",
-      type: "premiumVideo"
-    },
-
-
-    {
-      id: "product-showcase-ad-image",
-      title: "Product Showcase Image",
-      description: "Persistent visibility on all pages. Great for targeted promotions.",
-      dimensions: "800x400px",
-      impressions: "30,000+ monthly",
-      type: "iinContent"
-    },
-
-    {
-      id: "product-showcase-ad-video",
-      title: "Product Showcase Video",
-      description: "Persistent visibility on all pages. Great for targeted promotions.",
-      dimensions: "800x400px",
-      impressions: "30,000+ monthly",
-      type: "iinContent"
-    },
-
-
-    {
-      id: "brand-story-ad",
-      title: "Brand Story",
-      description: "Persistent visibility on all pages. Great for targeted promotions.",
-      dimensions: "800x400px",
-      impressions: "30,000+ monthly",
-      type: "iinContent"
-    }
-
-    
-  ];
-
-  // Load PayPal script
-  useEffect(() => {
-    const loadPayPalScript = () => {
-      if (typeof window !== 'undefined' && window.paypal) {
-        setPaypalLoaded(true);
-        return;
-      }
-      
-      const timer = setTimeout(() => {
-        if (window.paypal) {
-          setPaypalLoaded(true);
-        }
-      }, 1000);
-
-      return () => clearTimeout(timer);
+const Modal = memo(
+  ({
+    readings,
+    onReadingChange,
+    onDateChange,
+    onAddReading,
+    onRemoveReading,
+    onClose,
+    onSend,
+    onPay,
+    isSending,
+    meterInfo,
+    onAccountNumberChange,
+  }) => {
+    const calculateTotal = () => {
+      return readings.reduce((sum, reading) => {
+        const value = parseFloat(reading.value) || 0;
+        return sum + (value * (meterInfo.cost / 100));
+      }, 0).toFixed(2);
     };
 
-    loadPayPalScript();
+    const handleAffiliateClick = () => {
+      trackAffiliateClick(meterInfo.supplier, meterInfo.id);
+      window.open(meterInfo.affiliateLink, "_blank");
+    };
+
+    return (
+      <div className="modal-overlay">
+        <div className="modal-content">
+          <div className="modal-header">
+            <div>
+              <h2>Meter Details - {meterInfo.id}</h2>
+            </div>
+            <button className="close-button" onClick={onClose}>
+              ×
+            </button>
+          </div>
+          <div className="modal-body">
+            <button 
+              className="switch-supplier-button"
+              onClick={handleAffiliateClick}
+            >
+              Switch to {meterInfo.supplier}
+            </button>
+            <small>We earn a {meterInfo.commissionRate * 100}% commission if you switch</small>
+
+            <div className="detail-row">
+              <div className="account-number-input">
+                <h3>Customer Email:</h3>
+                <input
+                  type="text"
+                  id="accountNumber"
+                  value={meterInfo.accountNumber}
+                  onChange={onAccountNumberChange}
+                  placeholder="Enter your email"
+                  className="account-input"
+                />
+              </div>
+              <h3><span className="updateReader">Send your reading(s)</span></h3>
+              {readings.map((reading, index) => (
+                <div key={index} className="reading-row">
+                  <div className="reading-input-container">
+                    <input
+                      type="number"
+                      value={reading.value}
+                      onChange={(e) => onReadingChange(index, e.target.value)}
+                      className="reading-input"
+                      step="0.01"
+                      min="0"
+                      placeholder="Reading value"
+                    />
+                    <span className="reading-unit">kWh</span>
+                  </div>
+                  <div className="date-input-container">
+                    <input
+                      type="date"
+                      value={reading.date}
+                      onChange={(e) => onDateChange(index, e.target.value)}
+                      className="date-input"
+                    />
+                  </div>
+                  {index === readings.length - 1 ? (
+                    <button 
+                      type="button" 
+                      className="add-reading-button"
+                      onClick={onAddReading}
+                    >
+                      +
+                    </button>
+                  ) : (
+                    <button 
+                      type="button" 
+                      className="remove-reading-button"
+                      onClick={() => onRemoveReading(index)}
+                    >
+                      -
+                    </button>
+                  )}
+                </div>
+              ))}
+            </div>
+            <div className="detail-row">
+              <h3>Supplier Information</h3>      
+              <p>Supplier: <span className="energy-supplier">{meterInfo.supplier}</span></p>
+              <p>Tariff Type: {meterInfo.tariff}</p>
+            </div>
+            <div className="detail-row">
+              <h3>How much you will be paying</h3>
+              <p>Rate per kWh: {meterInfo.cost}p</p>
+              <p>Total Cost: £{calculateTotal()}</p>
+            </div>
+            <div className="detail-row">
+              <button
+                className="send-reading-button"
+                onClick={onSend}
+                disabled={isSending}
+              >
+                {isSending ? "Sending..." : "Send Meter Reading"}
+              </button>
+              <button
+                className="paypal-payment-button"
+                onClick={onPay}
+                disabled={isSending}
+              >
+                Payment Gateway
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+);
+
+Modal.displayName = "Modal";
+
+export default function EnergyMeter() {
+  const [readings, setReadings] = useState({});
+  const [historicalData, setHistoricalData] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [isReadingActive, setIsReadingActive] = useState(true);
+  const [showModal, setShowModal] = useState(false);
+  const { user } = useUser();
+  const [isSending, setIsSending] = useState(false);
+  const [modalData, setModalData] = useState(null);
+  const [meterReadings, setMeterReadings] = useState([{ value: "", date: new Date().toISOString().split('T')[0] }]);
+  const [calculatedResults, setCalculatedResults] = useState([]);
+  const [userReading, setUserReading] = useState("");
+
+  const updateReading = useCallback(({ meter_id, reading, timestamp }) => {
+    setReadings((prevReadings) => {
+      const currentReading = parseFloat(reading) || 0;
+      const totalCost = (currentReading * (meterData[meter_id].cost / 100)).toFixed(2);
+      
+      const newReading = {
+        ...meterData[meter_id],
+        reading: reading.toFixed(2),
+        total: totalCost,
+      };
+      
+      setHistoricalData(prev => ({
+        ...prev,
+        [meter_id]: [
+          ...(prev[meter_id] || []),
+          { reading, timestamp }
+        ].slice(-20)
+      }));
+      
+      return {
+        ...prevReadings,
+        [meter_id]: newReading
+      };
+    });
+    setLoading(false);
   }, []);
 
-  // Form submission handler
-  const onSubmit = async (data) => {
-    setIsProcessing(true);
-    try {
-      console.log("Form submitted:", data);
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      toast.success(`Payment successful! Total: $${calculateTotal()}`);
-      resetForm();
-    } catch (error) {
-      setPaymentError("Payment processing failed. Please try again.");
-      console.error("Payment error:", error);
-      toast.error("Payment failed. Please try again.");
-    } finally {
-      setIsProcessing(false);
+  useEffect(() => {
+    socket.on("newReading", updateReading);
+    return () => socket.off("newReading", updateReading);
+  }, [updateReading]);
+
+  const handleCalculate = (e) => {
+    e.preventDefault();
+    const reading = parseFloat(userReading);
+    if (!isNaN(reading)) {
+      const results = Object.entries(meterData).map(([id, data]) => {
+        const calculatedCost = (reading * (data.cost / 100)).toFixed(2);
+        return {
+          id,
+          supplier: data.supplier,
+          cost: calculatedCost,
+          tariff: data.tariff,
+          contact: data.contact,
+          target: data.target,
+          affiliateLink: data.affiliateLink,
+          commissionRate: data.commissionRate,
+          total: calculatedCost
+        };
+      });
+      setCalculatedResults(results);
     }
   };
 
-  // PayPal integration
-  const createOrder = (data, actions) => {
-    if (!selectedImageAd && !selectedVideoAd) {
-      setPaymentError("Please select at least one ad option");
-      return actions.reject();
+  const handleCloseResults = () => {
+    setCalculatedResults([]);
+    setUserReading("");
+  };
+
+  const stopReading = () => {
+    socket.emit("stopReading");
+    setIsReadingActive(false);
+  };
+
+  const startReading = () => {
+    socket.emit("startReading");
+    setIsReadingActive(true);
+  };
+
+  const handleReadingChange = (index, value) => {
+    const newReadings = [...meterReadings];
+    newReadings[index].value = value;
+    setMeterReadings(newReadings);
+  };
+
+  const handleDateChange = (index, date) => {
+    const newReadings = [...meterReadings];
+    newReadings[index].date = date;
+    setMeterReadings(newReadings);
+  };
+
+  const handleAddReading = () => {
+    setMeterReadings([...meterReadings, { value: "", date: new Date().toISOString().split('T')[0] }]);
+  };
+
+  const handleRemoveReading = (index) => {
+    if (meterReadings.length > 1) {
+      const newReadings = [...meterReadings];
+      newReadings.splice(index, 1);
+      setMeterReadings(newReadings);
     }
-    
-    return actions.order.create({
-      purchase_units: [
-        {
-          amount: {
-            value: calculateTotal().toString(),
-            currency_code: "USD",
-            breakdown: {
-              item_total: {
-                value: calculateTotal().toString(),
-                currency_code: "USD"
-              }
-            }
+  };
+
+  const handleModalClose = useCallback(() => {
+    setShowModal(false);
+    setMeterReadings([{ value: "", date: new Date().toISOString().split('T')[0] }]);
+    startReading();
+  }, []);
+
+  const handleSendReading = useCallback(async () => {
+    if (modalData && user) {
+      setIsSending(true);
+      try {
+        const response = await fetch(APPS_SCRIPT_URL, {
+          method: "POST",
+          redirect: "follow",
+          headers: {
+            "Content-Type": "text/plain;charset=utf-8",
           },
-          items: getSelectedItems()
+          body: JSON.stringify({
+            userEmail: user.primaryEmailAddress.emailAddress,
+            meterData: {
+              id: modalData.id,
+              readings: meterReadings,
+              supplier: modalData.supplier,
+              tariff: modalData.tariff,
+              cost: modalData.cost,
+              total: meterReadings.reduce((sum, reading) => {
+                const value = parseFloat(reading.value) || 0;
+                return sum + (value * (modalData.cost / 100));
+              }, 0).toFixed(2),
+              accountNumber: modalData.accountNumber,
+            },
+          }),
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          toast.success("Meter reading details sent!");
+          setShowModal(false);
+          setMeterReadings([{ value: "", date: new Date().toISOString().split('T')[0] }]);
+          startReading();
+        } else {
+          throw new Error(data.error || "Failed to send email");
         }
-      ],
-      application_context: {
-        shipping_preference: "NO_SHIPPING"
+      } catch (error) {
+        console.error("Email error:", error);
+        toast.error("Failed to send email: " + error.message);
+      } finally {
+        setIsSending(false);
       }
-    });
-  };
-
-  const onApprove = (data, actions) => {
-    return actions.order.capture().then((details) => {
-      toast.success(`Transaction completed by ${details.payer.name.given_name}`);
-      resetForm();
-    });
-  };
-
-  const onError = (err) => {
-    console.error("PayPal error:", err);
-    setPaymentError("Payment failed. Please try another method.");
-    toast.error("Payment failed. Please try another method.");
-  };
-
-  const onCancel = (data) => {
-    console.log("Payment cancelled:", data);
-    setPaymentError("Payment was cancelled");
-    toast.warning("Payment was cancelled");
-  };
-
-  // Helper functions
-  const calculateTotal = () => {
-    let total = 0;
-    const imageAd = imageAdOptions.find(opt => opt.duration === selectedImageAd);
-    const videoAd = videoAdOptions.find(opt => opt.duration === selectedVideoAd);
-    
-    if (imageAd) total += imageAd.price;
-    if (videoAd) total += videoAd.price;
-    
-    return total;
-  };
-
-  const getSelectedItems = () => {
-    const items = [];
-    if (selectedImageAd) {
-      const option = imageAdOptions.find(opt => opt.duration === selectedImageAd);
-      items.push({
-        name: `Image Ad (${option.duration})`,
-        unit_amount: {
-          value: option.price.toString(),
-          currency_code: "USD"
-        },
-        quantity: "1"
-      });
     }
-    if (selectedVideoAd) {
-      const option = videoAdOptions.find(opt => opt.duration === selectedVideoAd);
-      items.push({
-        name: `Video Ad (${option.duration})`,
-        unit_amount: {
-          value: option.price.toString(),
-          currency_code: "USD"
-        },
-        quantity: "1"
-      });
+  }, [modalData, user, meterReadings]);
+
+  const handlePay = useCallback(() => {
+    const total = meterReadings.reduce((sum, reading) => {
+      const value = parseFloat(reading.value) || 0;
+      return sum + (value * (modalData.cost / 100));
+    }, 0).toFixed(2);
+    console.log("Paying £" + total);
+  }, [modalData, meterReadings]);
+
+  const handleAccountNumberChange = useCallback((e) => {
+    setModalData((prev) => ({
+      ...prev,
+      accountNumber: e.target.value,
+    }));
+  }, []);
+
+  const handleMeterSelect = useCallback((meterId, data, e) => {
+    if (e.target.closest('.target-link')) {
+      return;
     }
-    return items;
+    
+    stopReading();
+    const meterSnapshot = {
+      id: meterId,
+      reading: data.reading,
+      supplier: data.supplier,
+      tariff: data.tariff,
+      cost: data.cost,
+      total: data.total,
+      emailAddress: "",
+      accountNumber: "",
+      affiliateLink: data.affiliateLink,
+      commissionRate: data.commissionRate
+    };
+    setModalData(meterSnapshot);
+    setMeterReadings([{ value: data.reading || "", date: new Date().toISOString().split('T')[0] }]);
+    setShowModal(true);
+  }, []);
+
+  const handleResultClick = (result) => {
+    stopReading();
+    const currentReading = parseFloat(userReading) || 0;
+    const totalCost = (currentReading * (result.cost / 100)).toFixed(2);
+    
+    const meterSnapshot = {
+      id: result.id,
+      reading: userReading || "0",
+      supplier: result.supplier,
+      tariff: result.tariff,
+      cost: result.cost,
+      total: totalCost,
+      emailAddress: "",
+      accountNumber: "",
+      affiliateLink: result.affiliateLink,
+      commissionRate: result.commissionRate
+    };
+    setModalData(meterSnapshot);
+    setMeterReadings([{ value: userReading || "", date: new Date().toISOString().split('T')[0] }]);
+    setShowModal(true);
   };
 
-  const resetForm = () => {
-    setSelectedImageAd("");
-    setSelectedVideoAd("");
-    setPaymentError("");
-    reset();
+  const handleAffiliateLinkClick = (supplier, meterId, e) => {
+    e.stopPropagation();
+    trackAffiliateClick(supplier, meterId);
+    // Link will open naturally via the anchor tag
   };
 
-  const handleAdExampleClick = (adId) => {
-    setActiveAdExample(adId === activeAdExample ? null : adId);
+  const renderModal = () => {
+    if (!modalData || !showModal) return null;
+
+    return (
+      <Modal
+        readings={meterReadings}
+        onReadingChange={handleReadingChange}
+        onDateChange={handleDateChange}
+        onAddReading={handleAddReading}
+        onRemoveReading={handleRemoveReading}
+        onClose={handleModalClose}
+        onSend={handleSendReading}
+        onPay={handlePay}
+        isSending={isSending}
+        meterInfo={modalData}
+        onAccountNumberChange={handleAccountNumberChange}
+      />
+    );
   };
+
+  const MeterRow = ({ meterId, data, isInteractive }) => {
+    const chartData = {
+      labels: historicalData[meterId]?.map((_, i) => i) || [],
+      datasets: [{
+        label: 'Energy Usage (kWh)',
+        data: historicalData[meterId]?.map(d => d.reading) || [],
+        borderColor: 'rgb(75, 192, 192)',
+        tension: 0.1,
+        fill: false
+      }]
+    };
+
+    const currentReading = parseFloat(data.reading) || 0;
+    const totalCost = (currentReading * (data.cost / 100)).toFixed(2);
+
+    return (
+      <div className="meter-row">
+        <div
+          className={`card ${isInteractive ? "card-interactive" : "card-disabled"}`}
+          onClick={isInteractive ? (e) => handleMeterSelect(meterId, data, e) : undefined}
+        >
+          <div className="card-header">
+            <div className="card-title">
+              {`Meter ${meterId}`}
+              <span className="status-indicator">
+                <span className={`ping ${isReadingActive ? "active" : "stopped"}`}></span>
+                <span className={`dot ${isReadingActive ? "active" : "stopped"}`}></span>
+              </span>
+            </div>
+          </div>
+          <div className="card-content">
+            <div className="reading-display">
+              <span>{data.reading}</span>
+              <span className="unit">kWh</span>
+              <p className="changeReading">Send your reading(s).</p>
+            </div>
+            <div className="other-display">
+              <span className="unit2">Supplier:</span>
+              <span>{data.supplier}</span>
+            </div>
+            <div className="other-display">
+              <span className="unit2">Tariff:</span>
+              <span>{data.tariff}</span>
+            </div>
+            <div className="other-display">
+              <span className="unit2">Cost per kWh:</span>
+              <span>{data.cost}p</span>
+            </div>
+            <div className="other-display">
+              <span className="unit2">Total Cost:</span>
+              <span>£{totalCost}</span>
+            </div>
+            <div>Contact: {data.contact}</div>
+            {data.target && (
+              <div className="target-link" onClick={(e) => handleAffiliateLinkClick(data.supplier, meterId, e)}>
+                <a href={data.affiliateLink} target="_blank" rel="noopener noreferrer">
+                  SWITCH! (Earn us {data.commissionRate * 100}%)
+                </a>
+              </div>
+            )}
+          </div>
+        </div>
+        <br />
+        <div className="meter-graph">
+          <Line 
+            data={chartData}
+            options={{
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                legend: {
+                  display: false
+                }
+              },
+              scales: {
+                y: {
+                  beginAtZero: false
+                }
+              }
+            }}
+          />
+        </div>
+      </div>
+    );
+  };
+
+  const MeterGrid = ({ isInteractive = true }) => (
+    <div className="meter-grid">
+      {Object.entries(readings).map(([meterId, data]) => (
+        <MeterRow 
+          key={meterId}
+          meterId={meterId}
+          data={data}
+          isInteractive={isInteractive}
+        />
+      ))}
+    </div>
+  );
 
   return (
     <div className="app-container">
@@ -348,592 +644,272 @@ export default function PricingPage() {
             <UserButton afterSignOutUrl="/" />
           </SignedIn>
         </div>
-         <div>
-           <Link to="" className="crumbtrail"><small>Newsletter </small></Link>
-            {/*<Link to="/advertising" className="crumbtrail"> <small> | Advertising | </small></Link>
-            <Link to="/pricing" className="crumbtrail"> <small>Pricing</small></Link> */}
+        <div>
+          <Link to="" className="crumbtrail"> <small> Newsletter</small></Link>
         </div>
       </nav>
 
-      <div className="advertising-header">
-        <h1>Pricing Plans</h1>
-        <p>
-          Promote your business on our platform to reach thousands of energy-conscious consumers.
-          The <strong>SPYDER</strong> Digital Twin Smart Energy Meter Reader helps users find the
-          best electricity meters at competitive prices.
-        </p>
-      </div>
-
-      <div className="advertising-columns">
-        <div className="form-section">
-          <form onSubmit={handleSubmit(onSubmit)} className="advertising-form">
-
-          <div className="form-group">
-              <h2><i className="icon-image"></i> Premium Banner</h2>
-              <p className="section-description">
-                Static image advertisements displayed throughout our platform.
-                Perfect for product promotions and brand awareness.
+      <div className="main-content-container">
+        <div className="content-area">
+          <div className="container">
+            <h3 className="title">Price Comparison Smart Energy Meter Reader</h3>
+            <p className="app-description">
+              The <strong>SPYDER</strong> Digital Twin Smart Energy Meter Reader,
+              helps you find the best electricity tariff at the most competitive
+              price. Compare different meters, check prices and choose the right
+              option to save on energy bills. The Reader also serves as a forecasting system, a settlement tool and a Net Zero initiative.
+            </p>
+            <SignedOut>
+              <p className="auth-prompt">
+                Start comparing now and make smarter choices for your electricity
+                usage. Please &nbsp;
+                <SignInButton mode="modal" className="login-button">
+                  Sign in &nbsp;
+                </SignInButton>
+                &nbsp;&nbsp; and select a Smart Meter!
               </p>
-              <div className="options-grid">
-                {imageAdOptions.map((option) => (
-                  <div 
-                    className={`option-card ${selectedImageAd === option.duration ? 'selected' : ''}`}
-                    key={option.id}
-                    onClick={() => setSelectedImageAd(option.duration)}
-                  >
-                    <input
-                      type="radio"
-                      id={option.id}
-                      name="imageAd"
-                      checked={selectedImageAd === option.duration}
-                      onChange={() => {}}
-                      hidden
-                    />
-                    <label htmlFor={option.id}>
-                      <span className="duration">{option.duration}</span>
-                      {option.discount && <span className="discount-badge">{option.discount}</span>}
-                      <span className="price">${option.price}</span>
-                    </label>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-
-
-          <div className="form-group">
-              <h2><i className="icon-image"></i> Premium Image</h2>
-              <p className="section-description">
-                Static image advertisements displayed throughout our platform.
-                Perfect for product promotions and brand awareness.
-              </p>
-              <div className="options-grid">
-                {imageAdOptions.map((option) => (
-                  <div 
-                    className={`option-card ${selectedImageAd === option.duration ? 'selected' : ''}`}
-                    key={option.id}
-                    onClick={() => setSelectedImageAd(option.duration)}
-                  >
-                    <input
-                      type="radio"
-                      id={option.id}
-                      name="imageAd"
-                      checked={selectedImageAd === option.duration}
-                      onChange={() => {}}
-                      hidden
-                    />
-                    <label htmlFor={option.id}>
-                      <span className="duration">{option.duration}</span>
-                      {option.discount && <span className="discount-badge">{option.discount}</span>}
-                      <span className="price">${option.price}</span>
-                    </label>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-
-            <div className="form-group">
-              <h2><i className="icon-image"></i> Premium Video</h2>
-              <p className="section-description">
-                Video advertisements displayed throughout our platform.
-                Perfect for product promotions and brand awareness.
-              </p>
-              <div className="options-grid">
-                {imageAdOptions.map((option) => (
-                  <div 
-                    className={`option-card ${selectedImageAd === option.duration ? 'selected' : ''}`}
-                    key={option.id}
-                    onClick={() => setSelectedImageAd(option.duration)}
-                  >
-                    <input
-                      type="radio"
-                      id={option.id}
-                      name="videoAd"
-                      checked={selectedImageAd === option.duration}
-                      onChange={() => {}}
-                      hidden
-                    />
-                    <label htmlFor={option.id}>
-                      <span className="duration">{option.duration}</span>
-                      {option.discount && <span className="discount-badge">{option.discount}</span>}
-                      <span className="price">${option.price}</span>
-                    </label>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-
-            <div className="form-group">
-              <h2><i className="icon-image"></i> In-Content Image Promotion</h2>
-              <p className="section-description">
-                Static image advertisements displayed throughout our platform.
-                Perfect for product promotions and brand awareness.
-              </p>
-              <div className="options-grid">
-                {imageAdOptions.map((option) => (
-                  <div 
-                    className={`option-card ${selectedImageAd === option.duration ? 'selected' : ''}`}
-                    key={option.id}
-                    onClick={() => setSelectedImageAd(option.duration)}
-                  >
-                    <input
-                      type="radio"
-                      id={option.id}
-                      name="imageAd"
-                      checked={selectedImageAd === option.duration}
-                      onChange={() => {}}
-                      hidden
-                    />
-                    <label htmlFor={option.id}>
-                      <span className="duration">{option.duration}</span>
-                      {option.discount && <span className="discount-badge">{option.discount}</span>}
-                      <span className="price">${option.price}</span>
-                    </label>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="form-group">
-              <h2 className="video-ads"><i className="icon-video"></i> In-Content Video Promotion</h2>
-              <p className="section-description">
-                Dynamic video content in premium placements. Higher engagement
-                and conversion rates.
-              </p>
-              <div className="options-grid">
-                {videoAdOptions.map((option) => (
-                  <div 
-                    className={`option-card ${selectedVideoAd === option.duration ? 'selected' : ''}`}
-                    key={option.id}
-                    onClick={() => setSelectedVideoAd(option.duration)}
-                  >
-                    <input
-                      type="radio"
-                      id={option.id}
-                      name="videoAd"
-                      checked={selectedVideoAd === option.duration}
-                      onChange={() => {}}
-                      hidden
-                    />
-                    <label htmlFor={option.id}>
-                      <span className="duration">{option.duration}</span>
-                      {option.discount && <span className="discount-badge">{option.discount}</span>}
-                      <span className="price">${option.price}</span>
-                    </label>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-
-            <div className="form-group">
-              <h2 className="video-ads"><i className="icon-video"></i> Side Bar Image</h2>
-              <p className="section-description">
-                Image content in premium placements. Higher engagement
-                and conversion rates.
-              </p>
-              <div className="options-grid">
-                {imageAdOptions.map((option) => (
-                  <div 
-                    className={`option-card ${selectedVideoAd === option.duration ? 'selected' : ''}`}
-                    key={option.id}
-                    onClick={() => setSelectedVideoAd(option.duration)}
-                  >
-                    <input
-                      type="radio"
-                      id={option.id}
-                      name="imageAd"
-                      checked={selectedVideoAd === option.duration}
-                      onChange={() => {}}
-                      hidden
-                    />
-                    <label htmlFor={option.id}>
-                      <span className="duration">{option.duration}</span>
-                      {option.discount && <span className="discount-badge">{option.discount}</span>}
-                      <span className="price">${option.price}</span>
-                    </label>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="form-group">
-              <h2 className="video-ads"><i className="icon-video"></i> Side Bar Video</h2>
-              <p className="section-description">
-                Dynamic video content in premium placements. Higher engagement
-                and conversion rates.
-              </p>
-              <div className="options-grid">
-                {videoAdOptions.map((option) => (
-                  <div 
-                    className={`option-card ${selectedVideoAd === option.duration ? 'selected' : ''}`}
-                    key={option.id}
-                    onClick={() => setSelectedVideoAd(option.duration)}
-                  >
-                    <input
-                      type="radio"
-                      id={option.id}
-                      name="videoAd"
-                      checked={selectedVideoAd === option.duration}
-                      onChange={() => {}}
-                      hidden
-                    />
-                    <label htmlFor={option.id}>
-                      <span className="duration">{option.duration}</span>
-                      {option.discount && <span className="discount-badge">{option.discount}</span>}
-                      <span className="price">${option.price}</span>
-                    </label>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-               <div className="form-group">
-              <h2 className="video-ads"><i className="icon-video"></i> Brand Story</h2>
-              <p className="section-description">
-                Dynamic video content in premium placements. Higher engagement
-                and conversion rates.
-              </p>
-              <div className="options-grid">
-                {videoAdOptions.map((option) => (
-                  <div 
-                    className={`option-card ${selectedVideoAd === option.duration ? 'selected' : ''}`}
-                    key={option.id}
-                    onClick={() => setSelectedVideoAd(option.duration)}
-                  >
-                    <input
-                      type="radio"
-                      id={option.id}
-                      name="videoAd"
-                      checked={selectedVideoAd === option.duration}
-                      onChange={() => {}}
-                      hidden
-                    />
-                    <label htmlFor={option.id}>
-                      <span className="duration">{option.duration}</span>
-                      {option.discount && <span className="discount-badge">{option.discount}</span>}
-                      <span className="price">${option.price}</span>
-                    </label>
-                  </div>
-                ))}
-              </div>
-            
-
-
-            <div className="form-group">
-              <h2 className="video-ads"><i className="icon-video"></i> Product Showcase Image</h2>
-              <p className="section-description">
-                Image content in premium placements. Higher engagement
-                and conversion rates.
-              </p>
-              <div className="options-grid">
-                {videoAdOptions.map((option) => (
-                  <div 
-                    className={`option-card ${selectedVideoAd === option.duration ? 'selected' : ''}`}
-                    key={option.id}
-                    onClick={() => setSelectedVideoAd(option.duration)}
-                  >
-                    <input
-                      type="radio"
-                      id={option.id}
-                      name="videoAd"
-                      checked={selectedVideoAd === option.duration}
-                      onChange={() => {}}
-                      hidden
-                    />
-                    <label htmlFor={option.id}>
-                      <span className="duration">{option.duration}</span>
-                      {option.discount && <span className="discount-badge">{option.discount}</span>}
-                      <span className="price">${option.price}</span>
-                    </label>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="form-group">
-              <h2 className="video-ads"><i className="icon-video"></i> Product Showcase Video</h2>
-              <p className="section-description">
-                Dynamic video content in premium placements. Higher engagement
-                and conversion rates.
-              </p>
-              <div className="options-grid">
-                {videoAdOptions.map((option) => (
-                  <div 
-                    className={`option-card ${selectedVideoAd === option.duration ? 'selected' : ''}`}
-                    key={option.id}
-                    onClick={() => setSelectedVideoAd(option.duration)}
-                  >
-                    <input
-                      type="radio"
-                      id={option.id}
-                      name="videoAd"
-                      checked={selectedVideoAd === option.duration}
-                      onChange={() => {}}
-                      hidden
-                    />
-                    <label htmlFor={option.id}>
-                      <span className="duration">{option.duration}</span>
-                      {option.discount && <span className="discount-badge">{option.discount}</span>}
-                      <span className="price">${option.price}</span>
-                    </label>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-
-            <div className="payment-section">
-              <h2><i className="icon-payment"></i> Payment</h2>
-              
-              <SignedOut>
-                <div className="auth-prompt">
-                  <p>Please <SignInButton mode="modal" className="login-button">sign in</SignInButton> to complete your purchase.</p>
-                </div>
-              </SignedOut>
-
-              <SignedIn>
-                <div className="order-summary">
-                  <h3>Order Summary</h3>
-                  <div className="order-items">
-                    {selectedImageAd && (
-                      <div className="order-item">
-                        <span>Image Ad ({selectedImageAd})</span>
-                        <span>${imageAdOptions.find(opt => opt.duration === selectedImageAd).price}</span>
-                      </div>
-                    )}
-                    {selectedVideoAd && (
-                      <div className="order-item">
-                        <span>Video Ad ({selectedVideoAd})</span>
-                        <span>${videoAdOptions.find(opt => opt.duration === selectedVideoAd).price}</span>
-                      </div>
-                    )}
-                    <div className="order-total">
-                      <span>Total</span>
-                      <span>${calculateTotal()}</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="paypal-container">
-                  <h4>Pay with PayPal</h4>
-                  <p className="paypal-description">Safe and secure payments</p>
-                  
-                  <PayPalScriptProvider 
-                    options={{ 
-                      "client-id": process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || "test",
-                      "currency": "USD",
-                      "intent": "capture",
-                      "components": "buttons",
-                      "disable-funding": "credit,card"
-                    }}
-                    onError={() => setPaypalError(true)}
-                    onLoad={() => setPaypalLoaded(true)}
-                  >
-                    {paypalError ? (
-                      <div className="paypal-error">
-                        Failed to load PayPal. Please refresh the page or try another payment method.
-                      </div>
-                    ) : paypalLoaded ? (
-                      <PayPalButtons
-                        style={{ 
-                          layout: "vertical",
-                          color: "blue",
-                          shape: "rect",
-                          label: "paypal",
-                          height: 48,
-                          tagline: false
-                        }}
-                        createOrder={createOrder}
-                        onApprove={onApprove}
-                        onError={onError}
-                        onCancel={onCancel}
-                        disabled={!selectedImageAd && !selectedVideoAd}
-                        forceReRender={[selectedImageAd, selectedVideoAd]}
-                      />
-                    ) : (
-                      <div className="paypal-loading">
-                        Loading PayPal...
-                      </div>
-                    )}
-                  </PayPalScriptProvider>
-                  
-                  <div className="payment-divider">
-                    <span>OR</span>
-                  </div>
-                </div>
-
-                <div className="credit-card-section">
-                  <h4>Pay with Credit/Debit Card</h4>
-                  <div className="form-control">
-                    <label htmlFor="cardNumber">Card Number &nbsp;</label>
-                    <input
-                      type="text"
-                      id="cardNumber"
-                      {...register("cardNumber", { 
-                        required: "Card number is required",
-                        pattern: {
-                          value: /^[0-9]{16}$/,
-                          message: "Invalid card number"
-                        }
-                      })}
-                      placeholder="1234 5678 9012 3456"
-                    />
-                    {errors.cardNumber && <span className="error">{errors.cardNumber.message}</span>}
-                  </div>
-
-                  <div className="form-row">
-                    <div className="form-control">
-                      <label htmlFor="expiry">Expiry Date &nbsp;</label>
-                      <input
-                        type="text"
-                        id="expiry"
-                        {...register("expiry", { 
-                          required: "Expiry date is required",
-                          pattern: {
-                            value: /^(0[1-9]|1[0-2])\/?([0-9]{2})$/,
-                            message: "MM/YY format required"
-                          }
-                        })}
-                        placeholder="MM/YY"
-                      />
-                      {errors.expiry && <span className="error">{errors.expiry.message}</span>}
-                    </div>
-
-                    <div className="form-control">
-                      <label htmlFor="cvc">CVC &nbsp;</label>
-                      <input
-                        type="text"
-                        id="cvc"
-                        {...register("cvc", { 
-                          required: "CVC is required",
-                          pattern: {
-                            value: /^[0-9]{3,4}$/,
-                            message: "Invalid CVC"
-                          }
-                        })}
-                        placeholder="123"
-                      />
-                      {errors.cvc && <span className="error">{errors.cvc.message}</span>}
-                    </div>
-                  </div>
-
-                  <div className="form-control">
-                    <label htmlFor="name">Name on Card &nbsp;</label>
-                    <input
-                      type="text"
-                      id="name"
-                      {...register("name", { 
-                        required: "Name is required",
-                        minLength: {
-                          value: 2,
-                          message: "Name must be at least 2 characters"
-                        }
-                      })}
-                      placeholder="John Smith"
-                    />
-                    {errors.name && <span className="error">{errors.name.message}</span>}
-                  </div>
-                </div>
-
-                <div className="submit-section">
-                  <button
-                    type="submit"
-                    className="payment-button"
-                    disabled={isProcessing || (!selectedImageAd && !selectedVideoAd)}
-                  >
-                    {isProcessing ? (
-                      <>
-                        <span className="spinner"></span> Processing...
-                      </>
-                    ) : (
-                      "Complete Payment"
-                    )}
+            </SignedOut>
+            <SignedIn>
+              <div className="reading-form-container">
+                <form onSubmit={handleCalculate}>
+                  <input
+                    type="number"
+                    value={userReading}
+                    onChange={(e) => setUserReading(e.target.value)}
+                    className="reading-input"
+                    placeholder="Please Enter your reading"
+                    step="0.01"
+                    min="0"
+                    required
+                  />
+                  <button type="submit" className="calculate-button">
+                    Calculate
                   </button>
-                  {paymentError && (
-                    <div className="payment-error">
-                      <i className="icon-error"></i> {paymentError}
-                    </div>
-                  )}
+                </form>
+
+                {calculatedResults.length > 0 && (
+                  <div className="results-container">
+                    <table className="cost-table">
+                      <thead>
+                        <tr>
+                          <th>Energy Company</th>
+                          <th>Total Cost (£)</th>
+                          <th>Commission</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {calculatedResults.map((result, index) => (
+                          <tr key={index} onClick={() => handleResultClick(result)} className="result-row">
+                            <td><span className="switch-tariff-supplier">{result.supplier} <strong>(SWITCH!)</strong></span></td>
+                            <td>£{result.cost}</td>
+                            <td>{result.commissionRate * 100}%</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                    <button 
+                      onClick={handleCloseResults} 
+                      className="close-results-button"
+                    >
+                      Close Results
+                    </button>
+                    <p>To better serve your energy needs, we kindly request that you <br /><a href='' className="subscribe-newsletter"><strong>Subscribe to our NEWSLETTER </strong></a> - $1.99 per month, <br />and share your past electricity meter readings with us. This data will enable us to make informed decisions through careful monitoring and analysis.
+                    We have provided samples of how Meter Readings are modelled using AI and Machine Learning models to reflect peaks, load shedding and other anomalies including tampering.
+                    Based on our assessment, we can provide you with a personalised account page with interactive Visualisation Dashboard, 
+                    and recommend a more competitive energy provider with a tariff better suited to your consumption patterns.
+                    Your cooperation will help ensure you receive the most cost-effective and efficient energy solution available.</p>
+                  </div>
+                )}
+              </div>
+
+              <MeterGrid isInteractive={true} />
+              {renderModal()}
+
+              <div className="button-container">
+                {isReadingActive ? (
+                  <button onClick={() => stopReading()} className="stop-button">
+                    Stop
+                  </button>
+                ) : (
+                  <button onClick={() => startReading()} className="start-button">
+                    Start
+                  </button>
+                )}
+              </div>
+              <div className="race-to-zero">
+                <Link to="/advertising">Race to zero emission future - Partner with us!</Link>
+              </div>
+            </SignedIn>
+          </div>
+
+          <div className="ad-container">
+            <div className="ad-column">
+              <div className="ad-label">
+                <div className="responsive-iframe-container">
+                  <iframe
+                    src="https://www.youtube.com/embed/O7ACNMj8NW0"
+                    title="Evolution of Tesla (Animation)"
+                    alt="Evolution of Tesla"
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerPolicy="strict-origin-when-cross-origin"
+                    allowFullScreen
+                  ></iframe>
                 </div>
-              </SignedIn>
+               
+                <div className="responsive-image-container">
+                  <img src={heatpump} alt="Heat pump" className="ad-image" />
+                </div>
+              </div>
             </div>
 
+            <div className="ad-column">
+              <div className="ad-label">
+                <div className="media-grid">
+                  <div className="media-container video">
+                    <span><a href="/pricing">Premium Ad Placement - Available!</a></span>
+                    <iframe
+                      src=""
+                      title="Dummy Video"
+                      alt="Dummy Video"
+                      frameBorder="0"
+                      allowFullScreen
+                    ></iframe>
+                  </div>
+                
+                  <div className="media-container image">
+                    <span>100% Organic</span>
+                    <iframe
+                      src={hellofresh}
+                      title="100% Organic"
+                      alt="100% Organic"
+                      frameBorder="0"
+                      allowFullScreen
+                    ></iframe>
+                  </div>
+                </div>
+              </div>
             </div>
-          </form>
-        </div>
+          </div>
 
-        <div className="ads-column">
-          <h2 className="examples-title">Advertising Placement Examples</h2>
-          <p className="examples-description">
-            See how your ads could appear on our platform. Click on each example to view details.
-          </p>
+          <div className="brand-story-container">
+            <div className="brand-story-column">
+              <div className="immersive-brand-ad">
+                <div className="brand-hero-video">
+                  <video 
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    poster="/images/green-energy-poster.jpg"
+                    className="brand-video"
+                  >
+                    <source src="https://goods-vod.kwcdn.com/goods-video/2e893b7d49267bbcf912d457f659eede65dad719.f30.mp4" type="video/mp4" />
+                    Your browser does not support the video tag.
+                  </video>
+                  <div className="video-overlay">
+                    <h2>The Future of Clean Energy</h2>
+                    <p>How we're powering tomorrow's world today</p>
+                  </div>
+                </div>
 
-          <div className="ad-examples-grid">
-            {adExamples.map((ad) => (
-              <div 
-                className={`ad-example-card ${ad.type} ${activeAdExample === ad.id ? 'expanded' : ''}`}
-                key={ad.id}
-                onClick={() => handleAdExampleClick(ad.id)}
-              >
-                <div className="ad-example-header">
-                  <h3>{ad.title}</h3>
-                  <i className={`icon-${ad.type}`}></i>
-                </div>
-                <div className="ad-example-preview">
-                  {ad.title} Preview Area
-                </div>
-                <div className="ad-example-details">
-                  <p>{ad.description}</p>
-                  <div className="ad-specs">
-                    <div className="spec">
-                      <span className="spec-label">Dimensions:</span>
-                      <span className="spec-value">{ad.dimensions}</span>
+                <div className="brand-narrative">
+                  <div className="narrative-content">
+                    <div className="narrative-text">
+                      <h3>Our Journey to Sustainability</h3>
+                      <p>
+                        Founded in 2010, GreenPower Solutions began with a simple mission: to make renewable energy 
+                        accessible to everyone. What started as a small team of engineers in a garage has grown into 
+                        a global movement powering over 1 million homes with clean energy.
+                      </p>
+                      <div className="brand-stats">
+                        <div className="stat-item">
+                          <span className="stat-number">1M+</span>
+                          <span className="stat-label">Homes Powered</span>
+                        </div>
+                        <div className="stat-item">
+                          <span className="stat-number">85%</span>
+                          <span className="stat-label">Carbon Reduction</span>
+                        </div>
+                        <div className="stat-item">
+                          <span className="stat-number">24/7</span>
+                          <span className="stat-label">Clean Energy</span>
+                        </div>
+                      </div>
                     </div>
-                    <div className="spec">
-                      <span className="spec-label">Impressions:</span>
-                      <span className="spec-value">{ad.impressions}</span>
+                    <div className="narrative-image">
+                      <p className="image-caption"><i>Our founding team in 2012, working on the first prototypes</i></p>
                     </div>
                   </div>
-                  {activeAdExample === ad.id && (
-                    <div className="ad-benefits">
-                      <h4>Benefits:</h4>
-                      <ul>
-                        <li>Premium visibility on all devices</li>
-                        <li>Detailed performance analytics</li>
-                        <li>Dedicated account manager</li>
-                        {ad.type === 'featured' && <li>Exclusive placement</li>}
-                      </ul>
-                    </div>
-                  )}
                 </div>
               </div>
-            ))}
-          </div>
-
-          <div className="advertising-info">
-            <h3>Why Advertise With Us?</h3>
-            <div className="info-cards">
-              <div className="info-card">
-                <i className="icon-audience"></i>
-                <h4>Targeted Audience</h4>
-                <p>Reach energy-conscious consumers actively looking for solutions</p>
+            </div>
+            
+            <div className="brand-story-column">
+              <div className="media-container video">
+                <span><a href="/pricing">Brand Story - Available</a></span>
+                <iframe
+                  src=""
+                  title="Brand Story Video Part 2"
+                  alt="Brand Story Video Part 2"
+                  frameBorder="0"
+                  allowFullScreen
+                ></iframe>
               </div>
-              <div className="info-card">
-                <i className="icon-analytics"></i>
-                <h4>Detailed Analytics</h4>
-                <p>Comprehensive reporting on impressions, clicks, and conversions</p>
-              </div>
-              <div className="info-card">
-                <i className="icon-support"></i>
-                <h4>Dedicated Support</h4>
-                <p>Our team will help optimize your campaigns for best results</p>
+              <div className="product-showcase">
+                  <h3>Innovation That Powers Life</h3>
+                  <div className="product-features">
+                    <div className="feature">
+                      <div className="feature-video-container">
+                        <video 
+                          autoPlay
+                          loop
+                          muted
+                          playsInline
+                          className="feature-video"
+                        >
+                          <source src="https://goods-vod.kwcdn.com/goods-video/991226355a5aed619dd7b4e8c443e418184d438b.f30.mp4" type="video/mp4" />
+                        </video>
+                      </div>
+                      <h4>Next-Gen Solar Panels</h4>
+                      <p>40% more efficient than conventional panels with our patented nano-coating technology</p>
+                    </div>
+                    <div className="feature">
+                      <div className="feature-video-container">
+                        <video 
+                          autoPlay
+                          loop
+                          muted
+                          playsInline
+                          className="feature-video"
+                        >
+                          <source src="https://goods-vod-eu.kwcdn.com/local-goods-vod/f17793572598e526aef7d74d7b03f277a1e56ea6.f30.mp4" type="video/mp4" />
+                        </video>
+                      </div>
+                      <h4>Home Battery Systems</h4>
+                      <p>Store excess energy with our compact, high-capacity home batteries</p>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
+
+            <div className="brand-cta">
+                <h3>Join the Energy Revolution</h3>
+                <p>Get a personalized quote and see how much you could save</p>
+                <div className="cta-buttons">
+                  <button className="cta-primary">How We Achieved 100% Uptime!</button>
+                  {/*https://www.greenpowersolutions.uk/blog/how-we-achieved-100-uptime-for-a-cctv-tower*/}
+                  <button className="cta-secondary">Watch Our Story</button>
+                  {/*https://www.greenpowersolutions.uk/*/}
+                </div>
+                <div className="trust-badges">
+                  <img src={EnergyCertTrust} alt="Energy Trust Certified" />
+                  <img src={GreenBusinessCertified} alt="Green Business Certified" />
+                </div>
+            </div>
+        
+        </div>    
       </div>
     </div>
   );
