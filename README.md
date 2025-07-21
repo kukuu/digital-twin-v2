@@ -11,7 +11,7 @@ This development covers:
 3. Vercel to host connection and configuration to  versioning and source control of code repository in GitHub.  
 4. Updated UI to dynamically calculate the cost of Meter Reading cumulatively.
 
-5. ## SPYDER
+## SPYDER
 
 SPYDER is a Net Zero initiative platform built to empower businesses and consumers with actionable insights for reducing carbon emissions and transitioning to sustainable energy. The platform, accessible at EnergyTariffsCheck.com ( https://www.energytariffscheck.com/ ), combines data analytics with user-friendly tools to compare energy tariffs, track consumption patterns, and recommend cost-effective renewable energy solutions. Its core purpose is to bridge the gap between sustainability goals and practical implementation, making it easier for organisations and individuals to contribute to a carbon-neutral future.
 
