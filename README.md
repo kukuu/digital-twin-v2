@@ -9,7 +9,15 @@ This development covers:
 1. Cloud deployment and hosting to AWS computing services Render for  interfacing. 
 2. Superbase as ORM to host connection to Database and store environmental variables.   
 3. Vercel to host connection and configuration to  versioning and source control of code repository in GitHub.  
-4. Updated UI to dynamically calculate the cost of Meter Reading cumulatively.    
+4. Updated UI to dynamically calculate the cost of Meter Reading cumulatively.
+
+5. ## SPYDER
+
+SPYDER is a Net Zero initiative platform built to empower businesses and consumers with actionable insights for reducing carbon emissions and transitioning to sustainable energy. The platform, accessible at EnergyTariffsCheck.com ( https://www.energytariffscheck.com/ ), combines data analytics with user-friendly tools to compare energy tariffs, track consumption patterns, and recommend cost-effective renewable energy solutions. Its core purpose is to bridge the gap between sustainability goals and practical implementation, making it easier for organisations and individuals to contribute to a carbon-neutral future.
+
+To develop SPYDER, I have led a cross-functional team in integrating real-time energy data, AI-driven recommendations, and policy compliance frameworks into a scalable web platform.
+
+Key features include dynamic carbon footprint tracking, personalised energy-saving strategies, and partnerships with green energy providers. By simplifying complex energy decisions, SPYDER - https://www.energytariffscheck.com/  has helped users reduce costs while accelerating their Net Zero journeys - proving that technology can be a catalyst for both environmental and economic impact.   
 
 
 ## Frontend is hosted on Vercel
