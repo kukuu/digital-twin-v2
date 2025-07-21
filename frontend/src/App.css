@@ -336,7 +336,7 @@ html, body {
 }
 
 .cost-table th {
-  /*background-color: #f8f9fa;*/
+  background-color: #f8f9fa;
 }
 
 .close-results-button {
@@ -701,6 +701,46 @@ a.subscribe-newsletter {
   opacity: 1;
 }
 
+/* ============ TARGET LINK STYLES ============ */
+.target-link a {
+  display: inline-block;
+  background-color: #4CAF50;
+  color: white;
+  padding: 8px 16px;
+  text-decoration: none;
+  border-radius: 4px;
+  margin-top: 10px;
+  transition: all 0.3s;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.target-link a:hover {
+  background-color: #3e8e41;
+  transform: translateY(-2px);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+/* ============ ENERGY SUPPLIER BADGES ============ */
+.energy-supplier {
+  font-weight: bold;
+  color: #2e7d32;
+  position: relative;
+  padding-right: 20px;
+}
+
+.energy-supplier::after {
+  content: "⚡";
+  position: absolute;
+  right: 0;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.card:hover .energy-supplier::after {
+  opacity: 1;
+}
+
 /* ============ RESPONSIVE ADJUSTMENTS ============ */
 @media (min-width: 768px) {
   .brand-story-container {
@@ -711,7 +751,7 @@ a.subscribe-newsletter {
   }
 
   .brand-hero-video {
-    height: 400px;
+    height: 518px;
   }
 
   .video-overlay {
@@ -800,6 +840,15 @@ a.subscribe-newsletter {
   .send-reading-button,
   .paypal-payment-button {
     width: 100%;
+  }
+
+  .cost-table {
+    font-size: 0.8rem;
+  }
+
+  .cost-table th, 
+  .cost-table td {
+    padding: 0.5rem;
   }
 }
 
