@@ -39,10 +39,72 @@ export default function PricingPage() {
     { id: "video-12months", duration: "12 months", price: 350, discount: "20% off" }
   ];
 
+  
+
+
+  const sideBarPremiumImage = [
+    { id: "image-6months", duration: "6 months", price: 180, discount: "" },
+    { id: "image-12months", duration: "12 months", price: 288, discount: "20% off" }
+  ];
+
+  const sideBarPremiumVideo = [
+    { id: "video-6months", duration: "6 months", price: 200, discount: "" },
+    { id: "video-12months", duration: "12 months", price: 320, discount: "20% off" }
+  ];
+
+  const sideBarStandardImage = [
+    { id: "image-6months", duration: "6 months", price: 140, discount: "" },
+    { id: "image-12months", duration: "12 months", price: 224, discount: "20% off" }
+  ];
+
+  const sideBarStandardVideo = [
+    { id: "image-6months", duration: "6 months", price: 165, discount: "" },
+    { id: "image-12months", duration: "12 months", price: 264, discount: "20% off" }
+  ];
+
+  const adPlacementInContentImage= [
+    { id: "image-6months", duration: "6 months", price: 380, discount: "" },
+    { id: "image-12months", duration: "12 months", price: 608, discount: "20% off" }
+  ];
+
+
+  const adPlacementInContentVideo = [
+    { id: "video-6months", duration: "6 months", price: 400, discount: "" },
+    { id: "video-12months", duration: "12 months", price: 640, discount: "20% off" }
+  ];
+
+  const productShowCaseImage = [
+    { id: "image-6months", duration: "6 months", price: 670, discount: "" },
+    { id: "image-12months", duration: "12 months", price: 1072, discount: "20% off" }
+  ];
+
+  const productShowCaseVideo= [
+    { id: "video-6months", duration: "6 months", price: 690, discount: "" },
+    { id: "video-12months", duration: "12 months", price: 1104, discount: "20% off" }
+  ];
+
+  const premiumAdPlacementImage = [
+    { id: "image-6months", duration: "6 months", price: 600, discount: "" },
+    { id: "image-12months", duration: "12 months", price: 960, discount: "20% off" }
+  ];
+
+  const premiumAdPlacementVideo = [
+    { id: "video-6months", duration: "6 months", price: 700, discount: "" },
+    { id: "video-12months", duration: "12 months", price: 1120, discount: "20% off" }
+  ];
+
+  const productBrandStory= [
+    { id: "6months", duration: "6 months", price: 850, discount: "" },
+    { id: "12months", duration: "12 months", price: 1410, discount: "20% off" }
+  ];
+
+
+
+
   const adExamples = [
     {
       id: "banner-ad",
-      title: "Premium Banner Placement",
+      title: "Premium Banner",
       description: "Top-of-page placement with maximum visibility. Perfect for brand awareness campaigns.",
       dimensions: "1200x200px",
       impressions: "50,000+ monthly",
@@ -50,47 +112,90 @@ export default function PricingPage() {
     },
 
     {
-      id: "premiumhomepage-ad",
-      title: "Premium Homepage Placement",
-      description: "Top-of-page placement with maximum visibility. Perfect for brand awareness campaigns.",
-      dimensions: "1200x200px",
-      impressions: "50,000+ monthly",
-      type: "banner"
-    },
-
-    {
-      id: "sidebar-ad",
-      title: "Sidebar Placement - Advertising",
+      id: "sidebar-ad-premium-image",
+      title: "Sidebar  Image",
       description: "Persistent visibility on all pages. Great for targeted promotions.",
       dimensions: "300x600px",
       impressions: "30,000+ monthly",
       type: "sidebar"
     },
+
     {
-      id: "content-ad",
-      title: "In-Content Promotion",
-      description: "Native-style ads within article content. Higher engagement rates.",
-      dimensions: "Flexible",
-      impressions: "Varies by content",
-      type: "content"
-    },
-    {
-      id: "brand-ad",
-      title: "Brand Story",
-      description: "Exclusive placement in our featured section. Limited availability.",
-      dimensions: "800x400px",
-      impressions: "25,000+ monthly",
-      type: "featured"
+      id: "sidebar-ad-premium-video",
+      title: "Sidebar  Video",
+      description: "Persistent visibility on all pages. Great for targeted promotions.",
+      dimensions: "300x600px",
+      impressions: "30,000+ monthly",
+      type: "sidebar"
     },
 
     {
-      id: "productshowcase-ad",
-      title: "Product Showcase",
-      description: "Exclusive placement in our Product Showcase section. Limited availability.",
+      id: "inContent-ad-image",
+      title: "In Content Image",
+      description: "Persistent visibility on all pages. Great for targeted promotions.",
+      dimensions: "Flexible",
+      impressions: "30,000+ monthly",
+      type: "inContent"
+    },
+
+    {
+      id: "inContent-ad-video",
+      title: "In Content Video",
+      description: "Persistent visibility on all pages. Great for targeted promotions.",
+      dimensions: "Flexible",
+      impressions: "30,000+ monthly",
+      type: "inContent"
+    },
+
+    {
+      id: "premium-ad-image",
+      title: "Premium Image",
+      description: "Persistent visibility on all pages. Great for targeted promotions.",
+      dimensions: "1200x200px",
+      impressions: "30,000+ monthly",
+      type: "premiumImage"
+    },
+
+
+    {
+      id: "premium-ad-video",
+      title: "Premium Video",
+      description: "Persistent visibility on all pages. Great for targeted promotions.",
+      dimensions: "1200x200px",
+      impressions: "30,000+ monthly",
+      type: "premiumVideo"
+    },
+
+
+    {
+      id: "product-showcase-ad-image",
+      title: "Product Showcase Image",
+      description: "Persistent visibility on all pages. Great for targeted promotions.",
       dimensions: "800x400px",
-      impressions: "25,000+ monthly",
-      type: "featured"
+      impressions: "30,000+ monthly",
+      type: "iinContent"
+    },
+
+    {
+      id: "product-showcase-ad-video",
+      title: "Product Showcase Video",
+      description: "Persistent visibility on all pages. Great for targeted promotions.",
+      dimensions: "800x400px",
+      impressions: "30,000+ monthly",
+      type: "iinContent"
+    },
+
+
+    {
+      id: "brand-story-ad",
+      title: "Brand Story",
+      description: "Persistent visibility on all pages. Great for targeted promotions.",
+      dimensions: "800x400px",
+      impressions: "30,000+ monthly",
+      type: "iinContent"
     }
+
+    
   ];
 
   // Load PayPal script
@@ -244,9 +349,9 @@ export default function PricingPage() {
           </SignedIn>
         </div>
          <div>
-           {/*<Link to="/newsletter" className="crumbtrail"><small>Newsletter | </small></Link> */}
-            <Link to="/advertising" className="crumbtrail"> <small>Advertising | </small></Link>
-            <Link to="/pricing" className="crumbtrail"> <small>Pricing</small></Link>
+           <Link to="" className="crumbtrail"><small>Newsletter </small></Link>
+            {/*<Link to="/advertising" className="crumbtrail"> <small> | Advertising | </small></Link>
+            <Link to="/pricing" className="crumbtrail"> <small>Pricing</small></Link> */}
         </div>
       </nav>
 
@@ -264,7 +369,7 @@ export default function PricingPage() {
           <form onSubmit={handleSubmit(onSubmit)} className="advertising-form">
 
           <div className="form-group">
-              <h2><i className="icon-image"></i> Premium Banner Placement</h2>
+              <h2><i className="icon-image"></i> Premium Banner</h2>
               <p className="section-description">
                 Static image advertisements displayed throughout our platform.
                 Perfect for product promotions and brand awareness.
@@ -297,7 +402,7 @@ export default function PricingPage() {
 
 
           <div className="form-group">
-              <h2><i className="icon-image"></i> Premium Homepage Placement</h2>
+              <h2><i className="icon-image"></i> Premium Image</h2>
               <p className="section-description">
                 Static image advertisements displayed throughout our platform.
                 Perfect for product promotions and brand awareness.
@@ -313,6 +418,38 @@ export default function PricingPage() {
                       type="radio"
                       id={option.id}
                       name="imageAd"
+                      checked={selectedImageAd === option.duration}
+                      onChange={() => {}}
+                      hidden
+                    />
+                    <label htmlFor={option.id}>
+                      <span className="duration">{option.duration}</span>
+                      {option.discount && <span className="discount-badge">{option.discount}</span>}
+                      <span className="price">${option.price}</span>
+                    </label>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+
+            <div className="form-group">
+              <h2><i className="icon-image"></i> Premium Video</h2>
+              <p className="section-description">
+                Video advertisements displayed throughout our platform.
+                Perfect for product promotions and brand awareness.
+              </p>
+              <div className="options-grid">
+                {imageAdOptions.map((option) => (
+                  <div 
+                    className={`option-card ${selectedImageAd === option.duration ? 'selected' : ''}`}
+                    key={option.id}
+                    onClick={() => setSelectedImageAd(option.duration)}
+                  >
+                    <input
+                      type="radio"
+                      id={option.id}
+                      name="videoAd"
                       checked={selectedImageAd === option.duration}
                       onChange={() => {}}
                       hidden
@@ -390,14 +527,15 @@ export default function PricingPage() {
               </div>
             </div>
 
+
             <div className="form-group">
-              <h2 className="video-ads"><i className="icon-video"></i> Side Bar Placement</h2>
+              <h2 className="video-ads"><i className="icon-video"></i> Side Bar Image</h2>
               <p className="section-description">
-                Dynamic video content in premium placements. Higher engagement
+                Image content in premium placements. Higher engagement
                 and conversion rates.
               </p>
               <div className="options-grid">
-                {videoAdOptions.map((option) => (
+                {imageAdOptions.map((option) => (
                   <div 
                     className={`option-card ${selectedVideoAd === option.duration ? 'selected' : ''}`}
                     key={option.id}
@@ -406,7 +544,7 @@ export default function PricingPage() {
                     <input
                       type="radio"
                       id={option.id}
-                      name="videoAd"
+                      name="imageAd"
                       checked={selectedVideoAd === option.duration}
                       onChange={() => {}}
                       hidden
@@ -419,9 +557,10 @@ export default function PricingPage() {
                   </div>
                 ))}
               </div>
+            </div>
 
-               <div className="form-group">
-              <h2 className="video-ads"><i className="icon-video"></i> Brand Story Placement</h2>
+            <div className="form-group">
+              <h2 className="video-ads"><i className="icon-video"></i> Side Bar Video</h2>
               <p className="section-description">
                 Dynamic video content in premium placements. Higher engagement
                 and conversion rates.
@@ -451,9 +590,71 @@ export default function PricingPage() {
               </div>
             </div>
 
+               <div className="form-group">
+              <h2 className="video-ads"><i className="icon-video"></i> Brand Story</h2>
+              <p className="section-description">
+                Dynamic video content in premium placements. Higher engagement
+                and conversion rates.
+              </p>
+              <div className="options-grid">
+                {videoAdOptions.map((option) => (
+                  <div 
+                    className={`option-card ${selectedVideoAd === option.duration ? 'selected' : ''}`}
+                    key={option.id}
+                    onClick={() => setSelectedVideoAd(option.duration)}
+                  >
+                    <input
+                      type="radio"
+                      id={option.id}
+                      name="videoAd"
+                      checked={selectedVideoAd === option.duration}
+                      onChange={() => {}}
+                      hidden
+                    />
+                    <label htmlFor={option.id}>
+                      <span className="duration">{option.duration}</span>
+                      {option.discount && <span className="discount-badge">{option.discount}</span>}
+                      <span className="price">${option.price}</span>
+                    </label>
+                  </div>
+                ))}
+              </div>
+            
+
 
             <div className="form-group">
-              <h2 className="video-ads"><i className="icon-video"></i> Product Showcase</h2>
+              <h2 className="video-ads"><i className="icon-video"></i> Product Showcase Image</h2>
+              <p className="section-description">
+                Image content in premium placements. Higher engagement
+                and conversion rates.
+              </p>
+              <div className="options-grid">
+                {videoAdOptions.map((option) => (
+                  <div 
+                    className={`option-card ${selectedVideoAd === option.duration ? 'selected' : ''}`}
+                    key={option.id}
+                    onClick={() => setSelectedVideoAd(option.duration)}
+                  >
+                    <input
+                      type="radio"
+                      id={option.id}
+                      name="videoAd"
+                      checked={selectedVideoAd === option.duration}
+                      onChange={() => {}}
+                      hidden
+                    />
+                    <label htmlFor={option.id}>
+                      <span className="duration">{option.duration}</span>
+                      {option.discount && <span className="discount-badge">{option.discount}</span>}
+                      <span className="price">${option.price}</span>
+                    </label>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="form-group">
+              <h2 className="video-ads"><i className="icon-video"></i> Product Showcase Video</h2>
               <p className="section-description">
                 Dynamic video content in premium placements. Higher engagement
                 and conversion rates.
