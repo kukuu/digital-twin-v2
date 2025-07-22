@@ -13,7 +13,7 @@
     "react-chartjs-2": "^5.3.0",
     "react-dom": "^18.3.1",
     "react-hook-form": "^7.57.0",
-    "react-router-dom": "^7.6.2",
+    "react-router-dom": "^6.22.3",
     "react-scripts": "5.0.1",
     "react-toastify": "^11.0.3",
     "socket.io-client": "^4.8.0",
@@ -23,7 +23,16 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "test:e2e": "playwright test",
+    "test:e2e:headed": "playwright test --headed",
+    "test:e2e:debug": "playwright test --debug",
+    "test:e2e:mp4": "playwright test --headed && node convert-videos.js",
+    "test:mobile": "playwright test tests/mobile-test.spec.js --project=\"Mobile Chrome\" --headed",
+    "test:mobile:all": "playwright test tests/mobile-test.spec.js --project=\"Mobile Chrome\" --project=\"Mobile Safari\" --project=\"Tablet\"",
+    "test:mobile:mp4": "playwright test tests/mobile-test.spec.js --project=\"Mobile Chrome\" --headed && node convert-videos.js",
+    "playwright:install": "playwright install",
+    "convert:videos": "node convert-videos.js"
   },
   "eslintConfig": {
     "extends": [
@@ -44,6 +53,7 @@
     ]
   },
   "devDependencies": {
+    "@playwright/test": "^1.41.0",
     "@shadcn/ui": "^0.0.4"
   }
 }
