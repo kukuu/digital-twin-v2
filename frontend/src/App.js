@@ -1,4 +1,3 @@
-"use strict";
 import React, { useState, useEffect, useCallback, useRef, memo } from "react";
 import io from "socket.io-client";
 import { Line } from 'react-chartjs-2';
@@ -8,7 +7,7 @@ import hellofresh from './images/dt-1-hello-fresh-co-uk.png';
 import EnergyCertTrust from './images/energy-saving-certified.png';
 import GreenBusinessCertified from './images/green-business-cert.png';
 import EDFSmartMeter from './images/edf-smart-meter.png';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   SignedIn,
   SignedOut,
@@ -20,6 +19,8 @@ import "./App.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useForm } from "react-hook-form";
+import { PayPalScriptProvider } from '@paypal/react-paypal-js';
+import Paypal from './components/Paypal';
 
 // Register Chart.js components
 Chart.register(...registerables);
@@ -120,10 +121,8 @@ let meterData = {
 
 // Function to track affiliate clicks
 const trackAffiliateClick = (supplier, meterId) => {
-  // In a real implementation, this would send data to your analytics backend
   console.log(`Affiliate click tracked for ${supplier} from meter ${meterId}`);
   
-  // Example: Send to Google Analytics or your tracking system
   if (window.gtag) {
     window.gtag('event', 'affiliate_click', {
       'event_category': 'affiliate',
@@ -132,7 +131,6 @@ const trackAffiliateClick = (supplier, meterId) => {
     });
   }
   
-  // Store in localStorage for session tracking
   const clickData = {
     supplier,
     meterId,
@@ -142,6 +140,161 @@ const trackAffiliateClick = (supplier, meterId) => {
   
   localStorage.setItem(`lastAffiliateClick_${meterId}`, JSON.stringify(clickData));
 };
+
+const NewsletterModal = memo(({ onClose, onPaymentSuccess }) => {
+  const [email, setEmail] = useState('');
+  const [paymentMethod, setPaymentMethod] = useState('paypal');
+  const [cardDetails, setCardDetails] = useState({
+    number: '',
+    expiry: '',
+    cvv: ''
+  });
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsProcessing(true);
+    setError('');
+
+    try {
+      // Validate email
+      if (!email || !email.includes('@')) {
+        throw new Error('Please enter a valid email address');
+      }
+
+      // Process payment based on selected method
+      if (paymentMethod === 'paypal') {
+        // PayPal processing will be handled by the PayPal button component
+        return;
+      } else {
+        // Validate card details for credit card payment
+        if (!cardDetails.number || !cardDetails.expiry || !cardDetails.cvv) {
+          throw new Error('Please fill all card details');
+        }
+        
+        // Simulate payment processing
+        await new Promise(resolve => setTimeout(resolve, 1500));
+        
+        // In a real app, you would call your payment gateway API here
+        console.log('Processing card payment', { email, cardDetails });
+      }
+
+      // On successful payment
+      handlePaymentSuccess();
+    } catch (err) {
+      setError(err.message);
+      setIsProcessing(false);
+    }
+  };
+
+  const handlePaymentSuccess = (paymentData) => {
+    console.log('Payment successful:', paymentData);
+    toast.success('Payment processed successfully!');
+    setIsProcessing(false);
+    onClose();
+    navigate('/newsletter');
+  };
+
+  return (
+    <div className="modal-overlay">
+      <div className="modal-content newsletter-modal">
+        <div className="modal-header">
+          <h2>Subscribe to Newsletter</h2>
+          <button className="close-button" onClick={onClose}>×</button>
+        </div>
+        <div className="modal-body">
+          <form onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label>Email Address</label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                placeholder="your@email.com"
+              />
+            </div>
+
+            <div className="form-group">
+              <label>Payment Method</label>
+              <select 
+                value={paymentMethod}
+                onChange={(e) => setPaymentMethod(e.target.value)}
+                className="payment-method-select"
+              >
+                <option value="paypal">PayPal</option>
+                <option value="credit">Credit Card</option>
+              </select>
+            </div>
+
+            {paymentMethod === 'credit' && (
+              <div className="card-details">
+                <div className="form-group">
+                  <label>Card Number</label>
+                  <input
+                    type="text"
+                    value={cardDetails.number}
+                    onChange={(e) => setCardDetails({...cardDetails, number: e.target.value})}
+                    placeholder="1234 5678 9012 3456"
+                  />
+                </div>
+                <div className="form-row">
+                  <div className="form-group">
+                    <label>Expiry Date</label>
+                    <input
+                      type="text"
+                      value={cardDetails.expiry}
+                      onChange={(e) => setCardDetails({...cardDetails, expiry: e.target.value})}
+                      placeholder="MM/YY"
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>CVV</label>
+                    <input
+                      type="text"
+                      value={cardDetails.cvv}
+                      onChange={(e) => setCardDetails({...cardDetails, cvv: e.target.value})}
+                      placeholder="123"
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {paymentMethod === 'paypal' && (
+              <div className="paypal-button-container">
+                <Paypal 
+                  amount="0.99" 
+                  currency="USD" 
+                  onSuccess={handlePaymentSuccess}
+                  onError={(err) => setError(err.message)}
+                />
+              </div>
+            )}
+
+            {error && <div className="error-message">{error}</div>}
+
+            {paymentMethod === 'credit' && (
+              <div className="submit-button-container">
+                <button 
+                  type="submit" 
+                  className="payment-button"
+                  disabled={isProcessing}
+                >
+                  {isProcessing ? 'Processing...' : 'Subscribe for $0.99/month'}
+                </button>
+              </div>
+            )}
+          </form>
+        </div>
+      </div>
+    </div>
+  );
+});
+
+NewsletterModal.displayName = "NewsletterModal";
 
 const Modal = memo(
   ({
@@ -262,13 +415,13 @@ const Modal = memo(
               >
                 {isSending ? "Sending..." : "Send Meter Reading"}
               </button>
-              <button
+             {/* <button
                 className="paypal-payment-button"
                 onClick={onPay}
                 disabled={isSending}
               >
                 Payment Gateway
-              </button>
+              </button>*/}
             </div>
           </div>
         </div>
@@ -279,12 +432,13 @@ const Modal = memo(
 
 Modal.displayName = "Modal";
 
-export default function EnergyMeter() {
+function AppWithPayPalProvider() {
   const [readings, setReadings] = useState({});
   const [historicalData, setHistoricalData] = useState({});
   const [loading, setLoading] = useState(true);
   const [isReadingActive, setIsReadingActive] = useState(true);
   const [showModal, setShowModal] = useState(false);
+  const [showNewsletterModal, setShowNewsletterModal] = useState(false);
   const { user } = useUser();
   const [isSending, setIsSending] = useState(false);
   const [modalData, setModalData] = useState(null);
@@ -390,6 +544,14 @@ export default function EnergyMeter() {
     setMeterReadings([{ value: "", date: new Date().toISOString().split('T')[0] }]);
     startReading();
   }, []);
+
+  const handleNewsletterModalClose = useCallback(() => {
+    setShowNewsletterModal(false);
+  }, []);
+
+  const handleNewsletterSubscribe = () => {
+    setShowNewsletterModal(true);
+  };
 
   const handleSendReading = useCallback(async () => {
     if (modalData && user) {
@@ -500,7 +662,6 @@ export default function EnergyMeter() {
   const handleAffiliateLinkClick = (supplier, meterId, e) => {
     e.stopPropagation();
     trackAffiliateClick(supplier, meterId);
-    // Link will open naturally via the anchor tag
   };
 
   const renderModal = () => {
@@ -519,6 +680,20 @@ export default function EnergyMeter() {
         isSending={isSending}
         meterInfo={modalData}
         onAccountNumberChange={handleAccountNumberChange}
+      />
+    );
+  };
+
+  const renderNewsletterModal = () => {
+    if (!showNewsletterModal) return null;
+
+    return (
+      <NewsletterModal 
+        onClose={handleNewsletterModalClose}
+        onPaymentSuccess={() => {
+          handleNewsletterModalClose();
+          toast.success("Thank you for subscribing to our newsletter!");
+        }}
       />
     );
   };
@@ -623,287 +798,311 @@ export default function EnergyMeter() {
   );
 
   return (
-    <div className="app-container">
-      <ToastContainer position="top-right" autoClose={3000} />
-      <nav className="navbar">
-        <div className="navbar-brand">
-          <h2 style={{ fontWeight: "bold", color: "green" }}><a href="/">SPYDER</a></h2>
-        </div>
-        <div className="navbar-auth">
-          <SignedOut>
-            <SignInButton mode="modal" />
-          </SignedOut>
-          <SignedIn>
-            <UserButton afterSignOutUrl="/" />
-          </SignedIn>
-        </div>
-        {/*<div>
-          <Link to="" className="crumbtrail"> <small> Newsletter</small></Link>
-        </div>*/}
-      </nav>
-
-      <div className="main-content-container">
-        <div className="content-area">
-          <div className="container">
-            <h3 className="title">Price Comparison Smart Energy Meter Reader</h3>
-            <p className="app-description">
-              The <strong>SPYDER</strong> Digital Twin Smart Energy Meter Reader,
-              helps you find the best electricity tariff at the most competitive
-              price. Compare different meters, check prices and choose the right
-              option to save on energy bills. The Reader also serves as a forecasting system, a settlement tool and a Net Zero initiative.
-            </p>
+    <PayPalScriptProvider options={{ 
+      "client-id": "YOUR_PAYPAL_CLIENT_ID",
+      components: "buttons",
+      currency: "USD"
+    }}>
+      <div className="app-container">
+        <ToastContainer position="top-right" autoClose={3000} />
+        <nav className="navbar">
+          <div className="navbar-brand">
+            <h2 style={{ fontWeight: "bold", color: "green" }}><a href="/">SPYDER</a></h2>
+          </div>
+          <div className="navbar-auth">
             <SignedOut>
-              <p className="auth-prompt">
-                Start comparing now and make smarter choices for your electricity
-                usage. Please &nbsp;
-                <SignInButton mode="modal" className="login-button">
-                  Sign in &nbsp;
-                </SignInButton>
-                &nbsp;&nbsp; and select a Smart Meter!
-              </p>
+              <SignInButton mode="modal" />
             </SignedOut>
             <SignedIn>
-              <div className="reading-form-container">
-                <form onSubmit={handleCalculate}>
-                  <input
-                    type="number"
-                    value={userReading}
-                    onChange={(e) => setUserReading(e.target.value)}
-                    className="reading-input"
-                    placeholder="Please Enter your reading"
-                    step="0.01"
-                    min="0"
-                    required
-                  />
-                  <button type="submit" className="calculate-button">
-                    Calculate
-                  </button>
-                </form>
-
-                {calculatedResults.length > 0 && (
-                  <div className="results-container">
-                    <table className="cost-table">
-                      <thead>
-                        <tr>
-                          <th>Energy Company</th>
-                          <th>Total Cost (£)</th>
-                          <th>Commission</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {calculatedResults.map((result, index) => (
-                          <tr key={index} onClick={() => handleResultClick(result)} className="result-row">
-                            <td><span className="switch-tariff-supplier">{result.supplier} <strong>(SWITCH!)</strong></span></td>
-                            <td>£{result.cost}</td>
-                            <td>{result.commissionRate * 100}%</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                    <button 
-                      onClick={handleCloseResults} 
-                      className="close-results-button"
-                    >
-                      Close Results
-                    </button>
-                    <p>To better serve your energy needs, we kindly request that you <br /><a href='' className="subscribe-newsletter"><strong>Subscribe to our NEWSLETTER </strong></a> - $1.99 per month, <br />and share your past electricity meter readings with us. This data will enable us to make informed decisions through careful monitoring and analysis.
-                    We have provided samples of how Meter Readings are modelled using AI and Machine Learning models to reflect peaks, load shedding and other anomalies including tampering.
-                    Based on our assessment, we can provide you with a personalised account page with interactive Visualisation Dashboard, 
-                    and recommend a more competitive energy provider with a tariff better suited to your consumption patterns.
-                    Your cooperation will help ensure you receive the most cost-effective and efficient energy solution available.</p>
-                  </div>
-                )}
-              </div>
-
-              <MeterGrid isInteractive={true} />
-              {renderModal()}
-
-              <div className="button-container">
-                {isReadingActive ? (
-                  <button onClick={() => stopReading()} className="stop-button">
-                    Stop
-                  </button>
-                ) : (
-                  <button onClick={() => startReading()} className="start-button">
-                    Start
-                  </button>
-                )}
-              </div>
-              <div className="race-to-zero">
-                <Link to="/advertising">Race to zero emission future - Partner with us!</Link>
-              </div>
+              <UserButton afterSignOutUrl="/" />
             </SignedIn>
           </div>
 
-          <div className="ad-container">
-            <div className="ad-column">
-              <div className="ad-label">
-                <div className="responsive-iframe-container">
-                  <iframe
-                    src="https://www.youtube.com/embed/O7ACNMj8NW0"
-                    title="Evolution of Tesla (Animation)"
-                    alt="Evolution of Tesla"
-                    frameBorder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    referrerPolicy="strict-origin-when-cross-origin"
-                    allowFullScreen
-                  ></iframe>
+          {/*<div>
+            <Link to="/newsletter" className="crumbtrail"> <small> Newsletter</small></Link>
+          </div>*/}
+        </nav>
+
+        <div className="main-content-container">
+          <div className="content-area">
+            <div className="container">
+              <h3 className="title">Price Comparison Smart Energy Meter Reader</h3>
+              <p className="app-description">
+                The <strong>SPYDER</strong> Digital Twin Smart Energy Meter Reader,
+                helps you find the best electricity tariff at the most competitive
+                price. Compare different meters, check prices and choose the right
+                option to save on energy bills. The Reader also serves as a forecasting system, a settlement tool and a Net Zero initiative.
+              </p>
+              <SignedOut>
+                <p className="auth-prompt">
+                  Start comparing now and make smarter choices for your electricity
+                  usage. Please &nbsp;
+                  <SignInButton mode="modal" className="login-button">
+                    Sign in &nbsp;
+                  </SignInButton>
+                  &nbsp;&nbsp; and select a Smart Meter!
+                </p>
+              </SignedOut>
+              <SignedIn>
+                <div className="reading-form-container">
+                  <form onSubmit={handleCalculate}>
+                    <input
+                      type="number"
+                      value={userReading}
+                      onChange={(e) => setUserReading(e.target.value)}
+                      className="reading-input"
+                      placeholder="Please Enter your reading"
+                      step="0.01"
+                      min="0"
+                      required
+                    />
+                    <button type="submit" className="calculate-button">
+                      Calculate
+                    </button>
+                  </form>
+
+                  {calculatedResults.length > 0 && (
+                    <div className="results-container">
+                      <table className="cost-table">
+                        <thead>
+                          <tr>
+                            <th>Energy Company</th>
+                            <th>Total Cost (£)</th>
+                            <th>Commission</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {calculatedResults.map((result, index) => (
+                            <tr key={index} onClick={() => handleResultClick(result)} className="result-row">
+                              <td><span className="switch-tariff-supplier">{result.supplier} <strong>(SWITCH!)</strong></span></td>
+                              <td>£{result.cost}</td>
+                              <td>{result.commissionRate * 100}%</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                      <button 
+                        onClick={handleCloseResults} 
+                        className="close-results-button"
+                      >
+                        Close Results
+                      </button>
+                      <p>To better serve your energy needs, we kindly request that you <br />
+                        <button 
+                          onClick={handleNewsletterSubscribe} 
+                          className="subscribe-newsletter-button"
+                        >
+                          <strong>Subscribe to our NEWSLETTER</strong>
+                        </button> - $0.99 per month, <br />and share your past electricity meter readings with us. This data will enable us to make informed decisions through careful monitoring and analysis.
+                        We have provided samples of how Meter Readings are modelled using AI and Machine Learning models to reflect peaks, load shedding and other anomalies including tampering.
+                        Based on our assessment, we can provide you with a personalised account page with interactive Visualisation Dashboard, 
+                        and recommend a more competitive energy provider with a tariff better suited to your consumption patterns.
+                        Your cooperation will help ensure you receive the most cost-effective and efficient energy solution available.</p>
+                    </div>
+                  )}
                 </div>
-               
-                <div className="responsive-image-container">
-                  <img src={heatpump} alt="Heat pump" className="ad-image" />
+
+                <MeterGrid isInteractive={true} />
+                {renderModal()}
+                {renderNewsletterModal()}
+
+                <div className="button-container">
+                  {isReadingActive ? (
+                    <button onClick={() => stopReading()} className="stop-button">
+                      Stop
+                    </button>
+                  ) : (
+                    <button onClick={() => startReading()} className="start-button">
+                      Start
+                    </button>
+                  )}
                 </div>
-              </div>
+                <div className="race-to-zero">
+                  <Link to="/advertising">Race to zero emission future - Partner with us!</Link>
+                </div>
+              </SignedIn>
             </div>
 
-            <div className="ad-column">
-              <div className="ad-label">
-                <div className="media-grid">
-                  <div className="media-container video">
-                    <span><a href="/pricing">Premium Ad Placement - Available!</a></span>
+            <div className="ad-container">
+              <div className="ad-column">
+                <div className="ad-label">
+                  <div className="responsive-iframe-container">
                     <iframe
-                      src=""
-                      title="Dummy Video"
-                      alt="Dummy Video"
+                      src="https://www.youtube.com/embed/O7ACNMj8NW0"
+                      title="Evolution of Tesla (Animation)"
+                      alt="Evolution of Tesla"
                       frameBorder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      referrerPolicy="strict-origin-when-cross-origin"
                       allowFullScreen
                     ></iframe>
                   </div>
                 
-                  <div className="media-container image">
-                    <span>100% Organic</span>
-                    <iframe
-                      src={hellofresh}
-                      title="100% Organic"
-                      alt="100% Organic"
-                      frameBorder="0"
-                      allowFullScreen
-                    ></iframe>
+                  <div className="responsive-image-container">
+                    <img src={heatpump} alt="Heat pump" className="ad-image" />
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
 
-          <div className="brand-story-container">
-            <div className="brand-story-column">
-              <div className="immersive-brand-ad">
-                <div className="brand-hero-video">
-                  <video 
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                    poster="/images/green-energy-poster.jpg"
-                    className="brand-video"
-                  >
-                    <source src="https://goods-vod.kwcdn.com/goods-video/2e893b7d49267bbcf912d457f659eede65dad719.f30.mp4" type="video/mp4" />
-                    Your browser does not support the video tag.
-                  </video>
-                  <div className="video-overlay">
-                    <h2>The Future of Clean Energy</h2>
-                    <p>How we're powering tomorrow's world today</p>
-                  </div>
-                </div>
-
-                <div className="brand-narrative">
-                  <div className="narrative-content">
-                    <div className="narrative-text">
-                      <h3>Our Journey to Sustainability</h3>
-                      <p>
-                        Founded in 2010, GreenPower Solutions began with a simple mission: to make renewable energy 
-                        accessible to everyone. What started as a small team of engineers in a garage has grown into 
-                        a global movement powering over 1 million homes with clean energy.
-                      </p>
-                      <div className="brand-stats">
-                        <div className="stat-item">
-                          <span className="stat-number">1M+</span>
-                          <span className="stat-label">Homes Powered</span>
-                        </div>
-                        <div className="stat-item">
-                          <span className="stat-number">85%</span>
-                          <span className="stat-label">Carbon Reduction</span>
-                        </div>
-                        <div className="stat-item">
-                          <span className="stat-number">24/7</span>
-                          <span className="stat-label">Clean Energy</span>
-                        </div>
-                      </div>
+              <div className="ad-column">
+                <div className="ad-label">
+                  <div className="media-grid">
+                    <div className="media-container video">
+                      <span><a href="/pricing">Premium Ad Placement - Available!</a></span>
+                      <iframe
+                        src=""
+                        title="Dummy Video"
+                        alt="Dummy Video"
+                        frameBorder="0"
+                        allowFullScreen
+                      ></iframe>
                     </div>
-                    <div className="narrative-image">
-                      <p className="image-caption"><i>Our founding team in 2012, working on the first prototypes</i></p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            <div className="brand-story-column">
-              <div className="media-container video">
-                <span><a href="/pricing">Brand Story - Available</a></span>
-                <iframe
-                  src=""
-                  title="Brand Story Video Part 2"
-                  alt="Brand Story Video Part 2"
-                  frameBorder="0"
-                  allowFullScreen
-                ></iframe>
-              </div>
-              <div className="product-showcase">
-                  <h3>Innovation That Powers Life</h3>
-                  <div className="product-features">
-                    <div className="feature">
-                      <div className="feature-video-container">
-                        <video 
-                          autoPlay
-                          loop
-                          muted
-                          playsInline
-                          className="feature-video"
-                        >
-                          <source src="https://goods-vod.kwcdn.com/goods-video/991226355a5aed619dd7b4e8c443e418184d438b.f30.mp4" type="video/mp4" />
-                        </video>
-                      </div>
-                      <h4>Next-Gen Solar Panels</h4>
-                      <p>40% more efficient than conventional panels with our patented nano-coating technology</p>
-                    </div>
-                    <div className="feature">
-                      <div className="feature-video-container">
-                        <video 
-                          autoPlay
-                          loop
-                          muted
-                          playsInline
-                          className="feature-video"
-                        >
-                          <source src="https://goods-vod-eu.kwcdn.com/local-goods-vod/f17793572598e526aef7d74d7b03f277a1e56ea6.f30.mp4" type="video/mp4" />
-                        </video>
-                      </div>
-                      <h4>Home Battery Systems</h4>
-                      <p>Store excess energy with our compact, high-capacity home batteries</p>
+                  
+                    <div className="media-container image">
+                      <span>100% Organic</span>
+                      <iframe
+                        src={hellofresh}
+                        title="100% Organic"
+                        alt="100% Organic"
+                        frameBorder="0"
+                        allowFullScreen
+                      ></iframe>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
 
-            <div className="brand-cta">
-                <h3>Join the Energy Revolution</h3>
-                <p>Get a personalized quote and see how much you could save</p>
-                <div className="cta-buttons">
-                  <button className="cta-primary">How We Achieved 100% Uptime!</button>
-                  {/*https://www.greenpowersolutions.uk/blog/how-we-achieved-100-uptime-for-a-cctv-tower*/}
-                  <button className="cta-secondary">Watch Our Story</button>
-                  {/*https://www.greenpowersolutions.uk/*/}
+            <div className="brand-story-container">
+              <div className="brand-story-column">
+                <div className="immersive-brand-ad">
+                  <div className="brand-hero-video">
+                    <video 
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      poster="/images/green-energy-poster.jpg"
+                      className="brand-video"
+                    >
+                      <source src="https://goods-vod.kwcdn.com/goods-video/2e893b7d49267bbcf912d457f659eede65dad719.f30.mp4" type="video/mp4" />
+                      Your browser does not support the video tag.
+                    </video>
+                    <div className="video-overlay">
+                      <h2>The Future of Clean Energy</h2>
+                      <p>How we're powering tomorrow's world today</p>
+                    </div>
+                  </div>
+
+                  <div className="brand-narrative">
+                    <div className="narrative-content">
+                      <div className="narrative-text">
+                        <h3>Our Journey to Sustainability</h3>
+                        <p>
+                          Founded in 2010, GreenPower Solutions began with a simple mission: to make renewable energy 
+                          accessible to everyone. What started as a small team of engineers in a garage has grown into 
+                          a global movement powering over 1 million homes with clean energy.
+                        </p>
+                        <div className="brand-stats">
+                          <div className="stat-item">
+                            <span className="stat-number">1M+</span>
+                            <span className="stat-label">Homes Powered</span>
+                          </div>
+                          <div className="stat-item">
+                            <span className="stat-number">85%</span>
+                            <span className="stat-label">Carbon Reduction</span>
+                          </div>
+                          <div className="stat-item">
+                            <span className="stat-number">24/7</span>
+                            <span className="stat-label">Clean Energy</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="narrative-image">
+                        <p className="image-caption"><i>Our founding team in 2012, working on the first prototypes</i></p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <div className="trust-badges">
-                  <img src={EnergyCertTrust} alt="Energy Trust Certified" />
-                  <img src={GreenBusinessCertified} alt="Green Business Certified" />
+              </div>
+              
+              <div className="brand-story-column">
+                <div className="media-container video">
+                  <span><a href="/pricing">Brand Story - Available</a></span>
+                  <iframe
+                    src=""
+                    title="Brand Story Video Part 2"
+                    alt="Brand Story Video Part 2"
+                    frameBorder="0"
+                    allowFullScreen
+                  ></iframe>
                 </div>
-            </div>
-        
-        </div>    
+                <div className="product-showcase">
+                    <h3>Innovation That Powers Life</h3>
+                    <div className="product-features">
+                      <div className="feature">
+                        <div className="feature-video-container">
+                          <video 
+                            autoPlay
+                            loop
+                            muted
+                            playsInline
+                            className="feature-video"
+                          >
+                            <source src="https://goods-vod.kwcdn.com/goods-video/991226355a5aed619dd7b4e8c443e418184d438b.f30.mp4" type="video/mp4" />
+                          </video>
+                        </div>
+                        <h4>Next-Gen Solar Panels</h4>
+                        <p>40% more efficient than conventional panels with our patented nano-coating technology</p>
+                      </div>
+                      <div className="feature">
+                        <div className="feature-video-container">
+                          <video 
+                            autoPlay
+                            loop
+                            muted
+                            playsInline
+                            className="feature-video"
+                          >
+                            <source src="https://goods-vod-eu.kwcdn.com/local-goods-vod/f17793572598e526aef7d74d7b03f277a1e56ea6.f30.mp4" type="video/mp4" />
+                          </video>
+                        </div>
+                        <h4>Home Battery Systems</h4>
+                        <p>Store excess energy with our compact, high-capacity home batteries</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="brand-cta">
+                  <h3>Join the Energy Revolution</h3>
+                  <p>Get a personalized quote and see how much you could save</p>
+                  <div className="cta-buttons">
+                    <button className="cta-primary">How We Achieved 100% Uptime!</button>
+                    <button className="cta-secondary">Watch Our Story</button>
+                  </div>
+                  <div className="trust-badges">
+                    <img src={EnergyCertTrust} alt="Energy Trust Certified" />
+                    <img src={GreenBusinessCertified} alt="Green Business Certified" />
+                  </div>
+              </div>
+          
+          </div>    
+        </div>
       </div>
-    </div>
+    </PayPalScriptProvider>
+  );
+}
+
+export default function EnergyMeter() {
+  return (
+    <PayPalScriptProvider options={{ 
+      "client-id": "YOUR_PAYPAL_CLIENT_ID",
+      components: "buttons",
+      currency: "USD"
+    }}>
+      <AppWithPayPalProvider />
+    </PayPalScriptProvider>
   );
 }
