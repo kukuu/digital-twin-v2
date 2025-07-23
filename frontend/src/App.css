@@ -9,6 +9,7 @@ html, body {
   width: 100%;
   overflow-x: hidden;
   min-height: 100vh;
+  font-family: 'Arial', sans-serif;
 }
 
 /* ============ NAVBAR STYLES ============ */
@@ -147,6 +148,7 @@ html, body {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 1.5rem;
 }
 
 .close-button {
@@ -155,6 +157,308 @@ html, body {
   font-size: 1.5rem;
   cursor: pointer;
   padding: 0.5rem;
+}
+
+/* ============ NEWSLETTER MODAL STYLES ============ */
+.newsletter-modal .modal-content {
+  max-width: 500px;
+  padding: 2.5rem;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+.newsletter-modal .modal-header {
+  border-bottom: 1px solid #eee;
+  padding-bottom: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.newsletter-modal .modal-header h2 {
+  font-size: 1.8rem;
+  color: #2e7d32;
+  font-weight: 600;
+}
+
+.newsletter-modal .modal-body {
+  padding: 0;
+}
+
+/* Payment method selector styles */
+.payment-method-selector {
+  margin-bottom: 2rem;
+}
+
+.payment-method-tabs {
+  display: flex;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 1.5rem;
+}
+
+.payment-method-tab {
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  font-weight: 500;
+  color: #666;
+  transition: all 0.3s ease;
+}
+
+.payment-method-tab.active {
+  color: #2e7d32;
+  border-bottom-color: #2e7d32;
+}
+
+.payment-method-content {
+  display: none;
+}
+
+.payment-method-content.active {
+  display: block;
+}
+
+/* PayPal specific payment method styles */
+.payment-method-content.paypal-method {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.5rem;
+}
+
+.payment-method-content.paypal-method.active {
+  display: flex !important;
+}
+
+/* Form group styles */
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.75rem;
+  font-weight: 500;
+  color: #333;
+  font-size: 0.95rem;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 0.875rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background-color: #f9f9f9;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #4CAF50;
+  box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
+  background-color: white;
+}
+
+/* Card details styles */
+.card-details {
+  background: #f9f9f9;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  border: 1px solid #eee;
+}
+
+.card-details .form-row {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.card-details .form-row .form-group {
+  flex: 1;
+}
+
+/* PayPal button container styles */
+.paypal-button-container {
+  margin: 1.5rem 0;
+  min-height: 45px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f9f9f9;
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid #eee;
+}
+
+/* ============ PAYPAL COMPONENT STYLES ============ */
+.paypal-component {
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.paypal-header {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+
+.paypal-subheader {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.paypal-divider {
+  display: flex;
+  align-items: center;
+  margin: 1.5rem 0;
+  color: #999;
+  width: 100%;
+}
+
+.paypal-divider::before,
+.paypal-divider::after {
+  content: "";
+  flex: 1;
+  border-bottom: 1px solid #ddd;
+}
+
+.paypal-divider-text {
+  padding: 0 1rem;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+}
+
+.paypal-button-wrapper {
+  background: #f9f9f9;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin: 1rem 0;
+  width: 100%;
+}
+
+.paypal-logo {
+  font-weight: bold;
+  color: #003087;
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.paypal-button {
+  background: #FFC439;
+  color: #111;
+  border: none;
+  border-radius: 4px;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  max-width: 200px;
+  transition: background-color 0.3s;
+  display: block;
+  margin: 0 auto;
+}
+
+.paypal-button:hover {
+  background: #f2bb35;
+}
+
+/* Payment summary styles */
+.payment-summary {
+  background: #f5f9f5;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin: 1.5rem 0;
+  border: 1px solid #e0e0e0;
+}
+
+.payment-summary-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+  font-size: 0.95rem;
+}
+
+.payment-summary-row.total {
+  font-weight: 600;
+  font-size: 1.1rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid #e0e0e0;
+  margin-top: 0.75rem;
+}
+
+/* Submit button styles */
+.submit-button-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 1.5rem;
+}
+
+.payment-button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  max-width: 300px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.payment-button:hover {
+  background-color: #3e8e41;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(0,0,0,0.15);
+}
+
+.payment-button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Error message styles */
+.error-message {
+  color: #dc3545;
+  margin: 1rem 0;
+  text-align: center;
+  font-size: 0.9rem;
+  padding: 0.75rem;
+  background-color: #f8d7da;
+  border-radius: 4px;
+  border: 1px solid #f5c6cb;
+}
+
+/* Terms and conditions styles */
+.terms-conditions {
+  font-size: 0.8rem;
+  color: #666;
+  text-align: center;
+  margin-top: 1.5rem;
+  line-height: 1.5;
+}
+
+.terms-conditions a {
+  color: #2e7d32;
+  text-decoration: none;
+}
+
+.terms-conditions a:hover {
+  text-decoration: underline;
 }
 
 /* ============ SWITCH SUPPLIER BUTTON ============ */
@@ -849,6 +1153,25 @@ a.subscribe-newsletter {
   .cost-table th, 
   .cost-table td {
     padding: 0.5rem;
+  }
+
+  /* Responsive adjustments for newsletter modal */
+  .newsletter-modal .modal-content {
+    padding: 1.5rem;
+  }
+
+  .payment-method-tabs {
+    flex-direction: column;
+  }
+
+  .payment-method-tab {
+    border-bottom: none;
+    border-left: 3px solid transparent;
+  }
+
+  .payment-method-tab.active {
+    border-bottom: none;
+    border-left-color: #2e7d32;
   }
 }
 
