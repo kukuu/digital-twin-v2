@@ -382,9 +382,9 @@ export default function PricingPage() {
                         hidden
                       />
                       <label htmlFor={option.id}>
-                        <span className="duration">{option.duration}</span>
-                        {option.discount && <span className="discount-badge">{option.discount}</span>}
-                        <span className="price">${option.price}</span>
+                        <span className="duration">{option.duration} </span>
+                        {option.discount && <span className="discount-badge">{option.discount} </span>}
+                        <span className="price"> &nbsp;&nbsp;${option.price}</span>
                       </label>
                     </div>
                   ))}
