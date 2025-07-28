@@ -19,8 +19,7 @@ import "./App.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useForm } from "react-hook-form";
-import { PayPalScriptProvider } from '@paypal/react-paypal-js';
-import Paypal from './components/Paypal';
+import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js';
 
 // Register Chart.js components
 Chart.register(...registerables);
@@ -139,6 +138,35 @@ const trackAffiliateClick = (supplier, meterId) => {
   };
   
   localStorage.setItem(`lastAffiliateClick_${meterId}`, JSON.stringify(clickData));
+};
+
+const Paypal = ({ amount, currency, onSuccess, onError }) => {
+  return (
+    <PayPalButtons
+      style={{ layout: "vertical" }}
+      createOrder={(data, actions) => {
+        return actions.order.create({
+          purchase_units: [
+            {
+              amount: {
+                value: amount,
+                currency_code: currency,
+              },
+              description: "Newsletter subscription",
+            },
+          ],
+        });
+      }}
+      onApprove={(data, actions) => {
+        return actions.order.capture().then((details) => {
+          onSuccess(details);
+        });
+      }}
+      onError={(err) => {
+        onError(err);
+      }}
+    />
+  );
 };
 
 const NewsletterModal = memo(({ onClose, onPaymentSuccess }) => {
@@ -265,12 +293,18 @@ const NewsletterModal = memo(({ onClose, onPaymentSuccess }) => {
 
             {paymentMethod === 'paypal' && (
               <div className="paypal-button-container">
-                <Paypal 
-                  amount="0.99" 
-                  currency="USD" 
-                  onSuccess={handlePaymentSuccess}
-                  onError={(err) => setError(err.message)}
-                />
+                <PayPalScriptProvider options={{ 
+                  "client-id": "test",
+                  components: "buttons",
+                  currency: "USD"
+                }}>
+                  <Paypal 
+                    amount="0.99" 
+                    currency="USD" 
+                    onSuccess={handlePaymentSuccess}
+                    onError={(err) => setError(err.message)}
+                  />
+                </PayPalScriptProvider>
               </div>
             )}
 
@@ -415,13 +449,6 @@ const Modal = memo(
               >
                 {isSending ? "Sending..." : "Send Meter Reading"}
               </button>
-             {/* <button
-                className="paypal-payment-button"
-                onClick={onPay}
-                disabled={isSending}
-              >
-                Payment Gateway
-              </button>*/}
             </div>
           </div>
         </div>
@@ -817,10 +844,6 @@ function AppWithPayPalProvider() {
               <UserButton afterSignOutUrl="/" />
             </SignedIn>
           </div>
-
-          {/*<div>
-            <Link to="/newsletter" className="crumbtrail"> <small> Newsletter</small></Link>
-          </div>*/}
         </nav>
 
         <div className="main-content-container">
