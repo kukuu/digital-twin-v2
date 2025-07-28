@@ -281,8 +281,9 @@ html, body {
 
 /* PayPal button container styles */
 .paypal-button-container {
-  margin: 1.5rem 0;
+  width: 100%;
   min-height: 45px;
+  margin: 1.5rem 0;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -290,6 +291,23 @@ html, body {
   padding: 1rem;
   border-radius: 8px;
   border: 1px solid #eee;
+}
+
+.paypal-button-container > div {
+  width: 100%;
+  max-width: 400px;
+}
+
+.paypal-button-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+/* Ensure the PayPal button takes full width */
+.paypal-button-container .paypal-buttons {
+  width: 100% !important;
+  min-width: 200px;
 }
 
 /* ============ PAYPAL COMPONENT STYLES ============ */
@@ -1180,23 +1198,13 @@ a.subscribe-newsletter {
     padding: 0.5rem;
   }
 
-  /* Responsive adjustments for newsletter modal */
-  .newsletter-modal .modal-content {
-    padding: 1.5rem;
+  /* Responsive adjustments for PayPal button */
+  .paypal-button-container {
+    padding: 0.5rem;
   }
-
-  .payment-method-tabs {
-    flex-direction: column;
-  }
-
-  .payment-method-tab {
-    border-bottom: none;
-    border-left: 3px solid transparent;
-  }
-
-  .payment-method-tab.active {
-    border-bottom: none;
-    border-left-color: #2e7d32;
+  
+  .paypal-button-container > div {
+    width: 100%;
   }
 }
 
