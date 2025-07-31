@@ -138,7 +138,7 @@ export default function PricingPage() {
       id: "sidebar-ad-premium-image",
       title: "Sidebar Image",
       description: "Persistent visibility on all pages. Great for targeted promotions.",
-      dimensions: "300x600px",
+      dimensions: "150x150px",
       impressions: "30,000+ monthly",
       type: "sidebar"
     },
@@ -146,7 +146,7 @@ export default function PricingPage() {
       id: "sidebar-ad-premium-video",
       title: "Sidebar Video",
       description: "Persistent visibility on all pages. Great for targeted promotions.",
-      dimensions: "300x600px",
+      dimensions: "150x150px",
       impressions: "30,000+ monthly",
       type: "sidebar"
     },
@@ -154,7 +154,7 @@ export default function PricingPage() {
       id: "inContent-ad-image",
       title: "In Content Image",
       description: "Persistent visibility on all pages. Great for targeted promotions.",
-      dimensions: "Flexible",
+      dimensions: "400x400",
       impressions: "30,000+ monthly",
       type: "inContent"
     },
@@ -162,7 +162,7 @@ export default function PricingPage() {
       id: "inContent-ad-video",
       title: "In Content Video",
       description: "Persistent visibility on all pages. Great for targeted promotions.",
-      dimensions: "Flexible",
+      dimensions: "400x400",
       impressions: "30,000+ monthly",
       type: "inContent"
     },
@@ -170,7 +170,7 @@ export default function PricingPage() {
       id: "premium-ad-image",
       title: "Premium Image",
       description: "Persistent visibility on all pages. Great for targeted promotions.",
-      dimensions: "1200x200px",
+      dimensions: "500x500px",
       impressions: "30,000+ monthly",
       type: "premiumImage"
     },
@@ -178,7 +178,7 @@ export default function PricingPage() {
       id: "premium-ad-video",
       title: "Premium Video",
       description: "Persistent visibility on all pages. Great for targeted promotions.",
-      dimensions: "1200x200px",
+      dimensions: "500x500px",
       impressions: "30,000+ monthly",
       type: "premiumVideo"
     },
@@ -202,7 +202,7 @@ export default function PricingPage() {
       id: "brand-story-ad",
       title: "Brand Story",
       description: "Persistent visibility on all pages. Great for targeted promotions.",
-      dimensions: "800x400px",
+      dimensions: "800x800px",
       impressions: "30,000+ monthly",
       type: "iinContent"
     }
