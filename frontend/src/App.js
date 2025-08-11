@@ -851,11 +851,14 @@ function AppWithPayPalProvider() {
             <div className="container">
               <h3 className="title">Price Comparison Smart Energy Meter Reader</h3>
               <p className="app-description">
-                The <strong>SPYDER</strong> Digital Twin Smart Energy Meter Reader,
-                helps you find the best electricity tariff at the most competitive
-                price. Compare different meters, check prices and choose the right
-                option to save on energy bills. The Reader also serves as a forecasting system, a settlement tool and a Net Zero initiative.
-              </p>
+                The <strong>SPYDER</strong> Digital Twin Smart Energy Meter Reader, helps you find the best electricity tariff at the most competitive price. Compare different meters, check prices and choose the right option to save on energy bills. The Reader also serves as a forecasting system, a settlement tool and a Net Zero initiative.
+   
+   
+   We aim to make great saving decisions making a breeze for everyone, and that purpose drives us every day.
+
+It’s why we have accomplished our mission by creating an artificial intelligence run-time quoting engine for finding the best energy tariffs, with the simplest of experiences, wrapped in a brand everyone loves!
+
+We change lives by making it simple to switch and save money!</p>
               <SignedOut>
                 <p className="auth-prompt">
                   Start comparing now and make smarter choices for your electricity
