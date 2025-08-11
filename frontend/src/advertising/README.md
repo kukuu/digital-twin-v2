@@ -1,6 +1,92 @@
 
 # Affiliate Marketing Integration
 
+
+................
+................
+
+- Master Integration Notes
+
+- A
+Based on the AWIN developer documentation and  API token generated (rt678gggg-1257-0oklnnv-dasweee-sssssssssss), I'll update the affiliateParam in the AFFILIATE_CONFIG to properly integrate with AWIN's tracking system.
+
+Here's the updated configuration:
+
+javascript
+const AFFILIATE_CONFIG = {
+  "Octopus Energy": {
+    baseUrl: "https://octopus.energy/",
+    affiliateParam: "?awc=6789_1_rt678gggg-1257-0oklnnv-dasweee-sssssssssss",
+    trackingId: "SPYDER-OCTOPUS",
+    commissionRate: 0.05, // 5% commission
+    contact: "0808 164 1088",
+    defaultTariff: "Flexible Octopus",
+    defaultCost: 23.28
+  },
+  "EDF Energy": {
+    baseUrl: "https://www.edfenergy.com/",
+    affiliateParam: "?awc=6789_2_rt678gggg-1257-0oklnnv-dasweee-sssssssssss",
+    trackingId: "SPYDER-EDF",
+    commissionRate: 0.04, // 4% commission
+    contact: "0333 200 5100",
+    defaultTariff: "Fixed",
+    defaultCost: 23.28
+  },
+  "E.ON Next": {
+    baseUrl: "https://www.eonnext.com/",
+    affiliateParam: "?awc=6789_3_rt678gggg-1257-0oklnnv-dasweee-sssssssssss",
+    trackingId: "SPYDER-EON",
+    commissionRate: 0.03, // 3% commission
+    contact: "0808 501 5200",
+    defaultTariff: "Next Flex",
+    defaultCost: 25.69
+  }
+};
+
+- Key changes made:
+
+i. Replaced all affiliateParam values with AWIN's tracking parameter format (awc)
+
+ii. Used provided API token (rt678gggg-1257-0oklnnv-dasweee-sssssssssss)
+
+iii. Added unique campaign IDs for each supplier (6789_1, 6789_2, 6789_3) to track performance separately
+
+iv. Maintained all other existing configuration values
+
+- The AWIN tracking parameter format is:
+
+?awc=[CAMPAIGN_ID]_[SUB_ID]_[API_TOKEN]
+
+Where:
+
+i. CAMPAIGN_ID is your AWIN campaign ID (I used 6789 as an example)
+
+ii. SUB_ID is a unique identifier for each supplier (1, 2, 3 in this case)
+
+iii. API_TOKEN is your provided token
+
+- This configuration will:
+
+i. Properly track all affiliate clicks through AWIN
+
+ii. Attribute commissions correctly for each energy supplier
+
+iii. Maintain all existing functionality while adding proper affiliate tracking
+
+iv. Allow you to analyze performance by supplier in your AWIN dashboard
+
+- Note:
+
+i. Replace the example campaign ID (6789) with your actual AWIN campaign ID
+
+ii. Consider adding additional UTM parameters for more detailed tracking
+
+iii. Test the links in your AWIN account to ensure tracking is working properly
+
+
+.......
+........
+
  Affiliate marketing integration with energy suppliers, with proper tracking and transparency for users.
 
 - Key Implementation Details
