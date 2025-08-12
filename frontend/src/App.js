@@ -38,7 +38,7 @@ const APPS_SCRIPT_URL = process.env.REACT_APP_APPS_SCRIPT_URL;
 const AFFILIATE_CONFIG = {
   "Octopus Energy": {
     baseUrl: "https://octopus.energy/",
-    affiliateParam: "?ref=SPYDER-AFFILIATE",
+    affiliateParam: "?awc=2334297_1_5d541736-1257-4e1a-a984-37e189817459",
     trackingId: "SPYDER-OCTOPUS",
     commissionRate: 0.05, // 5% commission
     contact: "0808 164 1088",
@@ -47,7 +47,7 @@ const AFFILIATE_CONFIG = {
   },
   "EDF Energy": {
     baseUrl: "https://www.edfenergy.com/",
-    affiliateParam: "?affiliate=SPYDER",
+    affiliateParam: "?awc=2334297_2_5d541736-1257-4e1a-a984-37e189817459",
     trackingId: "SPYDER-EDF",
     commissionRate: 0.04, // 4% commission
     contact: "0333 200 5100",
@@ -56,7 +56,7 @@ const AFFILIATE_CONFIG = {
   },
   "E.ON Next": {
     baseUrl: "https://www.eonnext.com/",
-    affiliateParam: "?utm_source=SPYDER",
+    affiliateParam: "?awc=2334297_3_5d541736-1257-4e1a-a984-37e189817459",
     trackingId: "SPYDER-EON",
     commissionRate: 0.03, // 3% commission
     contact: "0808 501 5200",
@@ -851,14 +851,15 @@ function AppWithPayPalProvider() {
             <div className="container">
               <h3 className="title">Price Comparison Smart Energy Meter Reader</h3>
               <p className="app-description">
-                The <strong>SPYDER</strong> Digital Twin Smart Energy Meter Reader, helps you find the best electricity tariff at the most competitive price. Compare different meters, check prices and choose the right option to save on energy bills. The Reader also serves as a forecasting system, a settlement tool and a Net Zero initiative.
+              The <strong>SPYDER</strong> Digital Twin Smart Energy Meter Reader, helps you find the best electricity tariff at the most competitive price. Compare different meters, check prices and choose the right option to save on energy bills. The Reader also serves as a forecasting system, a settlement tool and a Net Zero initiative.
    
    
    We aim to make great saving decisions making a breeze for everyone, and that purpose drives us every day.
 
 It’s why we have accomplished our mission by creating an artificial intelligence run-time quoting engine for finding the best energy tariffs, with the simplest of experiences, wrapped in a brand everyone loves!
 
-We change lives by making it simple to switch and save money!</p>
+We change lives by making it simple to switch and save money!
+              </p>
               <SignedOut>
                 <p className="auth-prompt">
                   Start comparing now and make smarter choices for your electricity
