@@ -781,7 +781,7 @@ function AppWithPayPalProvider() {
             {data.target && (
               <div className="target-link" onClick={(e) => handleAffiliateLinkClick(data.supplier, meterId, e)}>
                 <a href={data.affiliateLink} target="_blank" rel="noopener noreferrer">
-                  SWITCH! (Earn us {data.commissionRate * 100}%)
+                  SWITCH to {data.supplier} ! (Earn us {data.commissionRate * 100}%)
                 </a>
               </div>
             )}
