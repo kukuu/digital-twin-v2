@@ -447,7 +447,7 @@ const Modal = memo(
                 onClick={onSend}
                 disabled={isSending}
               >
-                {isSending ? "Sending..." : "Send Meter Reading"}
+                {isSending ? "Sending..." : "Send Meter Reading(s) to SPYDER"}
               </button>
             </div>
           </div>
