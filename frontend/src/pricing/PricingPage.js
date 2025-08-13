@@ -355,7 +355,7 @@ export default function PricingPage() {
         <p>
           Promote your business on our platform to reach thousands of energy-conscious consumers.
           The <strong>SPYDER</strong> Digital Twin Smart Energy Meter Reader helps users find the
-          best electricity meters at competitive prices.
+          best electricity unit charges at competitive prices.
         </p>
       </div>
 
