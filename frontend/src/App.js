@@ -372,7 +372,9 @@ const Modal = memo(
               className="switch-supplier-button"
               onClick={handleAffiliateClick}
             >
-              Switch to {meterInfo.supplier}
+              <a href={meterInfo.affiliateLink} target="_blank" rel="noopener noreferrer">
+                Switch to {meterInfo.supplier}
+              </a>
             </button>
             <small>We earn a {meterInfo.commissionRate * 100}% commission if you switch</small>
 
@@ -856,7 +858,7 @@ function AppWithPayPalProvider() {
    
    We aim to make great saving decisions making a breeze for everyone, and that purpose drives us every day.
 
-It’s why we have accomplished our mission by creating an artificial intelligence run-time quoting engine for finding the best energy tariffs, with the simplest of experiences, wrapped in a brand everyone loves!
+It's why we have accomplished our mission by creating an artificial intelligence run-time quoting engine for finding the best energy tariffs, with the simplest of experiences, wrapped in a brand everyone loves!
 
 We change lives by making it simple to switch and save money!
               </p>
@@ -901,7 +903,14 @@ We change lives by making it simple to switch and save money!
                         <tbody>
                           {calculatedResults.map((result, index) => (
                             <tr key={index} onClick={() => handleResultClick(result)} className="result-row">
-                              <td><span className="switch-tariff-supplier">{result.supplier} <strong>(SWITCH!)</strong></span></td>
+                              <td>
+                                <span className="switch-tariff-supplier">
+                                  {result.supplier} 
+                                  <a href={result.affiliateLink} target="_blank" rel="noopener noreferrer">
+                                    <strong>(SWITCH!)</strong>
+                                  </a>
+                                </span>
+                              </td>
                               <td>£{result.cost}</td>
                               <td>{result.commissionRate * 100}%</td>
                             </tr>
@@ -945,7 +954,7 @@ We change lives by making it simple to switch and save money!
                   )}
                 </div>
                 <div className="race-to-zero">
-                  <Link to="/advertising">Race to zero emission future - Partner with us!</Link>
+                  <Link to="/pricing">Race to zero emission future - Partner with us!</Link>
                 </div>
               </SignedIn>
             </div>
