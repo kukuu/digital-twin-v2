@@ -31,24 +31,24 @@ export default function PricingPage() {
       name: "Premium Banner",
       description: "Top-of-page placement with maximum visibility. Perfect for brand awareness campaigns.",
       options: [
-        { id: "premiumBanner-6months", duration: "6 months", price: 850, discount: "" },
-        { id: "premiumBanner-12months", duration: "12 months", price: 1530, discount: "20% off" }
+        { id: "premiumBanner-6months", duration: "6 months", price: 595, discount: "" },
+        { id: "premiumBanner-12months", duration: "12 months", price: 952, discount: "20% off" }
       ]
     },
     premiumImage: {
       name: "Premium Image",
       description: "Static image advertisements displayed throughout our platform.",
       options: [
-        { id: "premiumImage-6months", duration: "6 months", price: 600, discount: "" },
-        { id: "premiumImage-12months", duration: "12 months", price: 960, discount: "20% off" }
+        { id: "premiumImage-6months", duration: "6 months", price: 480, discount: "" },
+        { id: "premiumImage-12months", duration: "12 months", price: 768, discount: "20% off" }
       ]
     },
     premiumVideo: {
       name: "Premium Video",
       description: "Video advertisements displayed throughout our platform.",
       options: [
-        { id: "premiumVideo-6months", duration: "6 months", price: 700, discount: "" },
-        { id: "premiumVideo-12months", duration: "12 months", price: 1120, discount: "20% off" }
+        { id: "premiumVideo-6months", duration: "6 months", price: 560, discount: "" },
+        { id: "premiumVideo-12months", duration: "12 months", price: 896, discount: "20% off" }
       ]
     },
     inContentImage: {
@@ -63,64 +63,64 @@ export default function PricingPage() {
       name: "In-Content Video",
       description: "Dynamic video content in premium placements.",
       options: [
-        { id: "inContentVideo-6months", duration: "6 months", price: 400, discount: "" },
-        { id: "inContentVideo-12months", duration: "12 months", price: 640, discount: "20% off" }
+        { id: "inContentVideo-6months", duration: "6 months", price: 320, discount: "" },
+        { id: "inContentVideo-12months", duration: "12 months", price: 512, discount: "20% off" }
       ]
     },
     sidebarPremiumImage: {
       name: "Sidebar Premium Image",
       description: "Image content in premium sidebar placements.",
       options: [
-        { id: "sidebarPremiumImage-6months", duration: "6 months", price: 180, discount: "" },
-        { id: "sidebarPremiumImage-12months", duration: "12 months", price: 288, discount: "20% off" }
+        { id: "sidebarPremiumImage-6months", duration: "6 months", price: 144, discount: "" },
+        { id: "sidebarPremiumImage-12months", duration: "12 months", price: 230, discount: "20% off" }
       ]
     },
     sidebarPremiumVideo: {
       name: "Sidebar Premium Video",
       description: "Video in premium sidebar placements.",
       options: [
-        { id: "sidebarPremiumVideo-6months", duration: "6 months", price: 180, discount: "" },
-        { id: "sidebarPremiumVideo-12months", duration: "12 months", price: 288, discount: "20% off" }
+        { id: "sidebarPremiumVideo-6months", duration: "6 months", price: 144, discount: "" },
+        { id: "sidebarPremiumVideo-12months", duration: "12 months", price: 230, discount: "20% off" }
       ]
     },
     sidebarStandardImage: {
       name: "Sidebar Standard Image",
       description: "Image content in standard sidebar placements.",
       options: [
-        { id: "sidebarStandardImage-6months", duration: "6 months", price: 140, discount: "" },
-        { id: "sidebarStandardImage-12months", duration: "12 months", price: 224, discount: "20% off" }
+        { id: "sidebarStandardImage-6months", duration: "6 months", price: 112, discount: "" },
+        { id: "sidebarStandardImage-12months", duration: "12 months", price: 179, discount: "20% off" }
       ]
     },
     sidebarStandardVideo: {
       name: "Sidebar Standard Video",
       description: "Video in standard sidebar placements.",
       options: [
-        { id: "sidebarStandardVideo-6months", duration: "6 months", price: 165, discount: "" },
-        { id: "sidebarStandardVideo-12months", duration: "12 months", price: 264, discount: "20% off" }
+        { id: "sidebarStandardVideo-6months", duration: "6 months", price: 132, discount: "" },
+        { id: "sidebarStandardVideo-12months", duration: "12 months", price: 211, discount: "20% off" }
       ]
     },
     productShowcaseImage: {
       name: "Product Showcase Image",
       description: "Image content in premium placements.",
       options: [
-        { id: "productShowcaseImage-6months", duration: "6 months", price: 670, discount: "" },
-        { id: "productShowcaseImage-12months", duration: "12 months", price: 1072, discount: "20% off" }
+        { id: "productShowcaseImage-6months", duration: "6 months", price: 536, discount: "" },
+        { id: "productShowcaseImage-12months", duration: "12 months", price: 857, discount: "20% off" }
       ]
     },
     productShowcaseVideo: {
       name: "Product Showcase Video",
       description: "Dynamic video content in premium placements.",
       options: [
-        { id: "productShowcaseVideo-6months", duration: "6 months", price: 690, discount: "" },
-        { id: "productShowcaseVideo-12months", duration: "12 months", price: 1104, discount: "20% off" }
+        { id: "productShowcaseVideo-6months", duration: "6 months", price: 552, discount: "" },
+        { id: "productShowcaseVideo-12months", duration: "12 months", price: 883, discount: "20% off" }
       ]
     },
     brandStory: {
       name: "Brand Story",
       description: "Dynamic video content in premium placements.",
       options: [
-        { id: "brandStory-6months", duration: "6 months", price: 850, discount: "" },
-        { id: "brandStory-12months", duration: "12 months", price: 1410, discount: "20% off" }
+        { id: "brandStory-6months", duration: "6 months", price: 680, discount: "" },
+        { id: "brandStory-12months", duration: "12 months", price: 1088, discount: "20% off" }
       ]
     }
   };
