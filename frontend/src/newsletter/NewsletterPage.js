@@ -108,7 +108,7 @@ export default function NewsletterPage() {
                 <p>Showcase your product to our engaged audience</p>
               </div>
               <div className="ad-space">
-                <h4>Exclusive Offer</h4>
+                <h4>Exclusive Links</h4>
                 <p>Promote special deals to our subscribers</p>
               </div>
             </div>
@@ -171,7 +171,7 @@ export default function NewsletterPage() {
                 </div>
               </div>
               
-              <h4>Advertising Models</h4> 
+              <h4>Ads</h4> 
 
               <div className="ad-models">
                 <div className="featured-grid">
