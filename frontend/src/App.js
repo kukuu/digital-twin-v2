@@ -846,6 +846,9 @@ function AppWithPayPalProvider() {
               <UserButton afterSignOutUrl="/" />
             </SignedIn>
           </div>
+          <div>
+            <Link to="/newsletter" className="crumbtrail"><small>Newsletter</small></Link> 
+          </div>
         </nav>
 
         <div className="main-content-container">
@@ -956,6 +959,10 @@ function AppWithPayPalProvider() {
                   <Link to="/pricing">Race to zero emission future - Partner with us!</Link>
                 </div>
               </SignedIn>
+            </div>
+
+            <div>
+                <Link to="/newsletter" className="crumbtrail"><small>Newsletter</small></Link> 
             </div>
 
             <div className="ad-container">
