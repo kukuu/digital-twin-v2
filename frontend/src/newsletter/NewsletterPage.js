@@ -95,7 +95,8 @@ export default function NewsletterPage() {
           <div className="editorial-content">
             <div className="editorial-left">
               <h3>Ads</h3>
-              <div className="ad-space">
+              <p className="join-campaign"><a href="/pricing">Join the campaign</a></p>
+              <div className="ad-space"><br />
                 <h4>Premium Newsletter Spot</h4>
                 <p>Top placement in our newsletter with maximum visibility for your brand</p>
               </div>
@@ -172,7 +173,6 @@ export default function NewsletterPage() {
               </div>
               
               <h4>Ads</h4> 
-
               <div className="ad-models">
                 <div className="featured-grid">
                   {rightColumnAds.map(ad => (
