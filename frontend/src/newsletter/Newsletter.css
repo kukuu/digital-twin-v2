@@ -282,3 +282,13 @@
     max-width: 100%;
   }
 }
+
+.join-campaign {
+  margin-bottom: 10px;
+}
+
+.join-campaign a {
+  text-decoration: none;
+  color: green;
+  font-weight: 600;
+}
