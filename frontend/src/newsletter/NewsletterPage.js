@@ -173,6 +173,7 @@ export default function NewsletterPage() {
               </div>
               
               <h4>Ads</h4> 
+              <p className="join-campaign"><a href="/pricing">Join the campaign</a></p>
               <div className="ad-models">
                 <div className="featured-grid">
                   {rightColumnAds.map(ad => (
