@@ -345,9 +345,9 @@ export default function PricingPage() {
             <UserButton afterSignOutUrl="/" />
           </SignedIn>
         </div>
-        {/*<div>
-          <Link to="" className="crumbtrail"><small>Newsletter </small></Link>
-        </div>*/}
+         <div>
+            <Link to="/newsletter" className="crumbtrail"><small>Newsletter</small></Link> 
+         </div>
       </nav>
 
       <div className="advertising-header">
