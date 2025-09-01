@@ -1070,7 +1070,7 @@ function AppWithPayPalProvider() {
               
               <div className="brand-story-column">
                 <div className="media-container video">
-                  <span><a href="/pricing">Brand Story - Available</a></span>
+                  <span><a href="/pricing">Ad placement: Brand Story - Available</a></span>
                   <iframe
                     src=""
                     title="Brand Story Video Part 2"
