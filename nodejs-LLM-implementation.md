@@ -1,7 +1,7 @@
 
 # Node.js LLM implementation
 
-Here's a step-by-step executable plan to integrate an LLM module into SPYDER production build of the  Digital Twin app https://digital-twin-v2-chi.vercel.app/ . It  leveraging the existing Supabase/Vercel/Render stack.
+Here's a step-by-step executable plan to integrate an LLM module into SPYDER production build of the  Digital Twin app https://www.energytariffscheck.com/ . It  leveraging the existing Supabase/Vercel/Render stack.
 
 **The implementation gives you:**
 
