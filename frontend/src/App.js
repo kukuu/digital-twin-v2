@@ -464,6 +464,7 @@ Modal.displayName = "Modal";
 function AppWithPayPalProvider() {
   const [readings, setReadings] = useState({});
   const [historicalData, setHistoricalData] = useState({});
+  const [consumptionRates, setConsumptionRates] = useState({});
   const [loading, setLoading] = useState(true);
   const [isReadingActive, setIsReadingActive] = useState(true);
   const [showModal, setShowModal] = useState(false);
@@ -475,7 +476,7 @@ function AppWithPayPalProvider() {
   const [calculatedResults, setCalculatedResults] = useState([]);
   const [userReading, setUserReading] = useState("");
 
-  const updateReading = useCallback(({ meter_id, reading, timestamp }) => {
+  const updateReading = useCallback(({ meter_id, reading, timestamp, consumption_rate }) => {
     setReadings((prevReadings) => {
       const currentReading = parseFloat(reading) || 0;
       const totalCost = (currentReading * (meterData[meter_id].cost / 100)).toFixed(2);
@@ -493,6 +494,14 @@ function AppWithPayPalProvider() {
           { reading, timestamp }
         ].slice(-20)
       }));
+
+      // Update consumption rate for this meter
+      if (consumption_rate) {
+        setConsumptionRates(prev => ({
+          ...prev,
+          [meter_id]: consumption_rate
+        }));
+      }
       
       return {
         ...prevReadings,
@@ -741,6 +750,7 @@ function AppWithPayPalProvider() {
 
     const currentReading = parseFloat(data.reading) || 0;
     const totalCost = (currentReading * (data.cost / 100)).toFixed(2);
+    const consumptionRate = consumptionRates[meterId] || "Normal";
 
     return (
       <div className="meter-row">
@@ -791,6 +801,19 @@ function AppWithPayPalProvider() {
         </div>
         <br />
         <div className="meter-graph">
+          <div className="consumption-rate-label" style={{
+            textAlign: 'center',
+            padding: '5px',
+            backgroundColor: consumptionRate.includes('High') ? '#ffebee' : 
+                             consumptionRate.includes('Low') ? '#e8f5e8' : '#fff3e0',
+            color: consumptionRate.includes('High') ? '#c62828' : 
+                   consumptionRate.includes('Low') ? '#2e7d32' : '#ef6c00',
+            fontWeight: 'bold',
+            fontSize: '0.9rem',
+            borderRadius: '4px 4px 0 0'
+          }}>
+            Current Consumption: {consumptionRate}
+          </div>
           <Line 
             data={chartData}
             options={{
