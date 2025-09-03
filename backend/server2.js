@@ -15,7 +15,7 @@ const ORIGIN =
     ? process.env.FRONTEND_URL
     : "http://localhost:3000";
 
-//Initialise instance of socket.io
+// Initialise instance of socket.io
 const io = new Server(server, {
   cors: {
     origin: ORIGIN,
@@ -24,7 +24,7 @@ const io = new Server(server, {
   },
 });
 
-// Create a Supabase Client . Load from .env file
+// Create a Supabase Client. Load from .env file
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
@@ -57,9 +57,34 @@ const fetchLastReading = async (meter_id) => {
   return data.length > 0 ? data[0].reading : null;
 };
 
-// Function to generate new reading (Simulation)
+// Function to generate new reading with peak hour simulation
 const generateReading = (meter_id) => {
-  readings[meter_id] += Math.random() * 10; // Small random changes to the reading
+  const now = new Date();
+  const hours = now.getHours();
+  const minutes = now.getMinutes();
+  const timeOfDay = hours + minutes / 60;
+  
+  // Base consumption rate
+  let consumptionRate = 0.05; // kWh per interval
+  
+  // Adjust for peak hours (4:00 PM to 7:00 PM)
+  if (hours >= 16 && hours < 19) {
+    // Peak hours - 1.5x to 2x normal consumption
+    consumptionRate *= (1.5 + Math.random() * 0.5);
+  } else if (hours >= 23 || hours < 6) {
+    // Overnight - reduced consumption (50-70% of normal)
+    consumptionRate *= (0.5 + Math.random() * 0.2);
+  } else if ((hours >= 6 && hours < 9) || (hours >= 17 && hours < 22)) {
+    // Morning and evening - slightly elevated consumption
+    consumptionRate *= (1.1 + Math.random() * 0.2);
+  }
+  
+  // Add small random fluctuations
+  const fluctuation = Math.random() * 0.02;
+  consumptionRate += fluctuation;
+  
+  // Apply the consumption rate
+  readings[meter_id] += consumptionRate;
   
   // Check if reading exceeds 10000 kWh
   if (readings[meter_id] > 10000) {
@@ -67,14 +92,14 @@ const generateReading = (meter_id) => {
     readings[meter_id] = initialReadings[meter_id];
   }
   
-  return readings[meter_id];
+  return parseFloat(readings[meter_id].toFixed(3));
 };
 
 // Function to save reading to Supabase
 const saveReadingToDb = async (meter_id, reading) => {
   const timestamp = new Date().toISOString(); // Current timestamp
   const { data, error } = await supabase.from("readings").insert([
-    {//Insert Data
+    {
       timestamp: timestamp,
       meter_id: meter_id, // Save meter_id
       reading: reading,
@@ -90,6 +115,20 @@ const saveReadingToDb = async (meter_id, reading) => {
     console.log(
       `Reading for meter ${meter_id} saved: ${reading} at ${timestamp}`
     );
+  }
+};
+
+// Function to get current consumption rate for display
+const getCurrentConsumptionRate = () => {
+  const now = new Date();
+  const hours = now.getHours();
+  
+  if (hours >= 16 && hours < 19) {
+    return "High (Peak Hours: 4PM-7PM)";
+  } else if (hours >= 23 || hours < 6) {
+    return "Low (Overnight Hours)";
+  } else {
+    return "Normal";
   }
 };
 
@@ -120,9 +159,15 @@ const saveReadingToDb = async (meter_id, reading) => {
     const emitInterval = setInterval(() => {
       for (const meter_id of Object.keys(readings)) {
         const newReading = generateReading(meter_id);
+        const consumptionRate = getCurrentConsumptionRate();
 
         // Send the reading to the client
-        socket.emit("newReading", { meter_id, reading: newReading });
+        socket.emit("newReading", { 
+          meter_id, 
+          reading: newReading,
+          consumption_rate: consumptionRate,
+          timestamp: new Date().toISOString()
+        });
 
         // Store the latest reading for each meter
         latestReadings[meter_id] = newReading;
@@ -151,5 +196,6 @@ const saveReadingToDb = async (meter_id, reading) => {
 
   server.listen(3001, () => {
     console.log("Server is running on port 3001");
+    console.log("Simulating UK electricity usage patterns with peak hours (4PM-7PM)");
   });
 })();
