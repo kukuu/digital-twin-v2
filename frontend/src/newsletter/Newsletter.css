@@ -292,3 +292,25 @@
   color: green;
   font-weight: 600;
 }
+
+.ad-space p {
+  font-weight: normal;
+}
+
+.ad-space ul {
+  margin-left:  15px;
+}
+
+.ad-space ul li {
+  list-style-type: none;
+  font-weight: normal;
+}
+
+.ad-space h5 {
+  color: #ffcc33;
+  font-weight: 600;
+}
+
+.ad-space a {
+  text-decoration: none;
+}
