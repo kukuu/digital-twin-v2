@@ -100,7 +100,7 @@ export default function PricingPage() {
       ]
     },
     productShowcaseImage: {
-      name: "Product Showcase Image",
+      name: "Premium Showcase Image",
       description: "Image content in premium placements.",
       options: [
         { id: "productShowcaseImage-6months", duration: "6 months", price: 536, discount: "" },
@@ -108,7 +108,7 @@ export default function PricingPage() {
       ]
     },
     productShowcaseVideo: {
-      name: "Product Showcase Video",
+      name: "Premium Showcase Video",
       description: "Dynamic video content in premium placements.",
       options: [
         { id: "productShowcaseVideo-6months", duration: "6 months", price: 552, discount: "" },
@@ -116,7 +116,7 @@ export default function PricingPage() {
       ]
     },
     brandStory: {
-      name: "Brand Story",
+      name: "Premium Brand Story",
       description: "Dynamic video content in premium placements.",
       options: [
         { id: "brandStory-6months", duration: "6 months", price: 680, discount: "" },
@@ -184,7 +184,7 @@ export default function PricingPage() {
     },
     {
       id: "product-showcase-ad-image",
-      title: "Product Showcase Image",
+      title: "Premium Showcase Image",
       description: "Persistent visibility on all pages. Great for targeted promotions.",
       dimensions: "800x400px",
       impressions: "30,000+ monthly",
@@ -192,7 +192,7 @@ export default function PricingPage() {
     },
     {
       id: "product-showcase-ad-video",
-      title: "Product Showcase Video",
+      title: "Premium Showcase Video",
       description: "Persistent visibility on all pages. Great for targeted promotions.",
       dimensions: "800x400px",
       impressions: "30,000+ monthly",
@@ -200,7 +200,7 @@ export default function PricingPage() {
     },
     {
       id: "brand-story-ad",
-      title: "Brand Story",
+      title: "Premium Brand Story",
       description: "Persistent visibility on all pages. Great for targeted promotions.",
       dimensions: "800x800px",
       impressions: "30,000+ monthly",
