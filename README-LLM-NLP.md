@@ -1,6 +1,6 @@
 # Documentation
 
-# Updated server2.js with Peak Usage Simulation
+## Updated server2.js with Peak Usage Simulation
 
 Updated server2.js code that simulates UK home electricity usage patterns with peak hours (4:00 PM to 7:00 PM):
 
