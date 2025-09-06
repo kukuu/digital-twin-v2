@@ -132,79 +132,107 @@ touch .env
 Complete .env File Content
 
 
-# =============================================
-# SERVER CONFIGURATION
-# =============================================
+
+## SERVER CONFIGURATION
+
 
 PORT=5000
+
 NODE_ENV=development
+
 HOST=localhost
+
 CORS_ORIGIN=http://localhost:3000
 
-# =============================================
-# SUPABASE CONFIGURATION (Database & Auth)
-# =============================================
+
+## SUPABASE CONFIGURATION (Database & Auth)
+
 SUPABASE_URL=https://your-project-ref.supabase.co
+
 SUPABASE_ANON_KEY=your-supabase-anon-key-here
+
 SUPABASE_SERVICE_ROLE_KEY=your-supabase-service-role-key-here
+
 SUPABASE_JWT_SECRET=your-supabase-jwt-secret-here
 
-# =============================================
-# AUTHENTICATION & SECURITY
-# =============================================
+
+## AUTHENTICATION & SECURITY
+
 JWT_SECRET=your-super-secure-jwt-secret-minimum-32-characters-long
+
 JWT_EXPIRE=24h
+
 JWT_REFRESH_EXPIRE=7d
+
 CLERK_SECRET_KEY=sk_test_your-clerk-secret-key
+
 CLERK_PUBLISHABLE_KEY=pk_test_your-clerk-publishable-key
 
-# =============================================
-# AI/ML API KEYS (LLM & NLP Services)
-# =============================================
+
+##  AI/ML API KEYS (LLM & NLP Services)
+
 OPENAI_API_KEY=sk-your-openai-api-key-here
+
 HUGGINGFACE_API_KEY=hf_your-huggingface-api-key-here
+
 HUGGINGFACE_ACCESS_TOKEN=hf_your-huggingface-access-token
 
-# =============================================
-# EXTERNAL SERVICES & INTEGRATIONS
-# =============================================
+
+##  EXTERNAL SERVICES & INTEGRATIONS
+
 APPS_SCRIPT_URL=https://script.google.com/macros/s/your-apps-script-id/exec
+
 GOOGLE_SHEETS_ID=your-google-sheets-id-here
+
 PAYPAL_CLIENT_ID=your-paypal-client-id
+
 PAYPAL_CLIENT_SECRET=your-paypal-client-secret
+
 PAYPAL_MODE=sandbox
 
-# =============================================
-# DATABASE & STORAGE
-# =============================================
+
+##  DATABASE & STORAGE
+
 DATABASE_URL=postgresql://username:password@localhost:5432/digital_twin_db
+
 REDIS_URL=redis://localhost:6379
+
 UPLOAD_PATH=./uploads
+
 MAX_FILE_SIZE=10485760
 
-# =============================================
-# APPLICATION SPECIFIC SETTINGS
-# =============================================
+
+##  APPLICATION SPECIFIC SETTINGS
+
 SOCKET_PORT=5001
+
 SESSION_SECRET=your-session-secret-key-here
+
 ENCRYPTION_KEY=your-32-character-encryption-key-here
+
 AFFILIATE_TRACKING_ID=SPYDER-AFFILIATE
 
-# =============================================
-# RATE LIMITING & SECURITY
-# =============================================
+
+## RATE LIMITING & SECURITY
+
 RATE_LIMIT_WINDOW_MS=900000
+
 RATE_LIMIT_MAX_REQUESTS=100
+
 API_TIMEOUT=30000
+
 ALLOWED_ORIGINS=http://localhost:3000,http://localhost:5000
 
-# =============================================
-# LOGGING & MONITORING
-# =============================================
+
+## LOGGING & MONITORING
+
 LOG_LEVEL=info
+
 SENTRY_DSN=your-sentry-dsn-if-used
-How to Get Each Value:
+
+- How to Get Each Value:
 1. Supabase Values (Get from your Supabase dashboard):
+
 Go to your Supabase project → Settings → API
 
 SUPABASE_URL = URL under "Config" → "URL"
@@ -222,6 +250,7 @@ Visit https://platform.openai.com/api-keys
 Create a new secret key
 
 3. HuggingFace API Key:
+
 Visit https://huggingface.co/settings/tokens
 
 Create a new access token
@@ -232,11 +261,13 @@ Create a new access token
 node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"
 
 5. Clerk Keys (If using Clerk authentication):
+
 Visit https://dashboard.clerk.com
 
 Create a new application and get the keys
 
 6. Google Apps Script URL:
+
 This is the URL you deploy from your Google Apps Script
 
 Format: https://script.google.com/macros/s/SCRIPT_ID/exec
@@ -248,55 +279,90 @@ Create a setup script to generate the .env file:
 # create-env.sh
 #!/bin/bash
 
+```
 echo "Creating .env file for Digital Twin Backend..."
+
 echo "# =============================================" > .env
+
 echo "# SERVER CONFIGURATION" >> .env
+
 echo "# =============================================" >> .env
+
 echo "PORT=5000" >> .env
+
 echo "NODE_ENV=development" >> .env
+
 echo "HOST=localhost" >> .env
+
 echo "CORS_ORIGIN=http://localhost:3000" >> .env
+
 echo "" >> .env
 
 echo "# =============================================" >> .env
+
 echo "# SUPABASE CONFIGURATION" >> .env
+
 echo "# =============================================" >> .env
+
 echo "SUPABASE_URL=https://your-project-ref.supabase.co" >> .env
+
 echo "SUPABASE_ANON_KEY=your-supabase-anon-key-here" >> .env
+
 echo "SUPABASE_SERVICE_ROLE_KEY=your-supabase-service-role-key-here" >> .env
+
 echo "SUPABASE_JWT_SECRET=your-supabase-jwt-secret-here" >> .env
+
 echo "" >> .env
 
 echo "# =============================================" >> .env
+
 echo "# AI/ML API KEYS" >> .env
+
 echo "# =============================================" >> .env
+
 echo "OPENAI_API_KEY=sk-your-openai-api-key-here" >> .env
+
 echo "HUGGINGFACE_API_KEY=hf_your-huggingface-api-key-here" >> .env
+
 echo "" >> .env
 
 echo "# =============================================" >> .env
+
 echo "# AUTHENTICATION" >> .env
+
 echo "# =============================================" >> .env
+
 echo "JWT_SECRET=$(node -e "console.log(require('crypto').randomBytes(64).toString('hex'))")" >> .env
+
 echo "JWT_EXPIRE=24h" >> .env
+
 echo "JWT_REFRESH_EXPIRE=7d" >> .env
+
 echo "" >> .env
 
 echo "# =============================================" >> .env
+
 echo "# EXTERNAL SERVICES" >> .env
+
 echo "# =============================================" >> .env
+
 echo "APPS_SCRIPT_URL=https://script.google.com/macros/s/your-apps-script-id/exec" >> .env
+
 echo "" >> .env
 
 echo "✅ .env file created! Please update the placeholder values with your actual API keys."
-Make it executable and run:
+
+```
+
+- Make it executable and run:
 
 ```
 chmod +x create-env.sh
 ./create-env.sh
 ```
 
-Environment Validation Script
+- Environment Validation Script
+
 Create a script to validate your environment:
 
 javascript
@@ -412,41 +478,48 @@ cd backend/LLM-NLP
 npm install
 ```
 
-Environment Setup:
+- Environment Setup:
 Create a .env file with:
 
 # Server Configuration
 PORT=5000
+
 NODE_ENV=development
 
 # Supabase Configuration
 SUPABASE_URL=your-supabase-project-url
+
 SUPABASE_ANON_KEY=your-supabase-anon-key
+
 SUPABASE_SERVICE_ROLE_KEY=your-supabase-service-role-key
 
 # Authentication
 JWT_SECRET=your-jwt-secret-key-here
+
 CLERK_SECRET_KEY=your-clerk-secret-key
 
 # API Keys
 OPENAI_API_KEY=your-openai-api-key
+
 HUGGINGFACE_API_KEY=your-huggingface-api-key
 
 # Payment Integration
 PAYPAL_CLIENT_ID=your-paypal-client-id
+
 PAYPAL_CLIENT_SECRET=your-paypal-client-secret
 
 # Email/Apps Script
 APPS_SCRIPT_URL=your-google-apps-script-url
-Scripts Available:
-bash
+
+- Scripts Available:
+```
 npm start          # Start production server
 npm run dev        # Start development server with nodemon
 npm test           # Run tests
 npm run lint       # Check code quality
 npm run lint:fix   # Fix code style issues
 npm run setup      # Full setup with environment creation
-
+```
 
 #  Quick Start Commands
 
