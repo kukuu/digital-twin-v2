@@ -1,0 +1,48 @@
+{
+  "name": "llm-nlp-backend",
+  "version": "1.0.0",
+  "description": "Digital Twin LLM NLP Backend with Supabase integration",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "test": "jest",
+    "install-deps": "npm install"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^1.35.7",
+    "@huggingface/inference": "^2.3.1",
+    "axios": "^1.4.0",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.1.4",
+    "express": "^4.18.2",
+    "helmet": "^6.1.5",
+    "jsonwebtoken": "^9.0.1",
+    "multer": "^1.4.5-lts.1",
+    "node-cron": "^3.0.2",
+    "openai": "^3.3.0",
+    "socket.io": "^4.6.2",
+    "uuid": "^9.0.0",
+    "winston": "^3.8.2"
+  },
+  "devDependencies": {
+    "jest": "^29.5.0",
+    "nodemon": "^2.0.22",
+    "supertest": "^6.3.3"
+  },
+  "keywords": [
+    "llm",
+    "nlp",
+    "digital-twin",
+    "ai",
+    "supabase"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "engines": {
+    "node": ">=12.0.0",
+    "npm": ">=6.0.0"
+  }
+}
