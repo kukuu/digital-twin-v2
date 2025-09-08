@@ -12,8 +12,9 @@ This development covers:
 4. Updated UI to dynamically calculate the cost of Meter Reading cumulatively.
 
 ## SPYDER
+SPYDER, an AI-driven platform for the energy sector. It was designed to ingest, process, and make sense of complex energy tariff data to provide actionable insights - a similar challenge to making sense of contract and generation data for policy compliance and reporting.
 
-SPYDER is a Net Zero initiative platform built to empower businesses and consumers with actionable insights for reducing carbon emissions and transitioning to sustainable energy. The platform, accessible at EnergyTariffsCheck.com ( https://www.energytariffscheck.com/ ), combines data analytics with user-friendly tools to compare energy tariffs, track consumption patterns, and recommend cost-effective renewable energy solutions. Its core purpose is to bridge the gap between sustainability goals and practical implementation, making it easier for organisations and individuals to contribute to a carbon-neutral future.
+It is a Net Zero initiative platform built to empower businesses and consumers with actionable insights for reducing carbon emissions and transitioning to sustainable energy. The platform, accessible at EnergyTariffsCheck.com ( https://www.energytariffscheck.com/ ), combines data analytics with user-friendly tools to compare energy tariffs, track consumption patterns, and recommend cost-effective renewable energy solutions. Its core purpose is to bridge the gap between sustainability goals and practical implementation, making it easier for organisations and individuals to contribute to a carbon-neutral future.
 
 To develop SPYDER, I have led a cross-functional team in integrating real-time energy data, AI-driven recommendations, and policy compliance frameworks into a scalable web platform.
 
