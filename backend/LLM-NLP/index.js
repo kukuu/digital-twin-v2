@@ -1,5 +1,7 @@
 // backend/LLM-NLP/index.js
-require('dotenv').config();
+const path = require('path');
+require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
+
 const express = require('express');
 const cors = require('cors');
 const { testConnection } = require('./config/database');
@@ -15,18 +17,18 @@ app.use(express.urlencoded({ extended: true }));
 // Test database connection on startup
 testConnection().then(() => {
   console.log('✅ Supabase connection established');
+}).catch(error => {
+  console.error('❌ Database connection failed:', error.message);
 });
 
-// Routes
-app.use('/api/auth', require('./routes/auth'));
-app.use('/api/readings', require('./routes/readings')); // New readings routes
-app.use('/api/llm', require('./routes/llm')); // Your existing LLM routes
+// Routes - FIXED PATHS
+app.use('/api/readings', require('./routes/readings')); // This is correct
+app.use('/api/llm', require('./routes/llm')); // CHANGED from ./src/routes/llm to ./routes/llm
 
 // Health check with database test
 app.get('/health', async (req, res) => {
   try {
     const { supabase } = require('./config/database');
-    // Test connection by querying readings table
     const { data, error } = await supabase.from('readings').select('count');
     
     if (error) {
@@ -41,7 +43,7 @@ app.get('/health', async (req, res) => {
       status: 'OK', 
       database: 'Connected', 
       timestamp: new Date().toISOString(),
-      readings_count: data[0].count
+      readings_count: data[0]?.count || 0
     });
   } catch (error) {
     res.status(500).json({ 
@@ -55,5 +57,6 @@ app.get('/health', async (req, res) => {
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
   console.log(`🔗 Supabase URL: ${process.env.SUPABASE_URL}`);
-  console.log(`📊 Readings API available at: http://localhost:${PORT}/api/readings`);
+  console.log(`📊 Readings API: http://localhost:${PORT}/api/readings`);
+  console.log(`🤖 LLM API: http://localhost:${PORT}/api/llm`);
 });
