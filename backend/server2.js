@@ -1,6 +1,14 @@
+// server2.js
+const path = require('path');
+// Load the global .env file ONCE, here at the entry point
+require("dotenv").config({ path: path.resolve(__dirname, '../.env') });
+
 const express = require("express");
 const http = require("http");
+
+//require("dotenv").config({ path: require('path').resolve(__dirname, '../.env') });
 require("dotenv").config();
+
 const { Server } = require("socket.io");
 const cors = require("cors");
 const { createClient } = require("@supabase/supabase-js");
