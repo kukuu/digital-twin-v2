@@ -138,6 +138,311 @@ Supabase Vector (PostgreSQL PGVector extension) or Pinecone (for scalable storag
 
 - Security:
 
-    - Supabase Row-Level Security (RLS) for data access control.
+    - Supabase Row-Level Security (RLS) for data access control preferably where ANOn  access is defined else use Service Key.
 
     - AWS KMS to encrypt sensitive LLM inputs/outputs.
+ 
+
+
+## Core Backend Dependencies:
+
+Express.js - Web server framework
+
+Socket.IO - Real-time communication
+
+Supabase JS - Database and authentication
+
+OpenAI - LLM integration
+
+HuggingFace Inference - NLP capabilities
+
+- Security & Authentication:
+
+Clerk SDK - User authentication
+
+JWT - Token handling
+
+Helmet - Security headers
+
+bcryptjs - Password hashing
+
+CORS - Cross-origin requests
+
+- Data Processing & Utilities:
+
+Natural - Natural language processing
+
+Chart.js & React-Chartjs-2 - Data visualization
+
+Moment.js - Date handling
+
+UUID - Unique identifiers
+
+File & Data Handling:
+Multer - File uploads
+
+Body-parser - Request body parsing
+
+Compression - Response compression
+
+## Development Tools:
+
+Nodemon - Development server
+
+Jest - Testing framework
+
+ESLint & Prettier - Code formatting
+
+TypeScript - Type definitions
+
+## Security & Authentication:
+
+Clerk SDK - User authentication
+
+JWT - Token handling
+
+Helmet - Security headers
+
+bcryptjs - Password hashing
+
+CORS - Cross-origin requests
+
+## Data Processing & Utilities:
+
+Natural - Natural language processing
+
+Chart.js & React-Chartjs-2 - Data visualization
+
+Moment.js - Date handling
+
+UUID - Unique identifiers
+
+File & Data Handling:
+Multer - File uploads
+
+Body-parser - Request body parsing
+
+Compression - Response compression
+
+## Scripts Available:
+```
+npm start          # Start production server
+npm run dev        # Start development server with nodemon
+npm test           # Run tests
+npm run lint       # Check code quality
+npm run lint:fix   # Fix code style issues
+npm run setup      # Full setup with environment creation
+```
+
+##  LLM-NLP Quick Start Commands
+
+-  Backend Setup & Run
+
+```
+# Navigate to backend directory
+cd backend/LLM-NLP
+
+# Install dependencies
+npm install
+
+# Create environment file (if not exists)
+cp .env.example .env
+
+# Edit environment variables (use your preferred editor)
+nano .env  # or code .env or vim .env
+
+# Validate environment configuration
+npm run validate
+
+# Start development server
+npm run dev
+
+# Or start production server
+npm start
+
+```
+
+- Frontend Setup & Run
+
+```
+# Navigate to frontend directory  
+cd frontend/LLM-NLP
+
+# Install dependencies
+npm install
+
+# Create environment file
+cp .env.example .env
+
+# Edit environment variables
+nano .env  # or code .env or vim .env
+
+# Start development server
+npm start
+
+# Build for production
+npm run build
+```
+
+- Run Both Together (Different Terminals)
+
+# Terminal 1 - Backend
+cd backend/LLM-NLP && npm run dev
+
+# Terminal 2 - Frontend  
+cd frontend/LLM-NLP && npm start
+
+## Package.json Scripts Reference
+
+```
+# Development
+npm run dev          # Start with nodemon (auto-restart)
+
+# Production
+npm start            # Start production server
+
+# Validation & Setup
+npm run validate     # Check environment variables
+npm run setup        # Full setup (install + env creation)
+
+# Testing
+npm test             # Run Jest tests
+npm run lint         # Check code quality
+npm run lint:fix     # Fix code style issues
+
+```
+
+## Frontend Scripts (frontend/LLM-NLP/package.json):
+
+```
+# Development
+npm start            # Start React dev server (port 3000)
+
+# Build & Test
+npm run build        # Create production build
+npm test             # Run tests
+npm run eject        # Eject from Create React App
+
+# Additional (if configured)
+npm run validate     # Validate environment
+```
+
+## 🔧 Environment Setup Commands
+
+# Terminal 1 - Start Backend
+cd backend/LLM-NLP
+npm run dev
+
+# Terminal 2 - Start Frontend  
+cd frontend/LLM-NLP
+npm start
+
+# Terminal 3 - Run tests (optional)
+
+``` 
+
+cd backend/LLM-NLP
+
+npm test
+
+```
+
+## 🐛 Troubleshooting Commands
+If you encounter issues:
+
+```
+
+# Clear npm cache and reinstall
+npm cache clean --force
+rm -rf node_modules package-lock.json
+npm install
+
+# Check Node.js version
+node --version  # Should be 14+ (16+ recommended)
+
+# Validate environment
+npm run validate
+
+# Check if ports are available
+lsof -ti:3000  # Frontend port
+lsof -ti:5000  # Backend port
+
+# Kill processes on occupied ports
+kill -9 $(lsof -ti:3000)  # Be careful with this!
+kill -9 $(lsof -ti:5000)
+
+```
+
+- 📊 Verification Commands
+Check if servers are running:
+
+# Backend health check
+curl http://localhost:5000/health
+
+# Frontend check (in browser)
+open http://localhost:3000
+
+# Check Supabase connection
+curl http://localhost:5000/api/test-db
+
+## Environment validation:
+
+# Manual environment check
+
+```
+cd backend/LLM-NLP
+node -e "console.log('Node version:', process.version)"
+node -e "console.log('PORT:', process.env.PORT || 'Not set')"
+```
+
+
+## 🎯 Quick Reference Cheat Sheet
+
+```
+# 🏃‍♂️ Quick Start
+cd backend/LLM-NLP && npm run dev
+cd frontend/LLM-NLP && npm start
+
+# 🛠️ Setup
+npm install              # Install dependencies
+cp .env.example .env     # Create env file
+nano .env                # Configure environment
+
+# ✅ Validation  
+npm run validate         # Check environment
+node scripts/validate-env.js  # Manual validation
+
+# 🐛 Troubleshooting
+npm cache clean --force  # Clear cache
+rm -rf node_modules      # Remove dependencies
+npm install              # Reinstall
+
+```
+
+## ⚡ One-Liner to Start Everything (Using concurrently):
+
+```
+{
+  "scripts": {
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:backend": "cd backend/LLM-NLP && npm run dev",
+    "dev:frontend": "cd frontend/LLM-NLP && npm start"
+  }
+}
+```
+
+Then install concurrently and run:
+
+```
+npm install -g concurrently
+npm run dev
+```
+
+- The application will be available at:
+
+i. Frontend: http://localhost:3000
+
+ii. Backend API: http://localhost:5000
+
+iii. Health Check: http://localhost:5000/health
+```
