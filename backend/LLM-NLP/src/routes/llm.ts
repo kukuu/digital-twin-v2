@@ -1,5 +1,5 @@
 import express from "express";
-import { handleLLMQuery } from "../src/llm/service";  // Fixed path
+import { handleLLMQuery } from "../src/llm/service";  // needs updating
 import { z } from "zod";
 
 const router = express.Router();
