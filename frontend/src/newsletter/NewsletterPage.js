@@ -248,7 +248,7 @@ export default function NewsletterPage() {
                       </div>
                       <div className="featured-content">
                         <div className="ad-placeholder">
-                          <span>Ad Preview</span>
+                          <span>Available</span>
                         </div>
                       </div>
                       <div className="featured-footer">
