@@ -1,7 +1,5 @@
-{/*Phase 2: API & Frontend Integration*/}
-
 import express from "express";
-import { handleLLMQuery } from "../services/llmService";
+import { handleLLMQuery } from "../src/llm/service";  // Fixed path
 import { z } from "zod";
 
 const router = express.Router();
