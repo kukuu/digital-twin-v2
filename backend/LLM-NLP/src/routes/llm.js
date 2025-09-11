@@ -1,13 +1,24 @@
-// backend/LLM-NLP/config/supabase.js
-const { createClient } = require('@supabase/supabase-js');
+// backend/LLM-NLP/src/routes/llm.js
+const express = require("express");
+const { handleLLMQuery } = require("../llm/service");
+const { z } = require("zod");
 
-const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseKey = process.env.SUPABASE_KEY;
+const router = express.Router();
 
-if (!supabaseUrl || !supabaseKey) {
-  throw new Error('Missing Supabase environment variables');
-}
+const QuerySchema = z.object({
+  meterId: z.string(),
+  question: z.string().min(3),
+});
 
-const supabase = createClient(supabaseUrl, supabaseKey);
+router.post("/query", async (req, res) => {
+  try {
+    const validated = QuerySchema.parse(req.body);
+    const answer = await handleLLMQuery(validated);
+    res.json({ answer });
+  } catch (error) {
+    console.error("LLM Error:", error);
+    res.status(400).json({ error: error instanceof Error ? error.message : "Unknown error" });
+  }
+});
 
-module.exports = supabase;
+module.exports = router;
