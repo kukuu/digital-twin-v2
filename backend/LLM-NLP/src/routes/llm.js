@@ -1,6 +1,6 @@
 // backend/LLM-NLP/src/routes/llm.js
 const express = require("express");
-const { handleLLMQuery } = require("../llm/service");
+const { handleLLMQuery } = require("../src/llm/service");
 const { z } = require("zod");
 
 const router = express.Router();
