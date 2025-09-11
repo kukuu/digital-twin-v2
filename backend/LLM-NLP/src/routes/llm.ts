@@ -1,6 +1,10 @@
-import express from "express";
-import { handleLLMQuery } from "../src/llm/service";  // needs updating
-import { z } from "zod";
+//import express from "express";
+//import { handleLLMQuery } from "../src/llm/service";  // needs updating
+//import { z } from "zod";
+
+const express = require("express");
+const { handleLLMQuery } = require("../llm/service");
+const { z } = require("zod");
 
 const router = express.Router();
 
