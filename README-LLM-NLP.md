@@ -107,22 +107,6 @@ cd backend && npm install \
 
 
 
-  https://chat.deepseek.com/a/chat/s/4489d71b-3ab5-4e00-90db-81ee968ec7bc
-
-  - Open AI Secret Key: 
-
-
-  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
-
-  - Hugging Face Access Token:
-   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
-
-  - Generate JWT Secret: node -e "console.log('JWT_SECRET=', require('crypto').randomBytes(64).toString('hex'))"
-
-  - JWT_SECRET= 5cb85cda31d53d851ad7d740e4abe0e5783c857536c0f8b119c44cbf04b54f83e535f498ee79c87a0e2f0e47f095fc91adc43a6a113e24aa9fa58fee71186d65
-
-
-
 ## Create the .env file
 
 cd backend/LLM-NLP
