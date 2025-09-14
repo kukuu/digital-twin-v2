@@ -757,3 +757,16 @@ readings - Your existing meter readings data
 ✅ Automatic Fallback to basic analysis if AI fails
 
 ✅ Recommendation Extraction from AI responses
+
+
+## . Check Network Connectivity
+```
+# Check internet connection
+ping 8.8.8.8
+
+# Check DNS resolution
+nslookup thdnlawjnwfcglbnmgdc.supabase.co
+
+# Check if port 443 (HTTPS) is accessible
+telnet thdnlawjnwfcglbnmgdc.supabase.co 443
+```
