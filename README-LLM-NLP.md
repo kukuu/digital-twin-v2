@@ -724,3 +724,36 @@ i. Frontend: http://localhost:3000
 ii. Backend API: http://localhost:5000
 
 iii. Health Check: http://localhost:5000/health
+
+
+## Required Environment Variables:
+- env
+
+SUPABASE_URL=your_supabase_url
+
+SUPABASE_KEY=your_supabase_key
+
+OPENAI_API_KEY=your_openai_api_key
+
+- Required Supabase Tables:
+
+energy_documents - For vector store documents
+
+energy_analyses - For storing analysis history
+
+readings - Your existing meter readings data
+
+- Features:
+✅ Full AI Integration with LangChain and OpenAI
+
+✅ Vector Similarity Search for energy document retrieval
+
+✅ Energy-Specific Prompt Engineering for domain expertise
+
+✅ Analysis History Storage in Supabase
+
+✅ Confidence Scoring for response quality
+
+✅ Automatic Fallback to basic analysis if AI fails
+
+✅ Recommendation Extraction from AI responses
