@@ -11,7 +11,7 @@ const { zodToJsonSchema } = require("zod-to-json-schema");
 
 // Initialize Supabase client with SERVICE ROLE KEY for backend operations
 const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY; // CHANGED from SUPABASE_KEY
+const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 const openAIApiKey = process.env.OPENAI_API_KEY;
 
 if (!supabaseUrl || !supabaseKey) {
@@ -29,12 +29,12 @@ const EnergyAnalysisSchema = z.object({
   trend: z.string().describe("Current consumption trend (increasing, decreasing, stable)")
 });
 
-// Structured output LLM
-const structuredLLM = new ChatOpenAI({
+// Use regular ChatOpenAI instead of structured output
+const chatLLM = new ChatOpenAI({
   openAIApiKey: openAIApiKey,
   temperature: 0.1,
   modelName: "gpt-3.5-turbo",
-}).withStructuredOutput(EnergyAnalysisSchema);
+});
 
 // Regular LLM for fallback
 const fallbackLLM = new OpenAI({
@@ -42,6 +42,26 @@ const fallbackLLM = new OpenAI({
   temperature: 0.1,
   modelName: "gpt-3.5-turbo",
 });
+
+// Create a prompt template for structured output
+const createStructuredPrompt = () => {
+  return `As an expert energy analyst for EnergyTariffsCheck.com, analyze this energy query and provide output in JSON format with the following structure:
+
+{
+  "insights": "Detailed energy consumption insights and patterns",
+  "recommendations": "Actionable energy efficiency recommendations",
+  "estimatedSavings": "Potential cost or energy savings estimates",
+  "riskFactors": "Any identified risks or anomalies in consumption",
+  "trend": "Current consumption trend (increasing, decreasing, stable)"
+}
+
+USER QUERY: "{question}"
+
+CONTEXT:
+{context}
+
+Provide comprehensive energy insights focusing on patterns, efficiency opportunities, and actionable recommendations for this specific meter. Return ONLY valid JSON:`;
+};
 
 const handleLLMQuery = async (query) => {
   try {
@@ -98,18 +118,37 @@ METER ANALYSIS CONTEXT:
 `;
 
     try {
-      // Use structured LLM for detailed analysis
-      const analysis = await structuredLLM.invoke(
-        `As an expert energy analyst for EnergyTariffsCheck.com, analyze this energy query.
+      // Use chat LLM with JSON output prompt
+      const promptTemplate = createStructuredPrompt();
+      const response = await chatLLM.invoke([
+        {
+          role: "system",
+          content: "You are an expert energy analyst. Always respond with valid JSON format."
+        },
+        {
+          role: "user",
+          content: promptTemplate
+            .replace("{question}", question)
+            .replace("{context}", energyContext)
+        }
+      ]);
 
-USER QUERY: "${question}"
+      // Parse the JSON response
+      let analysis;
+      try {
+        // Extract JSON from the response content
+        const jsonMatch = response.content.match(/\{[\s\S]*\}/);
+        if (jsonMatch) {
+          analysis = JSON.parse(jsonMatch[0]);
+        } else {
+          analysis = { insights: response.content };
+        }
+      } catch (parseError) {
+        console.warn("JSON parse failed, using raw response:", parseError);
+        analysis = { insights: response.content };
+      }
 
-${energyContext}
-
-Provide comprehensive energy insights focusing on patterns, efficiency opportunities, and actionable recommendations for this specific meter.`
-      );
-
-      // Store the structured analysis in Supabase
+      // Store the analysis in Supabase
       const { data: analysisRecord, error: analysisError } = await supabase
         .from('energy_analyses')
         .insert([
@@ -117,7 +156,7 @@ Provide comprehensive energy insights focusing on patterns, efficiency opportuni
             meter_id: meterId,
             question: question,
             response: JSON.stringify(analysis),
-            insights: analysis.insights,
+            insights: analysis.insights || analysis.insight,
             recommendations: analysis.recommendations,
             estimated_savings: analysis.estimatedSavings,
             risk_factors: analysis.riskFactors,
