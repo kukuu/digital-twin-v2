@@ -107,6 +107,22 @@ cd backend && npm install \
 
 
 
+  https://chat.deepseek.com/a/chat/s/4489d71b-3ab5-4e00-90db-81ee968ec7bc
+
+  - Open AI Secret Key: 
+
+
+  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
+
+  - Hugging Face Access Token:
+   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
+
+  - Generate JWT Secret: node -e "console.log('JWT_SECRET=', require('crypto').randomBytes(64).toString('hex'))"
+
+  - JWT_SECRET= 5cb85cda31d53d851ad7d740e4abe0e5783c857536c0f8b119c44cbf04b54f83e535f498ee79c87a0e2f0e47f095fc91adc43a6a113e24aa9fa58fee71186d65
+
+
+
 ## Create the .env file
 
 cd backend/LLM-NLP
@@ -698,6 +714,40 @@ npm install              # Reinstall
 
 ```
 
+## How to Use Service Manager Script
+Save the script as backend/service-manager.js
+
+Run both services together:
+
+```
+cd digital-twin-v2/backend
+node service-manager.js
+
+```
+
+Or use the package.json script:
+
+```
+cd digital-twin-v2/backend
+npm run start-both
+
+```
+What This Script Does:
+
+Starts SPYDER backend on port 5000 using node server2.js
+
+Starts LLM-NLP backend on port 5001 using npm start
+
+Monitors both services and displays their output
+
+Performs health checks every 10 seconds
+
+Auto-restarts services if they crash
+
+Provides clean shutdown with Ctrl+C
+
+
+
 ## ⚡ One-Liner to Start Everything (Using concurrently):
 
 ```
@@ -714,6 +764,7 @@ Then install concurrently and run:
 
 ```
 npm install -g concurrently
+
 npm run dev
 ```
 
@@ -724,49 +775,3 @@ i. Frontend: http://localhost:3000
 ii. Backend API: http://localhost:5000
 
 iii. Health Check: http://localhost:5000/health
-
-
-## Required Environment Variables:
-- env
-
-SUPABASE_URL=your_supabase_url
-
-SUPABASE_KEY=your_supabase_key
-
-OPENAI_API_KEY=your_openai_api_key
-
-- Required Supabase Tables:
-
-energy_documents - For vector store documents
-
-energy_analyses - For storing analysis history
-
-readings - Your existing meter readings data
-
-- Features:
-✅ Full AI Integration with LangChain and OpenAI
-
-✅ Vector Similarity Search for energy document retrieval
-
-✅ Energy-Specific Prompt Engineering for domain expertise
-
-✅ Analysis History Storage in Supabase
-
-✅ Confidence Scoring for response quality
-
-✅ Automatic Fallback to basic analysis if AI fails
-
-✅ Recommendation Extraction from AI responses
-
-
-## . Check Network Connectivity
-```
-# Check internet connection
-ping 8.8.8.8
-
-# Check DNS resolution
-nslookup thdnlawjnwfcglbnmgdc.supabase.co
-
-# Check if port 443 (HTTPS) is accessible
-telnet thdnlawjnwfcglbnmgdc.supabase.co 443
-```
