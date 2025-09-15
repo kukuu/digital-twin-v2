@@ -10,7 +10,7 @@ This development covers:
 2. Superbase as ORM to host connection to Database and store environmental variables.   
 3. Vercel to host connection and configuration to  versioning and source control of code repository in GitHub.  
 4. Updated UI to dynamically calculate the cost of Meter Reading cumulatively.
-
+ 
 ## SPYDER
 SPYDER, an AI-driven platform for the energy sector. It was designed to ingest, process, and make sense of complex energy tariff data to provide actionable insights - a similar challenge to making sense of contract and generation data for policy compliance and reporting.
 
