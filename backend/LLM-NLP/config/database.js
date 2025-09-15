@@ -1,13 +1,13 @@
 // backend/LLM-NLP/config/database.js
 const { createClient } = require('@supabase/supabase-js');
 
-// These environment variables should be already loaded from the main entry point
+// CHANGE FROM SUPABASE_KEY TO SUPABASE_SERVICE_ROLE_KEY
 const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseKey = process.env.SUPABASE_KEY;
+const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY; // ← THIS LINE CHANGED
 
 // Validate that environment variables exist
 if (!supabaseUrl || !supabaseKey) {
-  throw new Error('Missing Supabase environment variables: SUPABASE_URL and SUPABASE_KEY must be set');
+  throw new Error('Missing Supabase environment variables: SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY must be set');
 }
 
 const supabase = createClient(supabaseUrl, supabaseKey);
