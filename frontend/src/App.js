@@ -885,7 +885,7 @@ function AppWithPayPalProvider() {
               initiative. We aim to make great saving decisions making a breeze for everyone, and that purpose drives us 
               every day! It's why we have accomplished our mission by creating an artificial intelligence run-time quoting
               engine for finding the best energy tariffs, with the simplest of experiences, wrapped in a brand everyone loves!
-              We change lives by making it simple to switch and save money!
+              We change lives by making it simple to switch and save money! Please login to experience the interactivity and comparison Meters and Graphs.
               </p>
               <SignedOut>
                 <p className="auth-prompt">
