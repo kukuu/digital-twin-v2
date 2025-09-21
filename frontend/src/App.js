@@ -948,8 +948,9 @@ function AppWithPayPalProvider() {
                       >
                         Close Results
                       </button>
-                      p>To help you optimise your energy costs, we invite you to subscribe to <strong>Jim</strong> 
-                      our AI quoting engine.
+                      <p>To help you optimise your energy costs, we invite you to subscribe to
+                         <strong> Jim </strong> 
+                      our AI quoting engine in our Newsletter.
 
 For $0.99 per month, you will gain access to our real-time chat engine, which provides:<br />
 
