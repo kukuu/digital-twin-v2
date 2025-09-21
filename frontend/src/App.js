@@ -948,17 +948,23 @@ function AppWithPayPalProvider() {
                       >
                         Close Results
                       </button>
-                      <p>To better serve your energy needs, we kindly request that you <br />
-                        <button 
-                          onClick={handleNewsletterSubscribe} 
-                          className="subscribe-newsletter-button"
-                        >
-                          <strong>Subscribe to our NEWSLETTER</strong>
-                        </button> - $0.99 per month, <br />and share your past electricity meter readings with us. This data will enable us to make informed decisions through careful monitoring and analysis.
-                        We have provided samples of how Meter Readings are modelled using AI and Machine Learning models to reflect peaks, load shedding and other anomalies including tampering.
-                        Based on our assessment, we can provide you with a personalised account page with interactive Visualisation Dashboard, 
-                        and recommend a more competitive energy provider with a tariff better suited to your consumption patterns.
-                        Your cooperation will help ensure you receive the most cost-effective and efficient energy solution available.</p>
+                      p>To help you optimise your energy costs, we invite you to subscribe to <strong>Jim</strong> 
+                      our AI quoting engine.
+
+For $0.99 per month, you will gain access to our real-time chat engine, which provides:<br />
+
+<strong>Live Market Analysis:</strong> Get instant quotes based on real-time pricing and predictive trend forecasts.<br />
+
+<strong>Personalised AI Modelling:</strong> Receive custom responses that analyse your consumption patterns, 
+including peaks, load-shedding, and anomalies.<br />
+
+<strong>Tailored Recommendations: </strong>We will identify a competitive energy provider and tariff better 
+suited to your needs.<br />
+
+<strong>Interactive Dashboard:</strong> Monitor your usage and savings through a personalised visualisation dashboard.<br />
+
+This service ensures you receive the most cost-effective and efficient energy solution available.
+Please note: Advertisers are exempt from this charge.</p>
                     </div>
                   )}
                 </div>
