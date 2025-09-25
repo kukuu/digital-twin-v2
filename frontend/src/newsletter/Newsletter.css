@@ -494,6 +494,9 @@
 
 .join-campaign {
   margin-bottom: 10px;
+  text-align: center;
+  margin-bottom:-15px;
+  font-size: 20px;
 }
 
 .join-campaign a {
@@ -523,7 +526,6 @@
 .ad-space a {
   text-decoration: none;
 }
-
 
 .ask-jim {
   color: palevioletred;
