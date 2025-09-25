@@ -1,262 +1,205 @@
-// backend/LLM-NLP/src/llm/service.js
-require('dotenv').config();
-const { OpenAI } = require("@langchain/openai");
-const { ChatOpenAI } = require("@langchain/openai");
-const { createClient } = require("@supabase/supabase-js");
-const { PromptTemplate } = require("@langchain/core/prompts");
-const { StringOutputParser } = require("@langchain/core/output_parsers");
-const { RunnableSequence } = require("@langchain/core/runnables");
-const { z } = require("zod");
-const { zodToJsonSchema } = require("zod-to-json-schema");
+const { SupabaseVectorStore } = require('@langchain/community/vectorstores/supabase');
+const { OpenAIEmbeddings } = require('@langchain/openai');
+const { ChatOpenAI } = require('@langchain/openai');
+const { createClient } = require('@supabase/supabase-js');
+const { PromptTemplate } = require('@langchain/core/prompts');
+const { StringOutputParser } = require('@langchain/core/output_parsers');
+const { RunnableSequence } = require('@langchain/core/runnables');
 
-// Initialize Supabase client with SERVICE ROLE KEY for backend operations
+// Initialize clients
 const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+const supabaseKey = process.env.SUPABASE_SERVICE_KEY;
 const openAIApiKey = process.env.OPENAI_API_KEY;
 
-if (!supabaseUrl || !supabaseKey) {
-  throw new Error("Missing Supabase environment variables. Check your .env file for SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY.");
-}
+const supabaseClient = createClient(supabaseUrl, supabaseKey);
 
-const supabase = createClient(supabaseUrl, supabaseKey);
+class LLMService {
+  constructor() {
+    this.embeddings = new OpenAIEmbeddings({ openAIApiKey });
+    this.llm = new ChatOpenAI({
+      openAIApiKey,
+      modelName: 'gpt-3.5-turbo',
+      temperature: 0.1
+    });
+  }
 
-// Energy analysis schema for structured output
-const EnergyAnalysisSchema = z.object({
-  insights: z.string().describe("Detailed energy consumption insights and patterns"),
-  recommendations: z.string().describe("Actionable energy efficiency recommendations"),
-  estimatedSavings: z.string().describe("Potential cost or energy savings estimates"),
-  riskFactors: z.string().describe("Any identified risks or anomalies in consumption"),
-  trend: z.string().describe("Current consumption trend (increasing, decreasing, stable)")
-});
-
-// Use regular ChatOpenAI instead of structured output
-const chatLLM = new ChatOpenAI({
-  openAIApiKey: openAIApiKey,
-  temperature: 0.1,
-  modelName: "gpt-3.5-turbo",
-});
-
-// Regular LLM for fallback
-const fallbackLLM = new OpenAI({
-  openAIApiKey: openAIApiKey,
-  temperature: 0.1,
-  modelName: "gpt-3.5-turbo",
-});
-
-// Create a prompt template for structured output
-const createStructuredPrompt = () => {
-  return `As an expert energy analyst for EnergyTariffsCheck.com, analyze this energy query and provide output in JSON format with the following structure:
-
-{
-  "insights": "Detailed energy consumption insights and patterns",
-  "recommendations": "Actionable energy efficiency recommendations",
-  "estimatedSavings": "Potential cost or energy savings estimates",
-  "riskFactors": "Any identified risks or anomalies in consumption",
-  "trend": "Current consumption trend (increasing, decreasing, stable)"
-}
-
-USER QUERY: "{question}"
-
-CONTEXT:
-{context}
-
-Provide comprehensive energy insights focusing on patterns, efficiency opportunities, and actionable recommendations for this specific meter. Return ONLY valid JSON:`;
-};
-
-const handleLLMQuery = async (query) => {
-  try {
-    const { meterId, question, timeframe = "30d" } = query;
-
-    // Get meter metadata first
-    const { data: meterMeta, error: metaError } = await supabase
-      .from('meters')
-      .select('*')
-      .eq('meter_id', meterId)
-      .single();
-
-    if (metaError) {
-      console.error("Meter metadata error:", metaError);
-      throw new Error(`Meter ${meterId} not found in database`);
-    }
-
-    // Get recent meter readings with SERVICE ROLE privileges
-    const { data: meterData, error: readingsError } = await supabase
-      .from('readings')
-      .select('*')
-      .eq('meter_id', meterId)
-      .order('timestamp', { ascending: false })
-      .limit(50);
-
-    if (readingsError) {
-      console.error("Database readings error:", readingsError);
-      throw readingsError;
-    }
-
-    if (!meterData || meterData.length === 0) {
-      throw new Error(`No consumption data found for meter ${meterId}`);
-    }
-
-    // Calculate energy metrics
-    const consumption = meterData.map(r => r.reading);
-    const timestamps = meterData.map(r => new Date(r.timestamp));
-    const avgConsumption = consumption.reduce((a, b) => a + b, 0) / consumption.length;
-    const maxConsumption = Math.max(...consumption);
-    const minConsumption = Math.min(...consumption);
-
-    // Create detailed energy context
-    const energyContext = `
-METER ANALYSIS CONTEXT:
-- Meter ID: ${meterId}
-- Meter Type: ${meterMeta.meter_type || 'Unknown'}
-- Location: ${meterMeta.location || 'Unknown'}
-- Total Readings: ${consumption.length}
-- Time Range: ${timestamps[timestamps.length - 1].toLocaleDateString()} to ${timestamps[0].toLocaleDateString()}
-- Average Consumption: ${avgConsumption.toFixed(2)} kWh
-- Peak Consumption: ${maxConsumption.toFixed(2)} kWh
-- Minimum Consumption: ${minConsumption.toFixed(2)} kWh
-- Consumption Range: ${(maxConsumption - minConsumption).toFixed(2)} kWh
-`;
-
+  async processQuery(question, maxRecords = 20) {
     try {
-      // Use chat LLM with JSON output prompt
-      const promptTemplate = createStructuredPrompt();
-      const response = await chatLLM.invoke([
-        {
-          role: "system",
-          content: "You are an expert energy analyst. Always respond with valid JSON format."
-        },
-        {
-          role: "user",
-          content: promptTemplate
-            .replace("{question}", question)
-            .replace("{context}", energyContext)
-        }
+      // Retrieve relevant context from readings table
+      const { data: readingsData, error: readingsError } = await supabaseClient
+        .from('readings')
+        .select('*')
+        .order('timestamp', { ascending: false })
+        .limit(50);
+
+      if (readingsError) throw readingsError;
+
+      // Retrieve recent analyses for context
+      const { data: analysesData, error: analysesError } = await supabaseClient
+        .from('energy_analyses')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(5);
+
+      if (analysesError) throw analysesError;
+
+      // Format the data for context
+      const readingsContext = this.formatReadingsContext(readingsData);
+      const analysesContext = this.formatAnalysesContext(analysesData);
+      
+      // Create prompt template
+      const prompt = PromptTemplate.fromTemplate(`
+        You are Jim, an energy analytics expert at Energy Tariffs Check. Analyze the following energy data and provide insights.
+
+        Recent Meter Readings:
+        {readingsContext}
+
+        Recent Analysis History:
+        {analysesContext}
+
+        User Question: {question}
+
+        Please provide a comprehensive analysis including:
+        1. Key insights from the data
+        2. Any anomalies or patterns detected
+        3. Recommendations if applicable
+        4. Answer the specific question asked
+
+        Format your response in HTML with proper formatting for a web page.
+        Use headings, paragraphs, lists, and emphasis where appropriate.
+      `);
+
+      // Create processing chain
+      const chain = RunnableSequence.from([
+        prompt,
+        this.llm,
+        new StringOutputParser()
       ]);
 
-      // Parse the JSON response
-      let analysis;
-      try {
-        // Extract JSON from the response content
-        const jsonMatch = response.content.match(/\{[\s\S]*\}/);
-        if (jsonMatch) {
-          analysis = JSON.parse(jsonMatch[0]);
-        } else {
-          analysis = { insights: response.content };
-        }
-      } catch (parseError) {
-        console.warn("JSON parse failed, using raw response:", parseError);
-        analysis = { insights: response.content };
-      }
-
-      // Store the analysis in Supabase
-      const { data: analysisRecord, error: analysisError } = await supabase
-        .from('energy_analyses')
-        .insert([
-          {
-            meter_id: meterId,
-            question: question,
-            response: JSON.stringify(analysis),
-            insights: analysis.insights || analysis.insight,
-            recommendations: analysis.recommendations,
-            estimated_savings: analysis.estimatedSavings,
-            risk_factors: analysis.riskFactors,
-            trend: analysis.trend,
-            average_consumption: avgConsumption,
-            created_at: new Date().toISOString()
-          }
-        ])
-        .select();
-
-      if (analysisError) {
-        console.error("Failed to store analysis:", analysisError);
-      }
-
-      return {
-        success: true,
-        analysis: analysis,
-        meterData: {
-          meterId: meterId,
-          meterType: meterMeta.meter_type,
-          location: meterMeta.location,
-          averageConsumption: avgConsumption.toFixed(2),
-          peakConsumption: maxConsumption.toFixed(2),
-          readingsCount: consumption.length
-        },
-        analysisId: analysisRecord?.[0]?.id,
-        timestamp: new Date().toISOString()
-      };
-
-    } catch (structuredError) {
-      console.warn("Structured LLM failed, falling back to basic LLM:", structuredError);
-      
-      // Fallback to basic LLM
-      const fallbackResponse = await fallbackLLM.invoke(
-        `As an energy analyst for EnergyTariffsCheck.com, provide insights for this query: ${question}\n\nContext: ${energyContext}\n\nProvide helpful energy analysis:`
-      );
-
-      // Store fallback analysis
-      const { data: analysisRecord, error: analysisError } = await supabase
-        .from('energy_analyses')
-        .insert([
-          {
-            meter_id: meterId,
-            question: question,
-            response: fallbackResponse,
-            created_at: new Date().toISOString()
-          }
-        ])
-        .select();
-
-      return {
-        success: true,
-        analysis: { insights: fallbackResponse },
-        meterData: {
-          meterId: meterId,
-          averageConsumption: avgConsumption.toFixed(2)
-        },
-        analysisId: analysisRecord?.[0]?.id,
-        timestamp: new Date().toISOString(),
-        mode: "fallback"
-      };
-    }
-
-  } catch (error) {
-    console.error("LLM Service Error:", error);
-    
-    return {
-      success: false,
-      error: error.message,
-      answer: `I encountered an error while analyzing energy data for meter ${query.meterId}. Your question: "${query.question}" - Please try again later.`,
-      meterId: query.meterId,
-      question: query.question,
-      timestamp: new Date().toISOString(),
-      mode: "error"
-    };
-  }
-};
-
-// Additional helper function for batch analysis
-const analyzeMultipleMeters = async (meterIds, analysisType = "general") => {
-  try {
-    const analyses = [];
-    
-    for (const meterId of meterIds) {
-      const analysis = await handleLLMQuery({
-        meterId: meterId,
-        question: `Provide a ${analysisType} energy consumption analysis for this meter`
+      // Generate response
+      const response = await chain.invoke({
+        readingsContext: readingsContext,
+        analysesContext: analysesContext,
+        question: question
       });
-      analyses.push(analysis);
-    }
-    
-    return analyses;
-  } catch (error) {
-    console.error("Batch analysis error:", error);
-    throw error;
-  }
-};
 
-module.exports = { 
-  handleLLMQuery, 
-  analyzeMultipleMeters,
-  EnergyAnalysisSchema 
-};
+      return {
+        success: true,
+        answer: response
+      };
+
+    } catch (error) {
+      console.error('Error processing LLM query:', error);
+      return {
+        success: false,
+        error: error.message,
+        answer: 'Sorry, I encountered an error processing your question. Please try again.'
+      };
+    }
+  }
+
+  formatReadingsContext(readings) {
+    if (!readings || readings.length === 0) {
+      return "No recent meter readings available.";
+    }
+
+    // Group readings by meter_id
+    const readingsByMeter = {};
+    readings.forEach(reading => {
+      if (!readingsByMeter[reading.meter_id]) {
+        readingsByMeter[reading.meter_id] = [];
+      }
+      readingsByMeter[reading.meter_id].push(reading);
+    });
+
+    // Format the context string
+    let context = "";
+    for (const meterId in readingsByMeter) {
+      context += `<strong>Meter ${meterId}:</strong><br>`;
+      readingsByMeter[meterId].slice(0, 5).forEach(reading => {
+        context += `  - ${new Date(reading.timestamp).toLocaleString()}: ${reading.reading} units<br>`;
+      });
+      context += "<br>";
+    }
+
+    return context;
+  }
+
+  formatAnalysesContext(analyses) {
+    if (!analyses || analyses.length === 0) {
+      return "No previous analysis history available.";
+    }
+
+    let context = "";
+    analyses.forEach(analysis => {
+      context += `<strong>Question:</strong> ${analysis.questions}<br>`;
+      context += `<strong>Response:</strong> ${analysis.response.substring(0, 100)}...<br><br>`;
+    });
+
+    return context;
+  }
+
+  async saveEnergyAnalysis(question, answer, meterId = 1, maxRecords = 20) {
+    try {
+      // Check current record count
+      const { count } = await supabaseClient
+        .from('energy_analyses')
+        .select('*', { count: 'exact' });
+
+      // Delete oldest records if over limit
+      if (count >= maxRecords) {
+        const { data: oldRecords } = await supabaseClient
+          .from('energy_analyses')
+          .select('id')
+          .order('created_at', { ascending: true })
+          .limit(count - maxRecords + 1);
+
+        const idsToDelete = oldRecords.map(record => record.id);
+        await supabaseClient
+          .from('energy_analyses')
+          .delete()
+          .in('id', idsToDelete);
+      }
+
+      // Insert new analysis
+      const { data, error } = await supabaseClient
+        .from('energy_analyses')
+        .insert([
+          {
+            meter_id: meterId,
+            questions: question,
+            response: answer,
+            created_at: new Date().toISOString()
+          }
+        ])
+        .select();
+
+      if (error) throw error;
+      return data;
+
+    } catch (error) {
+      console.error('Error saving energy analysis:', error);
+      throw error;
+    }
+  }
+
+  // Method to get recent analyses
+  async getRecentAnalyses(limit = 10) {
+    try {
+      const { data, error } = await supabaseClient
+        .from('energy_analyses')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(limit);
+
+      if (error) throw error;
+      return data;
+
+    } catch (error) {
+      console.error('Error fetching recent analyses:', error);
+      throw error;
+    }
+  }
+}
+
+module.exports = { LLMService };
