@@ -1,10 +1,10 @@
-// backend/LLM-NLP/index.js
-const path = require('path');
-require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
+
+// index.js - AT THE VERY TOP
+require('dotenv').config();
+const { testConnection, supabase } = require('./config/database');
 
 const express = require('express');
 const cors = require('cors');
-const { testConnection } = require('./config/database');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -60,3 +60,5 @@ app.listen(PORT, () => {
   console.log(`📊 Readings API: http://localhost:${PORT}/api/readings`);
   console.log(`🤖 LLM API: http://localhost:${PORT}/api/llm`);
 });
+
+
