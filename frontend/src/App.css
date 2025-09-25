@@ -1245,3 +1245,220 @@ a.subscribe-newsletter {
 .tariff-section {
   color: #dc3545;
 }
+
+/*Styles for LLM*/
+/* ============ NATURAL LANGUAGE QUERY STYLES ============ */
+.nl-query-section {
+  background: #f8f9fa;
+  padding: 2rem;
+  border-radius: 8px;
+  margin: 2rem 0;
+  border: 1px solid #e9ecef;
+}
+
+.nl-query-section h3 {
+  color: #2e7d32;
+  margin-bottom: 0.5rem;
+  font-size: 1.5rem;
+}
+
+.nl-query-section p {
+  color: #666;
+  margin-bottom: 1.5rem;
+  font-size: 0.95rem;
+}
+
+.nl-query-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.nl-query-textarea {
+  width: 100%;
+  padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-family: inherit;
+  resize: vertical;
+  min-height: 80px;
+  transition: border-color 0.3s;
+}
+
+.nl-query-textarea:focus {
+  outline: none;
+  border-color: #4CAF50;
+  box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
+}
+
+.nl-query-button {
+  background-color: #2e7d32;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  align-self: flex-start;
+}
+
+.nl-query-button:hover:not(:disabled) {
+  background-color: #1b5e20;
+  transform: translateY(-2px);
+}
+
+.nl-query-button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+/* ============ QUERY RESULTS MODAL STYLES ============ */
+.query-results-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.query-results-content {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 600px;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+.query-results-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #eee;
+}
+
+.query-results-header h3 {
+  color: #2e7d32;
+  margin: 0;
+}
+
+.query-results-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.query-result-item {
+  background: #f8f9fa;
+  padding: 1rem;
+  border-radius: 6px;
+  border-left: 4px solid #2e7d32;
+}
+
+.query-result-item h4 {
+  color: #2e7d32;
+  margin: 0 0 0.5rem 0;
+  font-size: 1.1rem;
+}
+
+.query-result-item p {
+  margin: 0.25rem 0;
+  color: #333;
+  font-size: 0.9rem;
+}
+
+.query-result-item p:first-of-type {
+  font-weight: 500;
+}
+
+/* ============ RESPONSIVE ADJUSTMENTS ============ */
+@media (max-width: 768px) {
+  .nl-query-section {
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+  }
+  
+  .nl-query-section h3 {
+    font-size: 1.3rem;
+  }
+  
+  .query-results-content {
+    padding: 1.5rem;
+    width: 95%;
+  }
+  
+  .query-result-item {
+    padding: 0.75rem;
+  }
+}
+/* ============ OPTIMIZED NEWSLETTER LINK PING ANIMATION ============ */
+.crumbtrail {
+  position: relative;
+  display: inline-block;
+  text-decoration: none;
+  color: #333;
+  padding: 0.5rem 3rem 0.5rem 1rem; /* Increased right padding */
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.crumbtrail:hover {
+  background-color: #f0f0f0;
+  color: #2e7d32;
+}
+
+/* Optimized ping animation using single pseudo-element */
+.crumbtrail::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 15px; /* Adjusted position */
+  transform: translateY(-50%);
+  width: 12px; /* Increased size */
+  height: 12px; /* Increased size */
+  border-radius: 50%;
+  background-color: #af4c66;
+  animation: ping 2s ease-in-out infinite both; /* Slower for bigger effect */
+  z-index: 1;
+}
+
+.crumbtrail::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 15px; /* Adjusted position */
+  transform: translateY(-50%);
+  width: 8px; /* Increased size */
+  height: 8px; /* Increased size */
+  border-radius: 50%;
+  background-color: #af4ca3;
+  z-index: 2;
+}
+
+/* Enhanced ping animation - wider and bigger */
+@keyframes ping {
+  0% {
+    transform: translateY(-50%) scale(0.3);
+    opacity: 1;
+  }
+  70% {
+    transform: translateY(-50%) scale(4); /* Much bigger scale */
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(-50%) scale(4);
+    opacity: 0;
+  }
+}
