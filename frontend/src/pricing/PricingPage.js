@@ -208,6 +208,11 @@ export default function PricingPage() {
     }
   ];
 
+  //ToDo
+  //Add to above id: "brand-story2-ad", title: "Brand Story" and  id: "product-showcase2-ad-video",title: "Showcase Video"
+  //for exposing to  newsleter ads. Update the Pricing indexing as well for both
+  //Note:There are no sidebar advertising in HP
+
   // Load PayPal script
   useEffect(() => {
     const loadPayPalScript = () => {
