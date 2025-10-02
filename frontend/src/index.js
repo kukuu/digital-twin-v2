@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
-import AdvertisingPage from "./advertising/AdvertisingPage"; // Add this import
+//import AdvertisingPage from "./advertising/AdvertisingPage"; // Add this import
 import NewsletterPage from "./newsletter/NewsletterPage"; // Add this import
 import PricingPage from "./pricing/PricingPage"; // Add this import
 
@@ -23,7 +23,7 @@ root.render(
       <ClerkProvider publishableKey={PUBLISHABLE_KEY} afterSignOutUrl="/">
         <Routes>
           <Route path="/" element={<App />} />
-          <Route path="/advertising" element={<AdvertisingPage />} />
+          {/*<Route path="/advertising" element={<AdvertisingPage />} />*/}
           <Route path="/newsletter" element={<NewsletterPage />} />
           <Route path="/pricing" element={<PricingPage />} />
         </Routes>
