@@ -1,7 +1,0 @@
-{/*Backend installation*/}
-
-cd backend && npm install \
-  langchain @langchain/openai \
-  @supabase/supabase-js \
-  typescript @types/node \
-  zod dotenv  # For type-safe envs
